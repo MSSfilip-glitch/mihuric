@@ -1,10 +1,5 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import Container from '@/components/ui/Container.astro';
-import Button from '@/components/ui/Button.astro';
-import Input from '@/components/ui/Input.astro';
-import Textarea from '@/components/ui/Textarea.astro';
-import Label from '@/components/ui/Label.astro';
 import { SITE } from '@/lib/site';
 
 // POSTs to Web3Forms when PUBLIC_WEB3FORMS_KEY is set; otherwise the form
@@ -14,109 +9,288 @@ const formReady = Boolean(accessKey);
 ---
 
 <BaseLayout
-  title="Contact"
+  title="Contact — Diving Center Mihurić"
   description="Get in touch with Diving Center Mihurić in Selce, Croatia. Email, phone, and a direct inquiry form."
+  active="contact"
 >
-  <Container size="default" class="py-[var(--spacing-section)]">
-    <h1 class="text-4xl md:text-5xl font-semibold">Plan your dive with us</h1>
-    <p class="mt-4 max-w-2xl text-[var(--color-ink-muted)]">
-      {formReady
-        ? "Tell us when you're coming, what you're certified for, and what you'd like to dive. We reply to every inquiry — usually within a day."
-        : "Reach us by email or phone — we reply to every message, usually within a day."}
-    </p>
+  <div class="page-wrap">
+    <div class="breadcrumbs">
+      <a href="/">Home</a><span class="sep">/</span>
+      <span>Contact</span>
+    </div>
+  </div>
 
-    <div class={formReady ? 'mt-10 grid gap-10 md:grid-cols-3' : 'mt-10'}>
+  <section class="contact-hero">
+    <div class="page-wrap">
+      <div class="kicker">Info &amp; contact · since 1995</div>
+      <h1>Real people, <em>one inbox.</em></h1>
+      <p class="lede">
+        <strong>Every message lands in {SITE.email}.</strong> We will get back to you with an offer or an answer as soon as possible.
+      </p>
+
+      <div class="status-bar" id="status-bar">
+        <div class="dot" aria-hidden="true"></div>
+        <div class="who">
+          <b id="status-text">Opening hours — <em>placeholder.</em></b>
+          <span id="status-sub">Real hours will replace this line once the owner confirms them.</span>
+        </div>
+        <div class="when" id="status-when"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact-main">
+    <div class="page-wrap">
+      <div class="contact-details">
+        <div class="block">
+          <div class="label">Address</div>
+          <div class="value">
+            Diving Center Mihurić<br />
+            {SITE.address.street}<br />
+            {SITE.address.postal} {SITE.address.city}, {SITE.address.country}
+          </div>
+          <div class="sub">Placeholder · location hint (parking, landmark) to be confirmed</div>
+        </div>
+
+        <div class="block">
+          <div class="label">Email &amp; phone</div>
+          <div class="value"><a href={`mailto:${SITE.email}`}>{SITE.email}</a></div>
+          <div class="sub">For bookings, availability, gear questions</div>
+          {SITE.phones.map((p) => (
+            <div class="value" style="margin-top: var(--spacing-4);">
+              <a href={`tel:${p.replace(/\s+/g, '')}`}>{p}</a>
+            </div>
+          ))}
+        </div>
+
+        <div class="block">
+          <div class="label">GPS</div>
+          <div class="value">{SITE.gps.lat.toFixed(4)}° N · {SITE.gps.lng.toFixed(4)}° E</div>
+          <div class="sub">
+            <a
+              href={`https://www.google.com/maps/@${SITE.gps.lat},${SITE.gps.lng},15z`}
+            >Open in Google Maps →</a>
+          </div>
+        </div>
+
+        <div class="block">
+          <div class="label">Follow</div>
+          <div class="value"><a href={SITE.social.facebook} rel="me noopener" target="_blank">Facebook</a></div>
+          <div class="value" style="margin-top: var(--spacing-2);"><a href={SITE.social.instagram} rel="me noopener" target="_blank">Instagram · @dc_mihuric</a></div>
+        </div>
+      </div>
+
       {formReady && (
-        <section class="md:col-span-2">
+        <div class="contact-form-card">
+          <h2>Send a message</h2>
           <form
             action="https://api.web3forms.com/submit"
             method="POST"
-            class="space-y-4"
             aria-label="Dive inquiry form"
           >
             <input type="hidden" name="access_key" value={accessKey} />
             <input type="hidden" name="from_name" value="mihuric.hr inquiry" />
             <input type="hidden" name="subject" value="New dive inquiry via website" />
             <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" />
-
-            <div>
-              <Label for="name">Name</Label>
-              <Input name="name" required autocomplete="name" />
+            <div class="row">
+              <label>Name<input name="name" required autocomplete="name" /></label>
             </div>
-
-            <div class="grid gap-4 md:grid-cols-2">
-              <div>
-                <Label for="email">Email</Label>
-                <Input name="email" type="email" required autocomplete="email" />
-              </div>
-              <div>
-                <Label for="phone">Phone (optional)</Label>
-                <Input name="phone" type="tel" autocomplete="tel" />
-              </div>
+            <div class="row split">
+              <label>Email<input name="email" type="email" required autocomplete="email" /></label>
+              <label>Phone<input name="phone" type="tel" autocomplete="tel" /></label>
             </div>
-
-            <div class="grid gap-4 md:grid-cols-2">
-              <div>
-                <Label for="arrival">Arrival date</Label>
-                <Input name="arrival" type="date" />
-              </div>
-              <div>
-                <Label for="departure">Departure date</Label>
-                <Input name="departure" type="date" />
-              </div>
+            <div class="row">
+              <label>What are you interested in?
+                <textarea name="interest" rows="5" placeholder="Wrecks, reefs, a specific course, family discovery dive…"></textarea>
+              </label>
             </div>
-
-            <div>
-              <Label for="certification">Certification level</Label>
-              <select
-                id="certification"
-                name="certification"
-                class="block w-full h-10 px-3 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[var(--radius-input)]"
-              >
-                <option value="">Pick one…</option>
-                <option>No certification — I'd like to try</option>
-                <option>Open Water Diver</option>
-                <option>Advanced Open Water Diver</option>
-                <option>Rescue Diver</option>
-                <option>Divemaster or Instructor</option>
-                <option>Tec diver</option>
-              </select>
-            </div>
-
-            <div>
-              <Label for="interest">What are you interested in?</Label>
-              <Textarea name="interest" rows={5} placeholder="Wrecks, reefs, a specific course, family discovery dive…" />
-            </div>
-
-            <Button type="submit" size="lg">Send inquiry</Button>
+            <button type="submit" class="btn btn-primary btn-arrow">Send inquiry</button>
           </form>
-        </section>
+        </div>
       )}
-
-      <aside class="space-y-6 text-sm">
-        <section>
-          <h2 class="font-semibold">Email</h2>
-          <p class="mt-1"><a href={`mailto:${SITE.email}`} class="hover:underline">{SITE.email}</a></p>
-        </section>
-        <section>
-          <h2 class="font-semibold">Phone</h2>
-          {SITE.phones.map((p) => (
-            <p><a href={`tel:${p.replace(/\s+/g, '')}`} class="hover:underline">{p}</a></p>
-          ))}
-        </section>
-        <section>
-          <h2 class="font-semibold">Address</h2>
-          <address class="not-italic text-[var(--color-ink-muted)]">
-            {SITE.address.street}<br />
-            {SITE.address.postal} {SITE.address.city}<br />
-            {SITE.address.country}
-          </address>
-        </section>
-        <section>
-          <h2 class="font-semibold">GPS</h2>
-          <p class="text-[var(--color-ink-muted)]">{SITE.gps.lat}, {SITE.gps.lng}</p>
-        </section>
-      </aside>
     </div>
-  </Container>
+  </section>
 </BaseLayout>
+
+<style>
+  .contact-hero {
+    padding: var(--spacing-16) 0 var(--spacing-12);
+  }
+  .contact-hero h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(44px, 6vw, 88px);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin: var(--spacing-5) 0 var(--spacing-5);
+    font-variation-settings: "opsz" 80;
+    max-width: 18ch;
+  }
+  .contact-hero h1 em {
+    font-style: italic;
+    color: var(--color-accent);
+  }
+  .contact-hero .lede {
+    font-size: clamp(17px, 1.5vw, 20px);
+    line-height: 1.55;
+    max-width: 58ch;
+    color: var(--color-ink-muted);
+    margin: 0;
+  }
+  .contact-hero .lede strong { color: var(--color-ink); font-weight: 500; }
+
+  .status-bar {
+    margin-top: var(--spacing-10);
+    padding: var(--spacing-4) var(--spacing-5);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-left: 3px solid var(--color-ok);
+    border-radius: var(--radius-card);
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: var(--spacing-5);
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 13px;
+  }
+  .status-bar .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-ok);
+    box-shadow: 0 0 0 4px oklch(0.62 0.14 165 / 0.2);
+    animation: contact-pulse 2s ease-in-out infinite;
+  }
+  @keyframes contact-pulse {
+    0%, 100% { box-shadow: 0 0 0 4px oklch(0.62 0.14 165 / 0.2); }
+    50% { box-shadow: 0 0 0 7px oklch(0.62 0.14 165 / 0.05); }
+  }
+  .status-bar b {
+    font-family: var(--font-display);
+    font-weight: 500;
+    color: var(--color-ink);
+    font-size: 15px;
+    letter-spacing: -0.01em;
+  }
+  .status-bar .who span {
+    display: block;
+    color: var(--color-ink-muted);
+    font-size: 12px;
+    margin-top: 4px;
+  }
+  .status-bar .when { color: var(--color-ink-muted); }
+
+  .contact-main { padding-bottom: var(--spacing-20); }
+  .contact-details {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-10);
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--spacing-10);
+  }
+  .contact-details .block .label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    margin-bottom: var(--spacing-3);
+  }
+  .contact-details .block .value {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+    line-height: 1.35;
+  }
+  .contact-details .block .value a {
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-border-strong);
+    padding-bottom: 1px;
+    color: inherit;
+  }
+  .contact-details .block .value a:hover {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+  }
+  .contact-details .block .sub {
+    margin-top: var(--spacing-2);
+    font-size: 13px;
+    color: var(--color-ink-muted);
+  }
+  .contact-details .block .sub a {
+    color: var(--color-ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-border-strong);
+  }
+
+  .contact-form-card {
+    margin-top: var(--spacing-12);
+    padding: var(--spacing-10);
+    background: var(--color-surface-muted);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+  }
+  .contact-form-card h2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(28px, 3vw, 36px);
+    letter-spacing: -0.015em;
+    margin: 0 0 var(--spacing-6);
+  }
+  .contact-form-card .row { margin-bottom: var(--spacing-4); }
+  .contact-form-card .row.split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-4);
+  }
+  .contact-form-card label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    margin-bottom: 6px;
+  }
+  .contact-form-card input,
+  .contact-form-card textarea {
+    width: 100%;
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: var(--color-ink);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-input);
+    padding: 12px 14px;
+    margin-top: 6px;
+  }
+  .contact-form-card input:focus,
+  .contact-form-card textarea:focus {
+    outline: none;
+    border-color: var(--color-accent);
+  }
+  .contact-form-card textarea { resize: vertical; min-height: 120px; }
+
+  @media (max-width: 720px) {
+    .contact-details { grid-template-columns: 1fr; gap: var(--spacing-6); }
+    .status-bar { grid-template-columns: 1fr; text-align: left; }
+    .contact-form-card .row.split { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script is:inline>
+  (function updateClock() {
+    const when = document.getElementById('status-when');
+    if (!when) return;
+    const fmt = () => {
+      const now = new Date();
+      const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      const pad = (n) => String(n).padStart(2, '0');
+      return `${days[now.getDay()]} · ${pad(now.getHours())}:${pad(now.getMinutes())} local · CET/CEST`;
+    };
+    when.textContent = fmt();
+    setInterval(() => { when.textContent = fmt(); }, 60 * 1000);
+  })();
+</script>

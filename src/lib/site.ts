@@ -8,7 +8,7 @@
 export const SITE = {
   name: 'Diving Center Mihurić',
   shortName: 'DC Mihurić',
-  tagline: 'PADI 5★ Gold Palm Dive Center — Selce, Croatia — since 1995',
+  tagline: 'PADI 5 Star IDC Resort — Selce, Croatia — since 1995',
   url: 'https://mihuric-v2.pages.dev',
   locales: ['en', 'hr'] as const,
   defaultLocale: 'en' as const,
@@ -27,8 +27,18 @@ export const SITE = {
     instagram: 'https://www.instagram.com/dc_mihuric/',
   },
   padi: {
-    rating: '5★ Gold Palm IDC',
+    rating: '5 Star IDC Resort',
     operatingSince: 1995,
+  },
+  /**
+   * Opening hours are a placeholder until the owner confirms real values.
+   * The original mihuric.hr does not publish hours. Treat every string here
+   * as "Lorem Ipsum"-equivalent — safe to display, not a claim of fact.
+   */
+  hours: {
+    season: 'Apr–Oct (placeholder)',
+    weekday: 'Lorem ipsum',
+    sunday: 'Lorem ipsum',
   },
 } as const;
 

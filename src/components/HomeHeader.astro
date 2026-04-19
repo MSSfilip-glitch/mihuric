@@ -1,0 +1,222 @@
+---
+/**
+ * Bespoke Home header — absolute-positioned over the hero image.
+ * Light text + translucent chrome. Season chip + language row + CTA.
+ */
+import { SITE, type Locale } from '@/lib/site';
+import logoRoundel from '@/assets/design/logo-roundel.png';
+
+interface Props {
+  locale?: Locale;
+}
+const { locale = 'en' } = Astro.props;
+const prefix = locale === 'en' ? '' : `/${locale}`;
+---
+
+<header class="home-header">
+  <div class="page-wrap bar">
+    <a href={`${prefix}/`} class="brand-lockup">
+      <img src={logoRoundel.src} alt="" width={44} height={44} />
+      <span class="brand-name">
+        <b>Diving Center Mihurić</b>
+        <small>Selce · PADI 5★ IDC Resort · Since 1995</small>
+      </span>
+    </a>
+    <nav class="nav" aria-label="Primary">
+      <a href={`${prefix}/`} class="current">{locale === 'hr' ? 'Početna' : 'Home'}</a>
+      <a href={`${prefix}/dive-sites/`}>{locale === 'hr' ? 'Lokacije' : 'Dive sites'}</a>
+      <a href={`${prefix}/courses/`}>{locale === 'hr' ? 'Tečajevi' : 'Courses'}</a>
+      <a href={`${prefix}/plan-a-trip/`}>{locale === 'hr' ? 'Planiraj' : 'Plan a trip'}</a>
+      <a href={`${prefix}/about/`}>{locale === 'hr' ? 'O nama' : 'About'}</a>
+      <a href={`${prefix}/contact/`}>{locale === 'hr' ? 'Kontakt' : 'Contact'}</a>
+    </nav>
+    <div class="header-actions">
+      <span class="season-chip" aria-label="Season status">
+        <span class="pulse"></span>
+        {locale === 'hr' ? 'Sezona počinje 1. svibnja' : 'Season opens May 1'}
+      </span>
+      <span class="lang-row" aria-label="Languages">
+        <span class={locale === 'en' ? 'active' : ''}>EN</span><span class="sep">/</span>
+        <span class={locale === 'hr' ? 'active' : ''}>HR</span>
+      </span>
+      <a href={`${prefix}/plan-a-trip/`} class="btn btn-ghost-light">
+        {locale === 'hr' ? 'Rezerviraj' : 'Book a dive'}
+      </a>
+    </div>
+  </div>
+</header>
+
+<style>
+  .home-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    padding: var(--spacing-5) 0;
+    color: oklch(0.98 0.01 90);
+  }
+  .home-header .bar {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: var(--spacing-8);
+  }
+  .brand-lockup {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    color: inherit;
+  }
+  .brand-lockup img {
+    height: 44px;
+    width: 44px;
+    object-fit: contain;
+  }
+  .brand-lockup .brand-name {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+  }
+  .brand-lockup .brand-name b {
+    font-weight: 500;
+    font-size: 17px;
+    letter-spacing: -0.015em;
+  }
+  .brand-lockup .brand-name small {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.65;
+    margin-top: 2px;
+  }
+
+  .nav {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-6);
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: -0.005em;
+  }
+  .nav a {
+    padding: var(--spacing-2) 0;
+    position: relative;
+    opacity: 0.85;
+    text-decoration: none;
+    color: inherit;
+    transition: opacity 160ms var(--ease-swim);
+  }
+  .nav a:hover { opacity: 1; }
+  .nav a.current { opacity: 1; }
+  .nav a.current::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.6;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-4);
+  }
+
+  .season-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-radius: var(--radius-pill);
+    background: oklch(1 0 0 / 0.12);
+    border: 1px solid oklch(1 0 0 / 0.22);
+    color: oklch(0.98 0.01 90);
+    backdrop-filter: blur(8px);
+  }
+  .season-chip .pulse {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-accent-warm);
+    box-shadow: 0 0 0 0 var(--color-accent-warm);
+    animation: home-pulse 2.2s var(--ease-swim) infinite;
+  }
+  @keyframes home-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 oklch(0.78 0.14 85 / 0.5); }
+    60% { box-shadow: 0 0 0 6px oklch(0.78 0.14 85 / 0); }
+  }
+
+  .lang-row {
+    display: flex;
+    gap: 4px;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .lang-row span { opacity: 0.55; }
+  .lang-row span.active { opacity: 1; }
+  .lang-row .sep { opacity: 0.3; }
+
+  .btn-ghost-light {
+    display: inline-flex;
+    align-items: center;
+    padding: 11px 20px;
+    border-radius: var(--radius-button);
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    color: oklch(0.98 0.01 90);
+    border: 1px solid oklch(1 0 0 / 0.35);
+    background: oklch(1 0 0 / 0.05);
+    transition: background 160ms var(--ease-rise);
+  }
+  .btn-ghost-light:hover { background: oklch(1 0 0 / 0.14); }
+
+  @media (max-width: 1180px) {
+    .home-header .bar { gap: var(--spacing-5); }
+    .nav { gap: var(--spacing-5); font-size: 13px; }
+    .header-actions { gap: var(--spacing-3); }
+    .lang-row { display: none; }
+  }
+  @media (max-width: 1040px) {
+    .home-header .bar {
+      grid-template-columns: auto auto;
+      grid-template-rows: auto auto;
+    }
+    .brand-lockup { grid-column: 1; grid-row: 1; }
+    .header-actions { grid-column: 2; grid-row: 1; }
+    .nav {
+      grid-column: 1 / -1;
+      grid-row: 2;
+      justify-content: flex-start;
+      padding-top: var(--spacing-2);
+      border-top: 1px solid oklch(1 0 0 / 0.12);
+      margin-top: var(--spacing-3);
+    }
+  }
+  @media (max-width: 720px) {
+    .home-header .bar {
+      grid-template-columns: 1fr auto;
+      grid-template-rows: auto;
+    }
+    .brand-lockup .brand-name small { display: none; }
+    .brand-lockup .brand-name b { font-size: 15px; }
+    .nav { display: none; }
+    .season-chip { display: none; }
+  }
+</style>

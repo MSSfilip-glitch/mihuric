@@ -1,50 +1,113 @@
 ---
 /**
- * Structural header — nav items only. Zero visual design.
- *
- * Claude Design owns: the visual treatment of the logo + nav + language
- * switcher + mobile menu animation.
+ * Translucent sticky header used by every subpage (not Home).
+ * Home overrides with HomeHeader.astro (bespoke hero-overlay variant).
  */
-import Container from '@/components/ui/Container.astro';
 import { SITE, type Locale } from '@/lib/site';
+import logoRoundel from '@/assets/design/logo-roundel.png';
 
 interface Props {
-  locale: Locale;
+  locale?: Locale;
+  active?: 'home' | 'dive-sites' | 'courses' | 'plan' | 'about' | 'contact' | null;
 }
 
-const { locale } = Astro.props;
-
+const { locale = 'en', active = null } = Astro.props;
 const prefix = locale === 'en' ? '' : `/${locale}`;
 
-const nav: Array<{ label: string; href: string }> = [
-  { label: locale === 'hr' ? 'Početna' : 'Home',           href: `${prefix}/` },
-  { label: locale === 'hr' ? 'Ponuda' : 'What we offer',    href: `${prefix}/what-we-offer/` },
-  { label: locale === 'hr' ? 'Tečajevi' : 'Courses',        href: `${prefix}/courses/` },
-  { label: locale === 'hr' ? 'Lokacije' : 'Dive sites',     href: `${prefix}/dive-sites/` },
-  { label: 'FAQ',                                            href: `${prefix}/faq/` },
-  { label: 'WebCam',                                         href: `${prefix}/webcam/` },
-  { label: locale === 'hr' ? 'Kontakt' : 'Contact',          href: `${prefix}/contact/` },
+const nav = [
+  { key: 'dive-sites', label: locale === 'hr' ? 'Lokacije' : 'Dive sites', href: `${prefix}/dive-sites/` },
+  { key: 'courses',    label: locale === 'hr' ? 'Tečajevi' : 'Courses',    href: `${prefix}/courses/` },
+  { key: 'plan',       label: locale === 'hr' ? 'Planiraj' : 'Plan a trip', href: `${prefix}/plan-a-trip/` },
+  { key: 'about',      label: locale === 'hr' ? 'O nama'  : 'About',       href: `${prefix}/about/` },
+  { key: 'contact',    label: locale === 'hr' ? 'Kontakt' : 'Contact',     href: `${prefix}/contact/` },
 ];
 ---
 
-<header class="border-b border-[var(--color-border)]">
-  <Container size="wide" as="div" class="flex items-center justify-between py-4 gap-6">
-    <a href={`${prefix}/`} class="font-semibold text-lg">
-      {SITE.shortName}
-    </a>
-    <nav aria-label="Primary">
-      <ul class="flex items-center gap-5 text-sm">
+<header class="site-header">
+  <div class="page-wrap">
+    <div class="bar">
+      <a class="brand-lockup" href={`${prefix}/`}>
+        <img src={logoRoundel.src} alt={SITE.name} width={40} height={40} />
+        <div class="name">
+          Mihurić
+          <em>PADI 5★ IDC · Selce</em>
+        </div>
+      </a>
+      <nav class="nav" aria-label="Primary">
         {nav.map((item) => (
-          <li><a href={item.href} class="hover:underline">{item.label}</a></li>
+          <a href={item.href} class={active === item.key ? 'active' : ''}>{item.label}</a>
         ))}
-      </ul>
-    </nav>
-    <div class="flex items-center gap-2 text-sm">
-      <a href={locale === 'en' ? '/' : '/'}
-         class={locale === 'en' ? 'font-semibold underline' : 'hover:underline'}>EN</a>
-      <span aria-hidden="true">/</span>
-      <a href={locale === 'hr' ? '/hr/' : '/hr/'}
-         class={locale === 'hr' ? 'font-semibold underline' : 'hover:underline'}>HR</a>
+      </nav>
+      <a href={`${prefix}/plan-a-trip/`} class="btn btn-primary btn-arrow">
+        {locale === 'hr' ? 'Rezerviraj' : 'Book a dive'}
+      </a>
     </div>
-  </Container>
+  </div>
 </header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: oklch(0.98 0.008 85 / 0.85);
+    backdrop-filter: saturate(140%) blur(10px);
+    -webkit-backdrop-filter: saturate(140%) blur(10px);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .site-header .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-6);
+    padding: 14px 0;
+  }
+  .brand-lockup {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .brand-lockup img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+  .brand-lockup .name {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+  }
+  .brand-lockup .name em {
+    font-style: normal;
+    color: var(--color-ink-muted);
+    font-weight: 400;
+    display: block;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .nav {
+    display: flex;
+    gap: var(--spacing-6);
+    align-items: center;
+  }
+  .nav a {
+    font-size: 14px;
+    text-decoration: none;
+    color: var(--color-ink);
+    padding: 6px 2px;
+    border-bottom: 1px solid transparent;
+  }
+  .nav a:hover,
+  .nav a.active {
+    border-bottom-color: var(--color-accent);
+  }
+  @media (max-width: 720px) {
+    .nav { display: none; }
+    .brand-lockup .name em { display: none; }
+  }
+</style>

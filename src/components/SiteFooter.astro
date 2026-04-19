@@ -1,52 +1,158 @@
 ---
-import Container from '@/components/ui/Container.astro';
+/**
+ * Dark 4-column footer. Shared chrome across every page including Home.
+ */
 import { SITE, type Locale } from '@/lib/site';
+import logoRoundel from '@/assets/design/logo-roundel.png';
 
 interface Props {
-  locale: Locale;
+  locale?: Locale;
 }
 
-const { locale } = Astro.props;
+const { locale = 'en' } = Astro.props;
+const prefix = locale === 'en' ? '' : `/${locale}`;
 const year = new Date().getFullYear();
 ---
 
-<footer class="border-t border-[var(--color-border)] mt-[var(--spacing-section)]">
-  <Container size="wide" as="div" class="py-10 grid gap-8 md:grid-cols-4">
-    <section>
-      <h2 class="font-semibold mb-2">{SITE.shortName}</h2>
-      <p class="text-sm text-[var(--color-ink-muted)]">{SITE.tagline}</p>
-    </section>
-
-    <section>
-      <h2 class="font-semibold mb-2">{locale === 'hr' ? 'Kontakt' : 'Contact'}</h2>
-      <address class="not-italic text-sm space-y-1">
-        <div><a href={`mailto:${SITE.email}`} class="hover:underline">{SITE.email}</a></div>
-        {SITE.phones.map((p) => (
-          <div><a href={`tel:${p.replace(/\s+/g, '')}`} class="hover:underline">{p}</a></div>
-        ))}
-      </address>
-    </section>
-
-    <section>
-      <h2 class="font-semibold mb-2">{locale === 'hr' ? 'Adresa' : 'Address'}</h2>
-      <address class="not-italic text-sm text-[var(--color-ink-muted)]">
-        {SITE.address.street}<br />
-        {SITE.address.postal} {SITE.address.city}<br />
-        {SITE.address.country}
-      </address>
-    </section>
-
-    <section>
-      <h2 class="font-semibold mb-2">{locale === 'hr' ? 'Pratite nas' : 'Follow'}</h2>
-      <ul class="flex gap-4 text-sm">
-        <li><a href={SITE.social.facebook} rel="me noopener" target="_blank" class="hover:underline">Facebook</a></li>
-        <li><a href={SITE.social.instagram} rel="me noopener" target="_blank" class="hover:underline">Instagram</a></li>
-      </ul>
-    </section>
-  </Container>
-
-  <Container size="wide" as="div" class="py-4 border-t border-[var(--color-border)] text-xs text-[var(--color-ink-muted)] flex flex-wrap justify-between gap-2">
-    <span>© {year} {SITE.name}</span>
-    <span>Preview build</span>
-  </Container>
+<footer class="site-footer">
+  <div class="page-wrap">
+    <div class="cols">
+      <div class="brand-col">
+        <a class="brand-lockup" href={`${prefix}/`}>
+          <img src={logoRoundel.src} alt="" width={40} height={40} />
+          <div class="name">
+            Mihurić
+            <em>PADI 5★ IDC · Selce · est. 1995</em>
+          </div>
+        </a>
+        <p class="blurb">
+          {SITE.address.street}, {SITE.address.postal} {SITE.address.city}, {SITE.address.country}<br />
+          <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+        </p>
+      </div>
+      <div>
+        <h5>{locale === 'hr' ? 'Ronjenje' : 'Dive'}</h5>
+        <ul>
+          <li><a href={`${prefix}/dive-sites/`}>{locale === 'hr' ? 'Lokacije' : 'Dive sites'}</a></li>
+          <li><a href={`${prefix}/courses/`}>{locale === 'hr' ? 'Tečajevi' : 'Courses'}</a></li>
+          <li><a href={`${prefix}/plan-a-trip/`}>{locale === 'hr' ? 'Planiraj' : 'Plan a trip'}</a></li>
+          <li><a href={`${prefix}/what-we-offer/`}>{locale === 'hr' ? 'Ponuda' : 'What we offer'}</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>{locale === 'hr' ? 'O nama' : 'About'}</h5>
+        <ul>
+          <li><a href={`${prefix}/about/`}>{locale === 'hr' ? 'Naša priča' : 'Our story'}</a></li>
+          <li><a href={`${prefix}/about/`}>{locale === 'hr' ? 'Tim' : 'Team'}</a></li>
+          <li><a href={`${prefix}/about/weather/`}>{locale === 'hr' ? 'Vrijeme' : 'Weather'}</a></li>
+          <li><a href={`${prefix}/media/`}>Media</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>{locale === 'hr' ? 'Info' : 'Trip info'}</h5>
+        <ul>
+          <li><a href={`${prefix}/faq/`}>FAQ</a></li>
+          <li><a href={`${prefix}/webcam/`}>Webcam</a></li>
+          <li><a href={`${prefix}/about/weather/`}>{locale === 'hr' ? 'Vrijeme i klima' : 'Weather & climate'}</a></li>
+          <li><a href={`${prefix}/contact/`}>{locale === 'hr' ? 'Kontakt' : 'Contact'}</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal">
+      <span>© 1995–{year} {SITE.name}</span>
+      <span>PADI {SITE.padi.rating}</span>
+    </div>
+  </div>
 </footer>
+
+<style>
+  .site-footer {
+    background: var(--color-deep-ink);
+    color: oklch(0.98 0.01 90 / 0.75);
+    padding: var(--spacing-16) 0 var(--spacing-8);
+    margin-top: 0;
+  }
+  .site-footer .cols {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: var(--spacing-10);
+    padding-bottom: var(--spacing-10);
+    border-bottom: 1px solid oklch(0.98 0.01 90 / 0.12);
+  }
+  .site-footer h5 {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: oklch(0.98 0.01 90 / 0.5);
+    font-weight: 500;
+    margin: 0 0 var(--spacing-4);
+  }
+  .site-footer ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 10px;
+  }
+  .site-footer ul a {
+    color: oklch(0.98 0.01 90 / 0.8);
+    text-decoration: none;
+    font-size: 14px;
+  }
+  .site-footer ul a:hover { color: var(--color-accent-warm); }
+  .site-footer .legal {
+    padding-top: var(--spacing-5);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--spacing-4);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: oklch(0.98 0.01 90 / 0.4);
+  }
+  .brand-col .brand-lockup {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--color-brand-contrast);
+  }
+  .brand-col .brand-lockup img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+  .brand-col .brand-lockup .name {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--color-brand-contrast);
+    line-height: 1.1;
+  }
+  .brand-col .brand-lockup .name em {
+    display: block;
+    font-style: normal;
+    color: oklch(0.98 0.01 90 / 0.5);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .brand-col .blurb {
+    margin-top: var(--spacing-4);
+    color: oklch(0.98 0.01 90 / 0.55);
+    font-size: 13px;
+    max-width: 38ch;
+  }
+  .brand-col .blurb a {
+    color: oklch(0.98 0.01 90 / 0.75);
+    text-decoration: none;
+  }
+  .brand-col .blurb a:hover { color: var(--color-accent-warm); }
+  @media (max-width: 720px) {
+    .site-footer .cols { grid-template-columns: 1fr 1fr; }
+  }
+</style>

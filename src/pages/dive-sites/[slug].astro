@@ -2,10 +2,6 @@
 import { getCollection, render } from 'astro:content';
 import { Image } from 'astro:assets';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import Container from '@/components/ui/Container.astro';
-import Badge from '@/components/ui/Badge.astro';
-import Button from '@/components/ui/Button.astro';
-import Separator from '@/components/ui/Separator.astro';
 import Schema from '@/components/Schema.astro';
 
 export async function getStaticPaths() {
@@ -16,96 +12,564 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 const d = entry.data;
+
+const certClass =
+  d.certification === 'Advanced Open Water' || d.certification === 'Rescue' || d.certification === 'Divemaster' || d.certification === 'Tec'
+    ? 'aowd'
+    : d.certification === 'Open Water' ? 'owd' : '';
+
+const relatedEntries = (await getCollection('diveSites', (e) =>
+  e.data.locale === 'en' && !e.data.draft && e.data.slug !== d.slug
+))
+  .filter((e) => e.data.category === d.category)
+  .slice(0, 3);
+
+const fallbackRelated = relatedEntries.length
+  ? relatedEntries
+  : (await getCollection('diveSites', (e) => e.data.locale === 'en' && !e.data.draft && e.data.slug !== d.slug)).slice(0, 3);
 ---
 
 <BaseLayout
-  title={d.title}
+  title={`${d.title} — Diving Center Mihurić`}
   description={d.summary}
   image={d.hero?.src}
   schemaType="none"
+  active="dive-sites"
 >
-  <Schema
-    type="diveSite"
-    name={d.title}
-    description={d.summary}
-    image={d.hero?.src}
-    gps={d.gps}
-  />
+  <Schema type="diveSite" name={d.title} description={d.summary} image={d.hero?.src} gps={d.gps} />
 
-  <Container size="default" class="py-[var(--spacing-section)]">
-    <nav aria-label="Breadcrumb" class="text-sm text-[var(--color-ink-muted)]">
-      <a href="/" class="hover:underline">Home</a>
-      <span aria-hidden="true"> / </span>
-      <a href="/dive-sites/" class="hover:underline">Dive sites</a>
-      <span aria-hidden="true"> / </span>
+  <div class="page-wrap">
+    <div class="breadcrumbs">
+      <a href="/">Home</a><span class="sep">/</span>
+      <a href="/dive-sites/">Dive sites</a><span class="sep">/</span>
       <span>{d.title}</span>
-    </nav>
+    </div>
+  </div>
 
-    <header class="mt-4">
-      <div class="flex flex-wrap items-center gap-2">
-        {d.category && <Badge variant="outline">{d.category}</Badge>}
-        {d.depth.max > 0 && <Badge variant="muted">{d.depth.min}–{d.depth.max} m</Badge>}
-        <Badge variant="muted">{d.certification}</Badge>
+  <section class="site-hero">
+    <div class="bg" style={d.hero ? `background-image: url('${d.hero.src}');` : ''}></div>
+    <div class="page-wrap">
+      <div class="hero-eyebrow">
+        <span class="dot"></span>
+        <span>{d.category ? `${d.category[0].toUpperCase()}${d.category.slice(1)} · Kvarner` : 'Kvarner'}</span>
+        {d.gps && <span style="opacity:0.5">· {d.gps.lat.toFixed(4)}°N {d.gps.lng.toFixed(4)}°E</span>}
       </div>
-      <h1 class="mt-2 text-4xl md:text-5xl font-semibold">{d.title}</h1>
-      <p class="mt-3 text-[var(--color-ink-muted)]">{d.summary}</p>
-    </header>
+      <h1>{d.title}</h1>
+      <p class="hero-sub">{d.summary}</p>
 
-    {d.hero && (
-      <figure class="mt-6">
-        <Image src={d.hero} alt={d.title} widths={[640, 960, 1440]} sizes="(min-width: 1024px) 960px, 100vw" />
-      </figure>
-    )}
+      <div class="stats-strip">
+        <div class="cell"><span>Min depth</span><b>{d.depth.min}<span class="unit">m</span></b></div>
+        <div class="cell"><span>Max depth</span><b>{d.depth.max || '—'}<span class="unit">m</span></b></div>
+        <div class="cell"><span>Level</span><b>{d.certification}</b></div>
+        {d.entry && <div class="cell"><span>Entry</span><b>{d.entry}</b></div>}
+        {d.visibility && <div class="cell"><span>Viz</span><b>{d.visibility}</b></div>}
+        {d.currents && <div class="cell"><span>Current</span><b>{d.currents}</b></div>}
+      </div>
+    </div>
+  </section>
 
-    <dl class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-sm">
-      <div>
-        <dt class="text-[var(--color-ink-muted)]">Depth</dt>
-        <dd class="font-medium">{d.depth.max > 0 ? `${d.depth.min}–${d.depth.max} m` : 'TBD'}</dd>
-      </div>
-      <div>
-        <dt class="text-[var(--color-ink-muted)]">Certification</dt>
-        <dd class="font-medium">{d.certification}</dd>
-      </div>
-      {d.entry && (
-        <div>
-          <dt class="text-[var(--color-ink-muted)]">Entry</dt>
-          <dd class="font-medium">{d.entry}</dd>
+  <main class="page-wrap">
+    <div class="article-wrap">
+      <article class="article">
+        <Content />
+
+        {d.marineLife.length > 0 && (
+          <section class="life-section">
+            <h2>What <em>lives here</em></h2>
+            <div class="life-chips">
+              {d.marineLife.map((species) => (
+                <span class="chip">{species}</span>
+              ))}
+            </div>
+          </section>
+        )}
+      </article>
+
+      <aside class="sidebar">
+        <div class="spec-card">
+          <h3>At a glance</h3>
+          <dl>
+            <dt>Certification</dt>
+            <dd><span class={`level-pill ${certClass}`}>{d.certification}</span></dd>
+
+            <dt>Depth</dt>
+            <dd>{d.depth.min}–{d.depth.max || '—'} m</dd>
+
+            {d.entry && (
+              <>
+                <dt>Entry</dt>
+                <dd>{d.entry}</dd>
+              </>
+            )}
+
+            {d.visibility && (
+              <>
+                <dt>Visibility</dt>
+                <dd>{d.visibility}</dd>
+              </>
+            )}
+
+            {d.difficulty && (
+              <>
+                <dt>Difficulty</dt>
+                <dd>{d.difficulty}</dd>
+              </>
+            )}
+          </dl>
         </div>
-      )}
-      {d.difficulty && (
-        <div>
-          <dt class="text-[var(--color-ink-muted)]">Difficulty</dt>
-          <dd class="font-medium">{d.difficulty}</dd>
+
+        {d.gps && (
+          <div class="sidebar-map">
+            <div class="coords-only">
+              <b>{d.gps.lat.toFixed(4)}° N · {d.gps.lng.toFixed(4)}° E</b>
+              <div class="coords-sub">Kvarner, Croatia<br />Boat or shore from Selce harbour</div>
+              <a
+                href={`https://www.google.com/maps/@${d.gps.lat},${d.gps.lng},14z`}
+                class="btn btn-ghost"
+                style="width: 100%; justify-content: center;"
+              >Open in Google Maps</a>
+            </div>
+          </div>
+        )}
+
+        <div class="sidebar-book">
+          <div class="price">Pricing <b>on request</b></div>
+          <h4>Dive {d.title}</h4>
+          <p>Email us with your certification level and preferred dates and we'll come back with availability, grouping and a quote.</p>
+          <a href={`mailto:info@mihuric.hr?subject=${encodeURIComponent(d.title + ' — inquiry')}`} class="btn btn-primary btn-arrow" style="width: 100%; justify-content: center;">Email us</a>
         </div>
-      )}
-    </dl>
+      </aside>
+    </div>
+  </main>
 
-    <Separator class="my-8" />
-
-    <article class="prose max-w-none">
-      <Content />
-    </article>
-
-    {d.gallery.length > 0 && (
-      <section class="mt-8">
-        <h2 class="text-xl font-semibold">Gallery</h2>
-        <ul class="mt-4 grid gap-2 md:grid-cols-3">
-          {d.gallery.map((img) => (
-            <li>
-              <Image src={img} alt={`${d.title} photo`} widths={[320, 640]} sizes="(min-width: 768px) 33vw, 100vw" />
-            </li>
+  {fallbackRelated.length > 0 && (
+    <section class="related">
+      <div class="page-wrap">
+        <div class="related-head">
+          <h2>More in <em>the area</em></h2>
+          <a class="viewall" href="/dive-sites/">All 30 sites →</a>
+        </div>
+        <div class="related-grid">
+          {fallbackRelated.map((r) => (
+            <a class="related-card" href={`/dive-sites/${r.data.slug}/`}>
+              {r.data.hero ? (
+                <div class="img" style={`background-image: url('${r.data.hero.src}');`}></div>
+              ) : (
+                <div class="img img-placeholder"></div>
+              )}
+              <div class="body">
+                <div class="kickerrow">
+                  <span>{r.data.category ?? 'Dive site'}</span>
+                  <span>{r.data.depth.max ? `${r.data.depth.min}–${r.data.depth.max} m` : '—'}</span>
+                </div>
+                <h3>{r.data.title}</h3>
+                <p>{r.data.summary}</p>
+                <div class="stats">
+                  <span>Depth <b>{r.data.depth.max ? `${r.data.depth.min}–${r.data.depth.max} m` : '—'}</b></span>
+                  <span>Level <b>{r.data.certification}</b></span>
+                </div>
+              </div>
+            </a>
           ))}
-        </ul>
-      </section>
-    )}
-
-    <aside class="mt-10 p-6 border border-[var(--color-border)] rounded-[var(--radius-card)]">
-      <h2 class="text-lg font-semibold">Want to dive here?</h2>
-      <p class="mt-1 text-sm text-[var(--color-ink-muted)]">Get in touch and we'll plan the trip around your certification and the weather window.</p>
-      <div class="mt-4 flex flex-wrap gap-3">
-        <Button as="a" href="/contact/">Ask about this site</Button>
-        <Button as="a" href="/dive-sites/" variant="outline">All dive sites</Button>
+        </div>
       </div>
-    </aside>
-  </Container>
+    </section>
+  )}
 </BaseLayout>
+
+<style>
+  .site-hero {
+    position: relative;
+    min-height: 72vh;
+    color: var(--color-brand-contrast);
+    background: var(--color-deep-ink);
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: var(--spacing-12);
+  }
+  .site-hero .bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-size: cover;
+    background-position: center;
+  }
+  .site-hero .bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(10,20,40,0.35) 0%, rgba(10,20,40,0) 30%, rgba(10,20,40,0.75) 100%),
+      radial-gradient(ellipse at 50% 35%, rgba(10,20,40,0) 40%, rgba(10,20,40,0.55) 100%);
+  }
+  .site-hero .page-wrap { position: relative; z-index: 1; width: 100%; }
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: oklch(0.98 0.01 90 / 0.72);
+    margin-bottom: var(--spacing-5);
+  }
+  .hero-eyebrow .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-accent);
+  }
+  .site-hero h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(44px, 7vw, 96px);
+    letter-spacing: -0.02em;
+    line-height: 0.98;
+    margin: 0 0 var(--spacing-6) 0;
+    font-variation-settings: "opsz" 96;
+    max-width: 18ch;
+    color: oklch(0.98 0.01 90);
+  }
+  .hero-sub {
+    font-size: clamp(16px, 1.3vw, 19px);
+    line-height: 1.45;
+    max-width: 52ch;
+    color: oklch(0.98 0.01 90 / 0.85);
+    margin: 0 0 var(--spacing-8) 0;
+  }
+  .stats-strip {
+    font-family: var(--font-mono);
+    background: oklch(0.98 0.01 90 / 0.08);
+    border: 1px solid oklch(0.98 0.01 90 / 0.14);
+    border-radius: var(--radius-card);
+    padding: var(--spacing-4) var(--spacing-6);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: var(--spacing-4);
+    backdrop-filter: blur(6px);
+    max-width: 1040px;
+  }
+  .stats-strip .cell span {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: oklch(0.98 0.01 90 / 0.55);
+    margin-bottom: 4px;
+  }
+  .stats-strip .cell b {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(16px, 1.8vw, 22px);
+    color: oklch(0.98 0.01 90);
+    letter-spacing: -0.01em;
+  }
+  .stats-strip .cell b .unit {
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-size: 11px;
+    color: oklch(0.98 0.01 90 / 0.6);
+    margin-left: 4px;
+  }
+
+  .article-wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: var(--spacing-12);
+    padding: var(--spacing-20) 0;
+  }
+  .article :global(h1) { display: none; }
+  .article :global(h2) {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(28px, 3vw, 40px);
+    letter-spacing: -0.015em;
+    line-height: 1.1;
+    margin: var(--spacing-12) 0 var(--spacing-4);
+    font-variation-settings: "opsz" 48;
+  }
+  .article :global(h2):first-child { margin-top: 0; }
+  .article :global(h2 em) { font-style: italic; font-weight: 400; color: var(--color-accent); }
+  .article :global(h3) {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+    margin: var(--spacing-8) 0 var(--spacing-3);
+  }
+  .article :global(p) {
+    font-size: 17px;
+    line-height: 1.65;
+    color: oklch(0.25 0.02 245);
+    margin: 0 0 var(--spacing-4) 0;
+    text-wrap: pretty;
+  }
+  .article :global(strong) { color: var(--color-ink); font-weight: 500; }
+  .article :global(figure) { margin: var(--spacing-10) 0; }
+  .article :global(figure img) {
+    width: 100%;
+    border-radius: var(--radius-card);
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  .life-section { margin: var(--spacing-16) 0 0; }
+  .life-section h2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(28px, 3vw, 40px);
+    letter-spacing: -0.015em;
+    margin: 0 0 var(--spacing-4);
+  }
+  .life-section h2 em { font-style: italic; color: var(--color-accent); }
+  .life-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: var(--spacing-4) 0 var(--spacing-8);
+  }
+  .chip {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    padding: 5px 10px;
+    border-radius: 100px;
+    background: var(--color-surface-muted);
+    color: var(--color-ink);
+    border: 1px solid var(--color-border);
+  }
+
+  .sidebar {
+    align-self: start;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-5);
+  }
+  .spec-card {
+    background: var(--color-surface-muted);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+  }
+  .spec-card h3 {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    padding: var(--spacing-4) var(--spacing-5) var(--spacing-3);
+    margin: 0;
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-surface);
+  }
+  .spec-card dl {
+    margin: 0;
+    padding: var(--spacing-3) 0 var(--spacing-4);
+  }
+  .spec-card dt,
+  .spec-card dd {
+    padding: 8px var(--spacing-5);
+    font-size: 13px;
+  }
+  .spec-card dt {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    padding-bottom: 0;
+    padding-top: var(--spacing-3);
+  }
+  .spec-card dd {
+    margin: 0;
+    padding-top: 2px;
+    font-weight: 500;
+    color: var(--color-ink);
+  }
+  .level-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 500;
+    background: var(--color-accent);
+    color: var(--color-brand-contrast);
+  }
+  .level-pill.aowd { background: var(--color-accent-strong); }
+  .level-pill.owd { background: oklch(0.55 0.12 180); }
+
+  .sidebar-map {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    background: var(--color-surface-muted);
+  }
+  .coords-only {
+    padding: var(--spacing-6) var(--spacing-5);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--color-ink);
+  }
+  .coords-only b {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .coords-sub {
+    color: var(--color-ink-muted);
+    margin-bottom: var(--spacing-3);
+  }
+
+  .sidebar-book {
+    padding: var(--spacing-6);
+    background: var(--color-deep-ink);
+    color: var(--color-brand-contrast);
+    border-radius: var(--radius-card);
+  }
+  .sidebar-book h4 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    margin: 0 0 var(--spacing-2);
+    color: oklch(0.98 0.01 90);
+  }
+  .sidebar-book p {
+    margin: 0 0 var(--spacing-4);
+    font-size: 13px;
+    line-height: 1.5;
+    color: oklch(0.98 0.01 90 / 0.7);
+  }
+  .sidebar-book .price {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: oklch(0.98 0.01 90 / 0.55);
+    margin-bottom: var(--spacing-4);
+  }
+  .sidebar-book .price b {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 24px;
+    color: var(--color-accent-warm);
+    letter-spacing: -0.01em;
+    display: block;
+    margin-top: 2px;
+  }
+
+  .related {
+    background: var(--color-surface-muted);
+    padding: var(--spacing-20) 0;
+    margin-top: var(--spacing-16);
+    border-top: 1px solid var(--color-border);
+  }
+  .related-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-10);
+    flex-wrap: wrap;
+    gap: var(--spacing-4);
+  }
+  .related h2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(28px, 3vw, 40px);
+    letter-spacing: -0.015em;
+    margin: 0;
+    font-variation-settings: "opsz" 48;
+  }
+  .related h2 em { font-style: italic; color: var(--color-accent); }
+  .related .viewall {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-border-strong);
+    padding-bottom: 2px;
+  }
+  .related .viewall:hover { color: var(--color-accent); border-bottom-color: var(--color-accent); }
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-6);
+  }
+  .related-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .related-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px -12px rgba(0,0,0,0.2);
+  }
+  .related-card .img {
+    aspect-ratio: 16 / 10;
+    background-size: cover;
+    background-position: center;
+  }
+  .related-card .img-placeholder { background: var(--color-surface-sunk); }
+  .related-card .body {
+    padding: var(--spacing-5) var(--spacing-6) var(--spacing-6);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .related-card .kickerrow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    margin-bottom: var(--spacing-2);
+  }
+  .related-card h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    margin: 0 0 var(--spacing-2);
+  }
+  .related-card p {
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--color-ink-muted);
+    margin: 0 0 var(--spacing-4);
+    flex: 1;
+  }
+  .related-card .stats {
+    display: flex;
+    gap: var(--spacing-4);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-ink-muted);
+    padding-top: var(--spacing-3);
+    border-top: 1px solid var(--color-border);
+  }
+  .related-card .stats b { color: var(--color-ink); font-weight: 500; }
+
+  @media (max-width: 960px) {
+    .article-wrap { grid-template-columns: 1fr; }
+    .sidebar { order: 2; }
+    .related-grid { grid-template-columns: 1fr; }
+    .stats-strip { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>

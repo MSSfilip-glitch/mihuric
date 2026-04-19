@@ -1,11 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
-import { Image } from 'astro:assets';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import Container from '@/components/ui/Container.astro';
-import Badge from '@/components/ui/Badge.astro';
-import Button from '@/components/ui/Button.astro';
-import Separator from '@/components/ui/Separator.astro';
 import Schema from '@/components/Schema.astro';
 
 export async function getStaticPaths() {
@@ -16,69 +11,612 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 const d = entry.data;
+
+const trackLabel: Record<string, string> = {
+  discovery: 'Try dive',
+  recreational: 'Recreational',
+  specialty: 'Specialty',
+  professional: 'Professional',
+  tec: 'Technical',
+};
+
+const rungOrder = ['discovery', 'recreational', 'specialty', 'professional', 'tec'];
+const rungIdx = rungOrder.indexOf(d.track);
+
+const allCourses = (await getCollection('courses', (e) => e.data.locale === 'en' && !e.data.draft))
+  .sort((a, b) => rungOrder.indexOf(a.data.track) - rungOrder.indexOf(b.data.track));
+
+const relatedCourses = allCourses
+  .filter((c) => c.data.slug !== d.slug)
+  .slice(0, 3);
 ---
 
-<BaseLayout title={d.title} description={d.summary} image={d.hero?.src} schemaType="none">
+<BaseLayout
+  title={`${d.title} — Diving Center Mihurić`}
+  description={d.summary}
+  image={d.hero?.src}
+  schemaType="none"
+  active="courses"
+>
   <Schema type="course" name={d.title} description={d.summary} priceFrom={d.priceFrom} />
 
-  <Container size="default" class="py-[var(--spacing-section)]">
-    <nav aria-label="Breadcrumb" class="text-sm text-[var(--color-ink-muted)]">
-      <a href="/" class="hover:underline">Home</a> /
-      <a href="/courses/" class="hover:underline">Courses</a> /
+  <div class="page-wrap">
+    <div class="breadcrumbs">
+      <a href="/">Home</a><span class="sep">/</span>
+      <a href="/courses/">Courses</a><span class="sep">/</span>
       <span>{d.title}</span>
-    </nav>
+    </div>
+  </div>
 
-    <header class="mt-4">
-      <Badge variant="muted">{d.track}</Badge>
-      <h1 class="mt-2 text-4xl md:text-5xl font-semibold">{d.title}</h1>
-      <p class="mt-3 text-[var(--color-ink-muted)]">{d.summary}</p>
-    </header>
-
-    {d.hero && (
-      <figure class="mt-6">
-        <Image src={d.hero} alt={d.title} widths={[640, 960, 1440]} sizes="(min-width: 1024px) 960px, 100vw" />
-      </figure>
-    )}
-
-    <dl class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-sm">
-      {d.duration && (
-        <div><dt class="text-[var(--color-ink-muted)]">Duration</dt><dd class="font-medium">{d.duration}</dd></div>
-      )}
-      {d.certification && (
-        <div><dt class="text-[var(--color-ink-muted)]">Certification</dt><dd class="font-medium">{d.certification}</dd></div>
-      )}
-      {d.priceFrom && (
-        <div><dt class="text-[var(--color-ink-muted)]">From</dt><dd class="font-medium">{d.priceFrom.amount} {d.priceFrom.currency}</dd></div>
-      )}
-    </dl>
-
-    {d.prerequisites.length > 0 && (
-      <section class="mt-8">
-        <h2 class="text-xl font-semibold">Prerequisites</h2>
-        <ul class="mt-2 list-disc pl-5">
-          {d.prerequisites.map((p) => <li>{p}</li>)}
-        </ul>
-      </section>
-    )}
-
-    {d.includes.length > 0 && (
-      <section class="mt-6">
-        <h2 class="text-xl font-semibold">What's included</h2>
-        <ul class="mt-2 list-disc pl-5">
-          {d.includes.map((p) => <li>{p}</li>)}
-        </ul>
-      </section>
-    )}
-
-    <Separator class="my-8" />
-    <article class="prose max-w-none"><Content /></article>
-
-    <aside class="mt-10 p-6 border border-[var(--color-border)] rounded-[var(--radius-card)]">
-      <h2 class="text-lg font-semibold">Ready to sign up?</h2>
-      <div class="mt-4 flex flex-wrap gap-3">
-        <Button as="a" href="/contact/">Start your booking</Button>
-        <Button as="a" href="/courses/" variant="outline">Other courses</Button>
+  <section class="site-hero">
+    <div class="bg" style={d.hero ? `background-image: url('${d.hero.src}');` : ''}></div>
+    <div class="page-wrap">
+      <div class="hero-eyebrow">
+        <span class="dot"></span>
+        <span>PADI Course · {trackLabel[d.track] ?? d.track}</span>
+        {d.certification && <span style="opacity:0.5">· {d.certification}</span>}
       </div>
-    </aside>
-  </Container>
+      <h1>{d.title}</h1>
+      <p class="hero-sub">{d.summary}</p>
+
+      <div class="stats-strip">
+        {d.priceFrom && (
+          <div class="cell"><span>From</span><b>€{d.priceFrom.amount}<span class="unit">all in</span></b></div>
+        )}
+        {d.duration && (
+          <div class="cell"><span>Duration</span><b>{d.duration}</b></div>
+        )}
+        {d.certification && (
+          <div class="cell"><span>Certification</span><b>{d.certification}</b></div>
+        )}
+        <div class="cell"><span>Agency</span><b>PADI<span class="unit">worldwide</span></b></div>
+      </div>
+    </div>
+  </section>
+
+  <main class="page-wrap">
+    <div class="article-wrap">
+      <article class="article">
+        <Content />
+      </article>
+
+      <aside class="sidebar">
+        <div class="spec-card">
+          <h3>Course summary</h3>
+          <dl>
+            {d.certification && (
+              <>
+                <dt>Certification</dt>
+                <dd><span class="level-pill">{d.certification}</span></dd>
+              </>
+            )}
+            {d.priceFrom && (
+              <>
+                <dt>Price</dt>
+                <dd>€{d.priceFrom.amount}<span class="sub">{d.priceFrom.currency}, instruction + cert</span></dd>
+              </>
+            )}
+            {d.duration && (
+              <>
+                <dt>Duration</dt>
+                <dd>{d.duration}</dd>
+              </>
+            )}
+            <dt>Agency</dt>
+            <dd>PADI<span class="sub">recognised worldwide</span></dd>
+          </dl>
+        </div>
+
+        {(d.includes.length > 0 || d.prerequisites.length > 0) && (
+          <div class="includes-card">
+            {d.includes.length > 0 && (
+              <>
+                <h3>What's included</h3>
+                <ul class="incl-list">
+                  {d.includes.map((i) => (
+                    <li><span class="check"></span>{i}</li>
+                  ))}
+                </ul>
+              </>
+            )}
+            {d.prerequisites.length > 0 && (
+              <>
+                <h3 style="margin-top: var(--spacing-6);">Prerequisites</h3>
+                <ul class="incl-list">
+                  {d.prerequisites.map((p) => (
+                    <li><span class="check"></span>{p}</li>
+                  ))}
+                </ul>
+              </>
+            )}
+          </div>
+        )}
+
+        <div class="sidebar-book">
+          <div class="price">
+            {d.priceFrom ? (<>From <b>€{d.priceFrom.amount}</b></>) : (<>Contact us for <b>pricing</b></>)}
+          </div>
+          <h4>Book this course</h4>
+          <p>Reply with dates and your certification level — we'll come back within 24 hours with a plan and a price.</p>
+          <a
+            href={`mailto:info@mihuric.hr?subject=${encodeURIComponent(d.title + ' course')}`}
+            class="btn btn-primary btn-arrow"
+            style="width: 100%; justify-content: center;"
+          >Request dates</a>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <section class="related">
+    <div class="page-wrap">
+      <div class="related-head">
+        <h2>The PADI <em>ladder.</em></h2>
+        <a class="viewall" href="/courses/">All courses →</a>
+      </div>
+
+      <div class="ladder-rail">
+        <div class="ladder-rungs">
+          {rungOrder.map((t, i) => {
+            const label = trackLabel[t];
+            const state = i < rungIdx ? 'done' : i === rungIdx ? 'current' : '';
+            return (
+              <div class={`rung-item ${state}`}>
+                <span class="rung-num">{String(i + 1).padStart(2, '0')}</span>
+                <span class="rung-name">{label}</span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <div class="related-grid">
+        {relatedCourses.map((c) => (
+          <a class="related-card" href={`/courses/${c.data.slug}/`}>
+            {c.data.hero ? (
+              <div class="img" style={`background-image: url('${c.data.hero.src}');`}></div>
+            ) : (
+              <div class="img img-placeholder"></div>
+            )}
+            <div class="body">
+              <div class="kickerrow">
+                <span>{trackLabel[c.data.track]}</span>
+                <span>{c.data.priceFrom ? `€${c.data.priceFrom.amount}` : ''}</span>
+              </div>
+              <h3>{c.data.title}</h3>
+              <p>{c.data.summary.slice(0, 140)}{c.data.summary.length > 140 ? '…' : ''}</p>
+              <div class="stats">
+                {c.data.duration && <span>Duration <b>{c.data.duration}</b></span>}
+                {c.data.certification && <span>Cert <b>{c.data.certification}</b></span>}
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
 </BaseLayout>
+
+<style>
+  .site-hero {
+    position: relative;
+    min-height: 62vh;
+    color: var(--color-brand-contrast);
+    background: var(--color-deep-ink);
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: var(--spacing-12);
+  }
+  .site-hero .bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-size: cover;
+    background-position: center;
+  }
+  .site-hero .bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(10,20,40,0.35) 0%, rgba(10,20,40,0) 30%, rgba(10,20,40,0.75) 100%),
+      radial-gradient(ellipse at 50% 35%, rgba(10,20,40,0) 40%, rgba(10,20,40,0.55) 100%);
+  }
+  .site-hero .page-wrap { position: relative; z-index: 1; width: 100%; }
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: oklch(0.98 0.01 90 / 0.72);
+    margin-bottom: var(--spacing-5);
+  }
+  .hero-eyebrow .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-accent);
+  }
+  .site-hero h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(44px, 7vw, 96px);
+    letter-spacing: -0.02em;
+    line-height: 0.98;
+    margin: 0 0 var(--spacing-6) 0;
+    font-variation-settings: "opsz" 96;
+    max-width: 18ch;
+    color: oklch(0.98 0.01 90);
+  }
+  .hero-sub {
+    font-size: clamp(16px, 1.3vw, 19px);
+    line-height: 1.45;
+    max-width: 52ch;
+    color: oklch(0.98 0.01 90 / 0.85);
+    margin: 0 0 var(--spacing-8) 0;
+  }
+  .stats-strip {
+    font-family: var(--font-mono);
+    background: oklch(0.98 0.01 90 / 0.08);
+    border: 1px solid oklch(0.98 0.01 90 / 0.14);
+    border-radius: var(--radius-card);
+    padding: var(--spacing-4) var(--spacing-6);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: var(--spacing-4);
+    backdrop-filter: blur(6px);
+    max-width: 1040px;
+  }
+  .stats-strip .cell span {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: oklch(0.98 0.01 90 / 0.55);
+    margin-bottom: 4px;
+  }
+  .stats-strip .cell b {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(16px, 1.8vw, 22px);
+    color: oklch(0.98 0.01 90);
+    letter-spacing: -0.01em;
+  }
+  .stats-strip .cell b .unit {
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-size: 11px;
+    color: oklch(0.98 0.01 90 / 0.6);
+    margin-left: 4px;
+  }
+
+  .article-wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: var(--spacing-12);
+    padding: var(--spacing-20) 0;
+  }
+  .article :global(h1) { display: none; }
+  .article :global(h2) {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(28px, 3vw, 40px);
+    letter-spacing: -0.015em;
+    line-height: 1.1;
+    margin: var(--spacing-12) 0 var(--spacing-4);
+    font-variation-settings: "opsz" 48;
+  }
+  .article :global(h2):first-child { margin-top: 0; }
+  .article :global(h2 em) { font-style: italic; font-weight: 400; color: var(--color-accent); }
+  .article :global(h3) {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+    margin: var(--spacing-8) 0 var(--spacing-3);
+  }
+  .article :global(p) {
+    font-size: 17px;
+    line-height: 1.65;
+    color: oklch(0.25 0.02 245);
+    margin: 0 0 var(--spacing-4) 0;
+    text-wrap: pretty;
+  }
+  .article :global(strong) { color: var(--color-ink); font-weight: 500; }
+  .article :global(ul) {
+    padding-left: 1.2em;
+    margin: 0 0 var(--spacing-4);
+    font-size: 16px;
+    color: var(--color-ink-muted);
+  }
+  .article :global(ul li) { margin-bottom: 6px; }
+
+  .sidebar {
+    align-self: start;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-5);
+  }
+  .spec-card {
+    background: var(--color-surface-muted);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+  }
+  .spec-card h3 {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    padding: var(--spacing-4) var(--spacing-5) var(--spacing-3);
+    margin: 0;
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-surface);
+  }
+  .spec-card dl { margin: 0; padding: var(--spacing-3) 0 var(--spacing-4); }
+  .spec-card dt,
+  .spec-card dd { padding: 8px var(--spacing-5); font-size: 13px; }
+  .spec-card dt {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    padding-bottom: 0;
+    padding-top: var(--spacing-3);
+  }
+  .spec-card dd { margin: 0; padding-top: 2px; font-weight: 500; color: var(--color-ink); }
+  .spec-card dd .sub {
+    display: block;
+    font-weight: 400;
+    font-size: 12px;
+    color: var(--color-ink-muted);
+    margin-top: 2px;
+  }
+  .level-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 500;
+    background: var(--color-accent-strong);
+    color: var(--color-brand-contrast);
+  }
+
+  .includes-card {
+    background: var(--color-surface-muted);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    padding: var(--spacing-5) var(--spacing-6) var(--spacing-6);
+  }
+  .includes-card h3 {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    margin: 0 0 var(--spacing-4);
+  }
+  .incl-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .incl-list li {
+    display: grid;
+    grid-template-columns: 18px 1fr;
+    gap: 8px;
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--color-ink);
+    align-items: start;
+  }
+  .incl-list .check {
+    width: 14px;
+    height: 14px;
+    margin-top: 2px;
+    display: inline-block;
+    background: var(--color-accent);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z'/%3E%3C/svg%3E") center/contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z'/%3E%3C/svg%3E") center/contain no-repeat;
+  }
+
+  .sidebar-book {
+    padding: var(--spacing-6);
+    background: var(--color-deep-ink);
+    color: var(--color-brand-contrast);
+    border-radius: var(--radius-card);
+  }
+  .sidebar-book h4 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    margin: 0 0 var(--spacing-2);
+    color: oklch(0.98 0.01 90);
+  }
+  .sidebar-book p {
+    margin: 0 0 var(--spacing-4);
+    font-size: 13px;
+    line-height: 1.5;
+    color: oklch(0.98 0.01 90 / 0.7);
+  }
+  .sidebar-book .price {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: oklch(0.98 0.01 90 / 0.55);
+    margin-bottom: var(--spacing-4);
+  }
+  .sidebar-book .price b {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 24px;
+    color: var(--color-accent-warm);
+    letter-spacing: -0.01em;
+    display: block;
+    margin-top: 2px;
+  }
+
+  .related {
+    background: var(--color-surface-muted);
+    padding: var(--spacing-20) 0;
+    margin-top: var(--spacing-16);
+    border-top: 1px solid var(--color-border);
+  }
+  .related-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-10);
+    flex-wrap: wrap;
+    gap: var(--spacing-4);
+  }
+  .related h2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(28px, 3vw, 40px);
+    letter-spacing: -0.015em;
+    margin: 0;
+    font-variation-settings: "opsz" 48;
+  }
+  .related h2 em { font-style: italic; color: var(--color-accent); }
+  .related .viewall {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-border-strong);
+    padding-bottom: 2px;
+  }
+  .related .viewall:hover { color: var(--color-accent); border-bottom-color: var(--color-accent); }
+
+  .ladder-rail {
+    margin-bottom: var(--spacing-10);
+    padding-bottom: var(--spacing-8);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .ladder-rungs {
+    display: flex;
+    gap: var(--spacing-4);
+    flex-wrap: wrap;
+  }
+  .rung-item {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 10px 16px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    color: var(--color-ink-muted);
+  }
+  .rung-item .rung-num { font-weight: 500; color: var(--color-ink-soft); }
+  .rung-item .rung-name {
+    font-family: var(--font-display);
+    font-size: 13px;
+    color: var(--color-ink);
+    letter-spacing: -0.005em;
+  }
+  .rung-item.done {
+    opacity: 0.55;
+  }
+  .rung-item.current {
+    background: var(--color-ink);
+    border-color: var(--color-ink);
+    color: oklch(0.98 0.01 90 / 0.75);
+  }
+  .rung-item.current .rung-num { color: var(--color-accent-warm); }
+  .rung-item.current .rung-name { color: oklch(0.98 0.01 90); }
+
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-6);
+  }
+  .related-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .related-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px -12px rgba(0,0,0,0.2);
+  }
+  .related-card .img {
+    aspect-ratio: 16 / 10;
+    background-size: cover;
+    background-position: center;
+  }
+  .related-card .img-placeholder { background: var(--color-surface-sunk); }
+  .related-card .body {
+    padding: var(--spacing-5) var(--spacing-6) var(--spacing-6);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .related-card .kickerrow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    margin-bottom: var(--spacing-2);
+  }
+  .related-card h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    margin: 0 0 var(--spacing-2);
+  }
+  .related-card p {
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--color-ink-muted);
+    margin: 0 0 var(--spacing-4);
+    flex: 1;
+  }
+  .related-card .stats {
+    display: flex;
+    gap: var(--spacing-4);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-ink-muted);
+    padding-top: var(--spacing-3);
+    border-top: 1px solid var(--color-border);
+    flex-wrap: wrap;
+  }
+  .related-card .stats b { color: var(--color-ink); font-weight: 500; }
+
+  @media (max-width: 960px) {
+    .article-wrap { grid-template-columns: 1fr; }
+    .sidebar { order: 2; }
+    .related-grid { grid-template-columns: 1fr; }
+  }
+</style>

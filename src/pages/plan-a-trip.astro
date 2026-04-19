@@ -1,0 +1,785 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import aboveAerial from '@/assets/design/home-assets/above-aerial.jpg';
+import { SITE } from '@/lib/site';
+---
+
+<BaseLayout
+  title="Plan a trip — Diving Center Mihurić"
+  description="Packages, season guide, and how to get to Selce. Everything you need to plan a dive trip to the Kvarner."
+  active="plan"
+>
+  <div class="page-wrap">
+    <div class="breadcrumbs">
+      <a href="/">Home</a><span class="sep">/</span>
+      <span>Plan a trip</span>
+    </div>
+  </div>
+
+  <section class="trip-hero">
+    <div class="bg" style={`background-image: url('${aboveAerial.src}');`}></div>
+    <div class="page-wrap">
+      <div class="kicker">
+        <span class="dot"></span>
+        <span>Planning a diving vacation in Selce</span>
+      </div>
+      <h1>Plan a trip <em>to dive with us.</em></h1>
+      <p class="lede">
+        You might be wondering where to dive in Croatia — you came to the right place. Along with PADI courses, we offer shore dives, night dives and boat dives. Tell us your dates and certification level and we'll come back with an offer as soon as possible.
+      </p>
+      <div class="quick-jump">
+        <a href="#services"><span class="count">01</span>What we offer</a>
+        <a href="#season"><span class="count">02</span>When to come</a>
+        <a href="#getting-here"><span class="count">03</span>Getting here</a>
+        <a href="#request"><span class="count">04</span>Request</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="services">
+    <div class="page-wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow"><span class="num">01</span> What we offer</div>
+          <h2>Shore, night, <em>and boat dives.</em></h2>
+        </div>
+        <p class="intro">
+          Straight from our "Diving at DC Mihurić" page: three flavours of diving, plus the full ladder of PADI courses. Pricing is handled individually — email us and we'll come back with an offer.
+        </p>
+      </div>
+
+      <div class="packages">
+        <article class="pkg-card">
+          <h3 class="name">Shore<em>.</em></h3>
+          <div class="subtitle">House reef · right in front of the shop</div>
+          <div class="price price-placeholder">Pricing <span class="per">on request</span></div>
+          <ul class="includes">
+            <li><span><b>Guided shore dive</b> on the house reef</span></li>
+            <li><span>Min depth 2 m · max depth 35 m</span></li>
+            <li><span>Open Water Diver or equivalent required</span></li>
+            <li><span>Marine life: fish, octopuses, slugs, sea horses</span></li>
+            <li><span>Features: Neptune tribute, smaller wrecks, 2 m anchor</span></li>
+          </ul>
+          <div class="fine">
+            Shore dives are possible throughout the day.
+          </div>
+          <a href="#request" class="btn btn-ghost btn-arrow">Email us</a>
+        </article>
+
+        <article class="pkg-card featured">
+          <h3 class="name">Boat<em>.</em></h3>
+          <div class="subtitle">Speedboat <em>Triton</em> · around 30 sites</div>
+          <div class="price price-placeholder">Pricing <span class="per">on request</span></div>
+          <ul class="includes">
+            <li><span><b>Two boat trips per day</b> — morning &amp; afternoon</span></li>
+            <li><span>Wrecks, reefs and caves in the Kvarner area</span></li>
+            <li><span>Location set in advance — suggestions welcome</span></li>
+            <li><span>Weather conditions always taken into account</span></li>
+            <li><span>Certification determines the site selection</span></li>
+          </ul>
+          <div class="fine">
+            AOWD (or equivalent) is required for the deeper sites — including Shipwreck Peltastis.
+          </div>
+          <a href="#request" class="btn btn-primary btn-arrow">Email us</a>
+        </article>
+
+        <article class="pkg-card">
+          <h3 class="name">Night<em>.</em></h3>
+          <div class="subtitle">After sundown · a few times per week</div>
+          <div class="price price-placeholder">Pricing <span class="per">on request</span></div>
+          <ul class="includes">
+            <li><span><b>Mostly on the house reef</b></span></li>
+            <li><span>Occasional boat-reachable night dives</span></li>
+            <li><span>A chance to see the reef after sundown</span></li>
+            <li><span>Runs a few times per week</span></li>
+            <li><span>Group size depends on the week's bookings</span></li>
+          </ul>
+          <div class="fine">
+            Schedule is set each week — ask us when you email about dates.
+          </div>
+          <a href="#request" class="btn btn-ghost btn-arrow">Email us</a>
+        </article>
+      </div>
+
+      <div class="custom-row">
+        <div>
+          <h3>PADI courses, <em>too.</em></h3>
+          <p>
+            Discovery dives through the full recreational ladder, PADI Pro and technical diving. Kids as young as 10 can join the OWD, Scuba Diver and Adventure Diver courses as Junior divers.
+          </p>
+        </div>
+        <a href="/courses/" class="btn btn-ghost btn-arrow">See courses</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="season">
+    <div class="page-wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow"><span class="num">02</span> When to come</div>
+          <h2>A mild climate, <em>comfortable year-round.</em></h2>
+        </div>
+        <p class="intro">
+          Water and air temperatures below are taken verbatim from our weather page. On a sunny day water transparency reaches down to 30 m.
+        </p>
+      </div>
+
+      <div class="season-wrap">
+        <div class="season-chart">
+          <h4><span>Period</span><span>Air temp</span><span>Water temp</span></h4>
+          <div class="row"><span class="month">Mar / Apr</span><span class="bar"><span class="fill edge" style="width:40%"></span></span><span class="note">12–20 °C air · 12–16 °C water</span></div>
+          <div class="row"><span class="month">May</span><span class="bar"><span class="fill ok" style="width:65%"></span></span><span class="note">20–25 °C air · 17–18 °C water</span></div>
+          <div class="row peak"><span class="month">Jul / Aug</span><span class="bar"><span class="fill peak" style="width:100%"></span></span><span class="note">25 °C+ air · 20–25 °C water</span></div>
+          <div class="row peak"><span class="month">Sep</span><span class="bar"><span class="fill peak" style="width:95%"></span></span><span class="note">25 °C+ air · 20–25 °C water</span></div>
+          <div class="row"><span class="month">Oct</span><span class="bar"><span class="fill ok" style="width:70%"></span></span><span class="note">20–25 °C air · 17–22 °C water</span></div>
+          <div class="legend">
+            <span class="edge">Shoulder</span>
+            <span class="ok">Good</span>
+            <span class="peak">Peak summer</span>
+          </div>
+        </div>
+
+        <div class="season-notes">
+          <div class="season-note">
+            <span class="tag">Summer</span>
+            <h4>July and August are the busiest.</h4>
+            <p>Summer is the busiest part of the year — not only for us, but for the rest of the town. Crowded beaches and warm, sunny weather.</p>
+          </div>
+          <div class="season-note">
+            <span class="tag">Shoulder</span>
+            <h4>September is still summer.</h4>
+            <p>If you prefer a slightly calmer atmosphere while still enjoying toasty temperatures, we recommend September — weather-wise it's still full-on summer here.</p>
+          </div>
+          <div class="season-note">
+            <span class="tag">Autumn</span>
+            <h4>October still gets sunny days.</h4>
+            <p>In October the temperatures tend to drop a bit, but we usually still get a lot of sunny days.</p>
+          </div>
+          <div class="season-note">
+            <span class="tag">Winds</span>
+            <h4>Bura and jugo.</h4>
+            <p>On occasion we get windy days. <strong>Bura</strong> (north-east) is dry and cool and welcome after hot spells. <strong>Jugo</strong> (south-east) brings wet weather and waves — not always suitable for diving.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="getting-here">
+    <div class="page-wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow"><span class="num">03</span> Getting here</div>
+          <h2>Selce, <em>on the Croatian coast.</em></h2>
+        </div>
+        <p class="intro">
+          Specific airport connections, drive times and transfers will be filled in once the owner confirms what they usually recommend. Entries below are placeholders.
+        </p>
+      </div>
+
+      <div class="routes">
+        <article class="route">
+          <span class="icon primary">✈</span>
+          <div>
+            <h4>Nearest airport — Lorem</h4>
+            <p>Lorem ipsum — placeholder. The owner's preferred airport + ground-transport recommendation replaces this block.</p>
+          </div>
+          <div class="duration">—<small>Lorem</small></div>
+        </article>
+        <article class="route">
+          <span class="icon">✈</span>
+          <div>
+            <h4>Alternative airport — Lorem</h4>
+            <p>Lorem ipsum — placeholder. A second airport option (with driving directions) lives here.</p>
+          </div>
+          <div class="duration">—<small>Lorem</small></div>
+        </article>
+        <article class="route">
+          <span class="icon">⌖</span>
+          <div>
+            <h4>Arriving by car — Lorem</h4>
+            <p>Lorem ipsum — placeholder. Route guidance for drivers coming from the north / west / south.</p>
+          </div>
+          <div class="duration">—<small>Pin on request</small></div>
+        </article>
+        <article class="route">
+          <span class="icon">⌖</span>
+          <div>
+            <h4>Parking &amp; finding the shop</h4>
+            <p>Lorem ipsum — placeholder. Street-level directions and parking notes from the owner go here.</p>
+          </div>
+          <div class="duration">—<small>Lorem</small></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="request">
+    <div class="page-wrap">
+      <div class="request-card">
+        <div>
+          <div class="eyebrow"><span class="num">04</span> Request a trip</div>
+          <h2>Tell us your dates; <em>we'll come back with an offer.</em></h2>
+          <p>
+            Email us with how many divers, certification level, preferred dates and anything specific you're after. We will get back to you with an offer as soon as possible.
+          </p>
+        </div>
+        <div class="request-cta">
+          <a
+            href={`mailto:${SITE.email}?subject=${encodeURIComponent('Trip request — Mihurić')}`}
+            class="btn btn-primary btn-arrow"
+          >Email {SITE.email}</a>
+          <a href={`tel:${SITE.phones[0].replace(/\s+/g, '')}`} class="phone-cta">
+            <span>Or call</span>
+            <b>{SITE.phones[0]}</b>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .trip-hero {
+    position: relative;
+    color: var(--color-brand-contrast);
+    background: var(--color-deep-ink);
+    overflow: hidden;
+    min-height: 62vh;
+    display: flex;
+    align-items: flex-end;
+    padding: var(--spacing-20) 0 var(--spacing-16);
+  }
+  .trip-hero .bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-size: cover;
+    background-position: center;
+    filter: saturate(0.92);
+  }
+  .trip-hero .bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(10,20,40,0.25) 0%, rgba(10,20,40,0) 30%, rgba(10,20,40,0.80) 100%);
+  }
+  .trip-hero .page-wrap { position: relative; z-index: 1; width: 100%; }
+  .trip-hero .kicker {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: oklch(0.98 0.01 90 / 0.75);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: var(--spacing-5);
+  }
+  .trip-hero .kicker::before { display: none; }
+  .trip-hero .kicker .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-accent);
+  }
+  .trip-hero h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(52px, 8vw, 112px);
+    letter-spacing: -0.025em;
+    line-height: 0.95;
+    margin: 0 0 var(--spacing-6);
+    font-variation-settings: "opsz" 96;
+    max-width: 16ch;
+    color: oklch(0.98 0.01 90);
+  }
+  .trip-hero h1 em { font-style: italic; font-weight: 400; color: var(--color-accent-warm); }
+  .trip-hero .lede {
+    font-size: clamp(18px, 1.5vw, 21px);
+    line-height: 1.5;
+    max-width: 56ch;
+    color: oklch(0.98 0.01 90 / 0.85);
+    margin: 0;
+  }
+  .quick-jump {
+    margin-top: var(--spacing-10);
+    display: flex;
+    gap: var(--spacing-3);
+    flex-wrap: wrap;
+  }
+  .quick-jump a {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: oklch(0.98 0.01 90 / 0.75);
+    text-decoration: none;
+    padding: 10px 14px;
+    border-radius: 100px;
+    border: 1px solid oklch(0.98 0.01 90 / 0.22);
+    background: oklch(0.98 0.01 90 / 0.06);
+    transition: all 0.15s;
+  }
+  .quick-jump a:hover {
+    background: oklch(0.98 0.01 90 / 0.14);
+    color: var(--color-brand-contrast);
+    border-color: oklch(0.98 0.01 90 / 0.4);
+  }
+  .quick-jump a .count {
+    color: oklch(0.98 0.01 90 / 0.5);
+    margin-right: 6px;
+  }
+
+  .section { padding: var(--spacing-24) 0; }
+  .section.alt { background: var(--color-surface-muted); }
+  .section-head {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-10);
+    align-items: end;
+    margin-bottom: var(--spacing-12);
+  }
+  .section-head .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: var(--spacing-4);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-head .eyebrow .num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-ink-muted);
+    padding: 3px 7px;
+    border: 1px solid var(--color-border);
+    border-radius: 100px;
+  }
+  .section-head h2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(36px, 4.5vw, 56px);
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    margin: 0;
+    max-width: 18ch;
+    font-variation-settings: "opsz" 56;
+  }
+  .section-head h2 em { font-style: italic; font-weight: 400; color: var(--color-accent); }
+  .section-head .intro {
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--color-ink-muted);
+    max-width: 50ch;
+    margin: 0;
+  }
+
+  .packages {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-5);
+  }
+  .pkg-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    padding: var(--spacing-8);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: border-color 0.15s ease, transform 0.2s ease;
+  }
+  .pkg-card:hover { border-color: var(--color-border-strong); transform: translateY(-2px); }
+  .pkg-card.featured {
+    border: 2px solid var(--color-accent);
+    box-shadow: 0 16px 40px -16px oklch(0.55 0.18 25 / 0.2);
+  }
+  .pkg-card.featured::before {
+    content: "Most booked";
+    position: absolute;
+    top: -12px;
+    left: var(--spacing-6);
+    background: var(--color-accent);
+    color: var(--color-brand-contrast);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    border-radius: 4px;
+  }
+  .pkg-card .name {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 34px;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin: 0;
+    font-variation-settings: "opsz" 48;
+  }
+  .pkg-card .name em { font-style: italic; color: var(--color-accent); }
+  .pkg-card .subtitle {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    margin: var(--spacing-3) 0 var(--spacing-5);
+  }
+  .pkg-card .price {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 44px;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--color-ink);
+    padding-bottom: var(--spacing-5);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .pkg-card .price.price-placeholder {
+    font-size: 22px;
+    color: var(--color-ink-muted);
+    font-weight: 400;
+  }
+  .pkg-card .price .per {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--color-ink-soft);
+    display: block;
+    margin-top: 4px;
+    letter-spacing: 0.05em;
+  }
+  .pkg-card .includes {
+    margin: var(--spacing-5) 0;
+    display: grid;
+    gap: 10px;
+    flex: 1;
+    padding: 0;
+    list-style: none;
+  }
+  .pkg-card .includes li {
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--color-ink-muted);
+    display: grid;
+    grid-template-columns: 16px 1fr;
+    gap: 10px;
+    align-items: start;
+  }
+  .pkg-card .includes li::before {
+    content: "";
+    width: 14px;
+    height: 14px;
+    background: var(--color-accent);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E") center/contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E") center/contain no-repeat;
+    margin-top: 4px;
+  }
+  .pkg-card .includes li b { color: var(--color-ink); font-weight: 500; }
+  .pkg-card .includes li.excl {
+    color: var(--color-ink-soft);
+    text-decoration: line-through;
+    opacity: 0.7;
+  }
+  .pkg-card .fine {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-ink-soft);
+    line-height: 1.4;
+    padding-top: var(--spacing-4);
+    border-top: 1px solid var(--color-border);
+    margin-top: var(--spacing-4);
+  }
+  .pkg-card .btn { margin-top: var(--spacing-5); align-self: flex-start; }
+
+  .custom-row {
+    margin-top: var(--spacing-8);
+    padding: var(--spacing-8);
+    background: var(--color-surface-muted);
+    border-radius: var(--radius-card);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--spacing-8);
+    align-items: center;
+  }
+  .custom-row h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 26px;
+    letter-spacing: -0.015em;
+    margin: 0 0 var(--spacing-2);
+  }
+  .custom-row h3 em { font-style: italic; color: var(--color-accent); }
+  .custom-row p {
+    font-size: 15px;
+    color: var(--color-ink-muted);
+    margin: 0;
+    max-width: 60ch;
+  }
+
+  .season-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-10);
+    align-items: start;
+  }
+  .season-chart {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    padding: var(--spacing-6);
+  }
+  .season-chart h4 {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    font-weight: 500;
+    margin: 0 0 var(--spacing-4);
+    display: flex;
+    justify-content: space-between;
+  }
+  .season-chart .row {
+    display: grid;
+    grid-template-columns: 64px 1fr 110px;
+    gap: var(--spacing-3);
+    align-items: center;
+    padding: var(--spacing-3) 0;
+    border-bottom: 1px solid var(--color-border);
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+  .season-chart .row:last-child { border-bottom: 0; }
+  .season-chart .row .month {
+    color: var(--color-ink);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .season-chart .row .bar {
+    position: relative;
+    height: 16px;
+    border-radius: 3px;
+    background: var(--color-surface-sunk);
+    overflow: hidden;
+  }
+  .season-chart .row .bar .fill {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    background: var(--color-accent-warm);
+    border-radius: 3px;
+  }
+  .season-chart .row .bar .fill.ok { background: var(--color-ok); }
+  .season-chart .row .bar .fill.peak { background: var(--color-accent); }
+  .season-chart .row .bar .fill.closed { background: var(--color-ink-soft); opacity: 0.3; }
+  .season-chart .row .bar .fill.edge { background: var(--color-accent-warm); }
+  .season-chart .row .note {
+    color: var(--color-ink-soft);
+    font-size: 11px;
+    text-align: right;
+  }
+  .season-chart .row.peak .month { color: var(--color-accent); }
+  .season-chart .legend {
+    display: flex;
+    gap: var(--spacing-5);
+    flex-wrap: wrap;
+    margin-top: var(--spacing-5);
+    padding-top: var(--spacing-4);
+    border-top: 1px solid var(--color-border);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-ink-muted);
+  }
+  .season-chart .legend span { display: flex; align-items: center; gap: 6px; }
+  .season-chart .legend span::before {
+    content: "";
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    background: var(--color-ink-soft);
+  }
+  .season-chart .legend span.edge::before { background: var(--color-accent-warm); }
+  .season-chart .legend span.ok::before { background: var(--color-ok); }
+  .season-chart .legend span.peak::before { background: var(--color-accent); }
+  .season-chart .legend span.closed::before { background: var(--color-ink-soft); opacity: 0.3; }
+
+  .season-notes { display: grid; gap: var(--spacing-5); }
+  .season-note {
+    padding: var(--spacing-5);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    border-left: 3px solid var(--color-accent);
+  }
+  .season-note h4 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 18px;
+    margin: 0 0 var(--spacing-2);
+  }
+  .season-note .tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 6px;
+  }
+  .season-note p {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--color-ink-muted);
+    margin: 0;
+  }
+
+  .routes {
+    display: grid;
+    gap: var(--spacing-5);
+  }
+  .route {
+    padding: var(--spacing-6);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: var(--spacing-5);
+    align-items: center;
+  }
+  .route .icon {
+    width: 44px;
+    height: 44px;
+    background: var(--color-surface-muted);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 20px;
+    color: var(--color-ink);
+  }
+  .route .icon.primary {
+    background: var(--color-accent);
+    color: var(--color-brand-contrast);
+  }
+  .route h4 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+    margin: 0 0 4px;
+  }
+  .route p {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--color-ink-muted);
+    margin: 0;
+  }
+  .route .duration {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--color-ink);
+    text-align: right;
+    white-space: nowrap;
+  }
+  .route .duration small {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+    margin-top: 4px;
+  }
+
+  .request-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    padding: var(--spacing-12);
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: var(--spacing-10);
+    align-items: center;
+  }
+  .request-card .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: var(--spacing-4);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .request-card .eyebrow .num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-ink-muted);
+    padding: 3px 7px;
+    border: 1px solid var(--color-border);
+    border-radius: 100px;
+  }
+  .request-card h2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(32px, 4vw, 48px);
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    margin: 0 0 var(--spacing-4);
+  }
+  .request-card h2 em { font-style: italic; color: var(--color-accent); }
+  .request-card p {
+    font-size: 16px;
+    color: var(--color-ink-muted);
+    margin: 0;
+    max-width: 46ch;
+    line-height: 1.6;
+  }
+  .request-cta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+    align-items: flex-start;
+  }
+  .phone-cta {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 2px;
+    color: var(--color-ink);
+    text-decoration: none;
+    padding-left: 0;
+  }
+  .phone-cta span {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+  }
+  .phone-cta b {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+  }
+
+  @media (max-width: 960px) {
+    .section-head { grid-template-columns: 1fr; gap: var(--spacing-4); }
+    .packages { grid-template-columns: 1fr; }
+    .season-wrap { grid-template-columns: 1fr; }
+    .custom-row { grid-template-columns: 1fr; }
+    .request-card { grid-template-columns: 1fr; padding: var(--spacing-8); }
+  }
+</style>
