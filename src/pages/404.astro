@@ -1,0 +1,21 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+import Button from '@/components/ui/Button.astro';
+---
+
+<BaseLayout title="Page not found" description="That page isn't here." noindex>
+  <Container size="narrow" class="py-[var(--spacing-section)] text-center">
+    <p class="text-sm uppercase tracking-wider text-[var(--color-ink-muted)]">404</p>
+    <h1 class="mt-2 text-4xl md:text-5xl font-semibold">That page drifted off.</h1>
+    <p class="mt-4 text-[var(--color-ink-muted)]">
+      The link is broken or the page was moved. Try one of these instead:
+    </p>
+    <div class="mt-6 flex flex-wrap justify-center gap-3">
+      <Button as="a" href="/">Home</Button>
+      <Button as="a" href="/dive-sites/" variant="outline">Dive sites</Button>
+      <Button as="a" href="/courses/" variant="outline">Courses</Button>
+      <Button as="a" href="/contact/" variant="outline">Contact</Button>
+    </div>
+  </Container>
+</BaseLayout>

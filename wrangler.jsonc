@@ -1,0 +1,15 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "mihuric",
+  "compatibility_date": "2026-04-19",
+  /*
+   * Serve the Astro build as pure static assets. No Workers runtime, no
+   * KV, no Images binding — this is a content site. Having this file
+   * present stops wrangler from auto-running `astro add cloudflare`,
+   * which would install the Cloudflare adapter and break the build.
+   */
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  }
+}
