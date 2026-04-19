@@ -6,8 +6,8 @@
 
 # ── homepage & old front pages ─────────────────────────────────────────
 /index.html                          /                            301
-/sample-page                         /                            410
-/sample-page/                        /                            410
+/sample-page                         /                            301
+/sample-page/                        /                            301
 
 # ── pages ──────────────────────────────────────────────────────────────
 /our-story                           /about/                      301
@@ -113,23 +113,24 @@
 /shipwreck-jakljan                   /dive-sites/shipwreck-jakljan/         301
 /shipwreck-jakljan/                  /dive-sites/shipwreck-jakljan/         301
 
-# ── dead ends that Google has indexed (return 410 so they're dropped) ─
-/portfolio-item/*                    /                            410
-/en                                  /                            410
-/en/                                 /                            410
-/shop                                /                            410
-/shop/                               /                            410
-/cart                                /                            410
-/cart/                               /                            410
-/checkout                            /                            410
-/checkout/                           /                            410
-/my-account                          /                            410
-/my-account/                         /                            410
-/blog                                /                            410
-/blog/                               /                            410
+# ── dead ends that Google has indexed (301 to home; Workers Static
+#    Assets does not support 410 in _redirects) ──────────────────────
+/portfolio-item/*                    /                            301
+/en                                  /                            301
+/en/                                 /                            301
+/shop                                /                            301
+/shop/                               /                            301
+/cart                                /                            301
+/cart/                               /                            301
+/checkout                            /                            301
+/checkout/                           /                            301
+/my-account                          /                            301
+/my-account/                         /                            301
+/blog                                /                            301
+/blog/                               /                            301
 
 # ── WordPress noise that Googlebot tries periodically ─────────────────
-/wp-login.php                        /                            410
-/xmlrpc.php                          /                            410
-/wp-content/*                        /                            410
-/wp-admin/*                          /                            410
+/wp-login.php                        /                            301
+/xmlrpc.php                          /                            301
+/wp-content/*                        /                            301
+/wp-admin/*                          /                            301
