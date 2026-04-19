@@ -1,0 +1,49 @@
+---
+import { cn } from '@/lib/utils';
+
+interface Props {
+  name: string;
+  type?: 'text' | 'email' | 'tel' | 'url' | 'number' | 'date' | 'password';
+  value?: string;
+  placeholder?: string;
+  required?: boolean;
+  disabled?: boolean;
+  autocomplete?: string;
+  id?: string;
+  class?: string;
+  [key: string]: unknown;
+}
+
+const {
+  name,
+  type = 'text',
+  value,
+  placeholder,
+  required,
+  disabled,
+  autocomplete,
+  id,
+  class: className,
+  ...rest
+} = Astro.props;
+
+const base =
+  'block w-full h-10 px-3 text-base bg-[var(--color-surface)] text-[var(--color-ink)] ' +
+  'border border-[var(--color-border)] rounded-[var(--radius-input)] ' +
+  'placeholder:text-[var(--color-ink-muted)] ' +
+  'focus-visible:outline-2 focus-visible:outline-[var(--color-ring)] ' +
+  'disabled:cursor-not-allowed disabled:opacity-50';
+---
+
+<input
+  id={id ?? name}
+  name={name}
+  type={type}
+  value={value}
+  placeholder={placeholder}
+  required={required}
+  disabled={disabled}
+  autocomplete={autocomplete}
+  class={cn(base, className)}
+  {...rest}
+/>

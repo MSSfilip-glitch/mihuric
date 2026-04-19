@@ -1,0 +1,50 @@
+---
+/**
+ * Structural header — nav items only. Zero visual design.
+ *
+ * Claude Design owns: the visual treatment of the logo + nav + language
+ * switcher + mobile menu animation.
+ */
+import Container from '@/components/ui/Container.astro';
+import { SITE, type Locale } from '@/lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const prefix = locale === 'en' ? '' : `/${locale}`;
+
+const nav: Array<{ label: string; href: string }> = [
+  { label: locale === 'hr' ? 'Početna' : 'Home',           href: `${prefix}/` },
+  { label: locale === 'hr' ? 'Ponuda' : 'What we offer',    href: `${prefix}/what-we-offer/` },
+  { label: locale === 'hr' ? 'Tečajevi' : 'Courses',        href: `${prefix}/courses/` },
+  { label: locale === 'hr' ? 'Lokacije' : 'Dive sites',     href: `${prefix}/dive-sites/` },
+  { label: 'FAQ',                                            href: `${prefix}/faq/` },
+  { label: 'WebCam',                                         href: `${prefix}/webcam/` },
+  { label: locale === 'hr' ? 'Kontakt' : 'Contact',          href: `${prefix}/contact/` },
+];
+---
+
+<header class="border-b border-[var(--color-border)]">
+  <Container size="wide" as="div" class="flex items-center justify-between py-4 gap-6">
+    <a href={`${prefix}/`} class="font-semibold text-lg">
+      {SITE.shortName}
+    </a>
+    <nav aria-label="Primary">
+      <ul class="flex items-center gap-5 text-sm">
+        {nav.map((item) => (
+          <li><a href={item.href} class="hover:underline">{item.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+    <div class="flex items-center gap-2 text-sm">
+      <a href={locale === 'en' ? '/' : '/'}
+         class={locale === 'en' ? 'font-semibold underline' : 'hover:underline'}>EN</a>
+      <span aria-hidden="true">/</span>
+      <a href={locale === 'hr' ? '/hr/' : '/hr/'}
+         class={locale === 'hr' ? 'font-semibold underline' : 'hover:underline'}>HR</a>
+    </div>
+  </Container>
+</header>

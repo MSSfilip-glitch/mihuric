@@ -1,0 +1,20 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+import { getEntry, render } from 'astro:content';
+
+const page = await getEntry('pages', 'what-we-offer-diving.en');
+const { Content } = page ? await render(page) : { Content: () => null };
+---
+
+<BaseLayout
+  title={page?.data.title ?? 'Diving at DC Mihurić'}
+  description={page?.data.description ?? 'Guided diving with DC Mihurić, Selce, Croatia.'}
+>
+  <Container size="narrow" class="py-[var(--spacing-section)]">
+    <h1 class="text-3xl md:text-4xl font-semibold">{page?.data.title ?? 'Diving at DC Mihurić'}</h1>
+    <article class="mt-8 prose max-w-none">
+      <Content />
+    </article>
+  </Container>
+</BaseLayout>

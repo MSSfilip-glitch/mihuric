@@ -1,0 +1,65 @@
+---
+/**
+ * Emits all SEO/social meta tags for a page.
+ *
+ * Data-only — no visual surface. Claude Design never touches this.
+ */
+import { SITE, type Locale } from '@/lib/site';
+
+interface Props {
+  title: string;
+  description: string;
+  locale?: Locale;
+  image?: string;
+  noindex?: boolean;
+  canonicalPath?: string;
+  type?: 'website' | 'article';
+  /** When set, renders a matching <link rel="alternate" hreflang="…"> for each. */
+  alternates?: Partial<Record<Locale, string>>;
+}
+
+const {
+  title,
+  description,
+  locale = 'en',
+  image,
+  noindex = false,
+  canonicalPath,
+  type = 'website',
+  alternates,
+} = Astro.props;
+
+const path = canonicalPath ?? Astro.url.pathname;
+const canonical = new URL(path, SITE.url).toString();
+const absImage = image ? new URL(image, SITE.url).toString() : undefined;
+const fullTitle = title.includes(SITE.shortName) ? title : `${title} — ${SITE.name}`;
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+{!noindex && <meta name="robots" content="index, follow, max-image-preview:large" />}
+
+<meta property="og:type" content={type} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:site_name" content={SITE.name} />
+<meta property="og:locale" content={locale === 'hr' ? 'hr_HR' : 'en_US'} />
+{absImage && <meta property="og:image" content={absImage} />}
+
+<meta name="twitter:card" content={absImage ? 'summary_large_image' : 'summary'} />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+{absImage && <meta name="twitter:image" content={absImage} />}
+
+{alternates && Object.entries(alternates).map(([lang, href]) => (
+  <link rel="alternate" hreflang={lang} href={new URL(href!, SITE.url).toString()} />
+))}
+{alternates && (
+  <link rel="alternate" hreflang="x-default" href={new URL(alternates.en ?? path, SITE.url).toString()} />
+)}
+
+<meta name="theme-color" content="#0f172a" />

@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+/*
+  ───────────────────────────────────────────────────────────────────────────
+  Mihurić design tokens — PLACEHOLDERS ONLY
+  ───────────────────────────────────────────────────────────────────────────
+
+  These CSS variables are the contract between the Astro codebase and
+  Claude Design's "Your brand, built in" feature. Every visual token the
+  templates care about is named here with a neutral default.
+
+  DO NOT set final brand values by hand. Claude Design will generate the
+  palette + typography + scale based on the brand brief and uploaded
+  photography, and its handoff bundle will overwrite these same variable
+  names with the chosen values.
+
+  Rationale: keeping the variables empty-feeling (grayscale, system fonts,
+  simple scales) means the current site renders as a recognisable "unstyled
+  skeleton" — useful for content review, useless as a final design, which
+  is exactly what we want until Claude Design takes over.
+*/
+
+@theme {
+  /* Color — neutral grayscale until Claude Design fills these in. */
+  --color-brand:           oklch(0.50 0 0);
+  --color-brand-foreground:oklch(0.98 0 0);
+  --color-accent:          oklch(0.70 0 0);
+  --color-accent-foreground:oklch(0.15 0 0);
+  --color-ink:             oklch(0.18 0 0);
+  --color-ink-muted:       oklch(0.45 0 0);
+  --color-surface:         oklch(1.00 0 0);
+  --color-surface-muted:   oklch(0.97 0 0);
+  --color-surface-sunk:    oklch(0.94 0 0);
+  --color-border:          oklch(0.90 0 0);
+  --color-ring:            oklch(0.60 0 0);
+  --color-danger:          oklch(0.55 0.18 25);
+  --color-success:         oklch(0.60 0.15 150);
+
+  /* Typography — system stack placeholder. */
+  --font-display: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-body:    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono:    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Radius — Claude Design should retune. */
+  --radius-card:   0.375rem;
+  --radius-button: 0.375rem;
+  --radius-input:  0.375rem;
+
+  /* Spacing rhythm for sections and content blocks. */
+  --spacing-section: 4rem;
+  --spacing-gutter:  1.5rem;
+
+  /* Shadows — flat by default. */
+  --shadow-card: 0 0 0 1px var(--color-border);
+  --shadow-hover: 0 2px 8px -2px oklch(0 0 0 / 0.1);
+}
+
+/*
+  Dark-mode variant — wired up but empty; Claude Design owns the values.
+*/
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    font-family: var(--font-body);
+    color: var(--color-ink);
+    background: var(--color-surface);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    margin: 0;
+    line-height: 1.55;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    line-height: 1.15;
+    margin: 0;
+    color: var(--color-ink);
+  }
+
+  a {
+    color: inherit;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.15em;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+
+  img, svg, video, canvas {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+}

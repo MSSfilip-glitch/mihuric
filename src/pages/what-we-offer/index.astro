@@ -1,0 +1,40 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+import Card from '@/components/ui/Card.astro';
+import { getEntry, render } from 'astro:content';
+
+const page = await getEntry('pages', 'what-we-offer.en');
+const { Content } = page ? await render(page) : { Content: () => null };
+---
+
+<BaseLayout
+  title={page?.data.title ?? 'What we offer'}
+  description={page?.data.description ?? 'Courses, guided dives, and diving services at DC Mihurić.'}
+>
+  <Container size="default" class="py-[var(--spacing-section)]">
+    <h1 class="text-4xl md:text-5xl font-semibold">{page?.data.title ?? 'What we offer'}</h1>
+    <p class="mt-4 text-[var(--color-ink-muted)]">{page?.data.description}</p>
+
+    <ul class="mt-8 grid gap-4 md:grid-cols-2">
+      <li>
+        <Card href="/courses/" class="p-6">
+          <h2 class="text-lg font-semibold">PADI courses</h2>
+          <p class="mt-2 text-sm text-[var(--color-ink-muted)]">Discovery → Open Water → Advanced → Specialty → Pro → Tec.</p>
+        </Card>
+      </li>
+      <li>
+        <Card href="/what-we-offer/diving/" class="p-6">
+          <h2 class="text-lg font-semibold">Diving services</h2>
+          <p class="mt-2 text-sm text-[var(--color-ink-muted)]">Guided dives, rental, nitrox, boat &amp; shore dives.</p>
+        </Card>
+      </li>
+    </ul>
+
+    {page && (
+      <article class="mt-10 prose max-w-none">
+        <Content />
+      </article>
+    )}
+  </Container>
+</BaseLayout>

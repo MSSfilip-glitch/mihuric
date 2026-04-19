@@ -1,0 +1,29 @@
+---
+import { cn } from '@/lib/utils';
+
+interface Props {
+  as?: 'article' | 'div' | 'section';
+  href?: string;
+  class?: string;
+}
+
+const { as = 'article', href, class: className } = Astro.props;
+
+const base =
+  'block bg-[var(--color-surface)] border border-[var(--color-border)] ' +
+  'rounded-[var(--radius-card)] overflow-hidden';
+
+const Tag = href ? 'a' : as;
+---
+
+{
+  Tag === 'a' ? (
+    <a href={href} class={cn(base, 'hover:shadow-[var(--shadow-hover)] transition-shadow', className)}>
+      <slot />
+    </a>
+  ) : (
+    <Tag class={cn(base, className)}>
+      <slot />
+    </Tag>
+  )
+}

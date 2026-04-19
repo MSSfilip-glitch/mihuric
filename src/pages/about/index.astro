@@ -1,0 +1,33 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+import Card from '@/components/ui/Card.astro';
+import { getEntry, render } from 'astro:content';
+
+const page = await getEntry('pages', 'about.en');
+const { Content } = page ? await render(page) : { Content: () => null };
+---
+
+<BaseLayout
+  title={page?.data.title ?? 'About us'}
+  description={page?.data.description ?? 'The Mihurić family dive center story.'}
+>
+  <Container size="default" class="py-[var(--spacing-section)]">
+    <h1 class="text-4xl md:text-5xl font-semibold">{page?.data.title ?? 'About us'}</h1>
+
+    <ul class="mt-8 grid gap-4 md:grid-cols-3">
+      <li><Card href="/about/weather/" class="p-6">
+        <h2 class="text-lg font-semibold">Weather &amp; climate</h2>
+        <p class="mt-2 text-sm text-[var(--color-ink-muted)]">When to dive the Kvarner.</p>
+      </Card></li>
+      <li><Card href="/media/" class="p-6">
+        <h2 class="text-lg font-semibold">Media center</h2>
+        <p class="mt-2 text-sm text-[var(--color-ink-muted)]">Photos, videos, press.</p>
+      </Card></li>
+    </ul>
+
+    <article class="mt-10 prose max-w-none">
+      <Content />
+    </article>
+  </Container>
+</BaseLayout>

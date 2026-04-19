@@ -1,0 +1,19 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+import { getEntry, render } from 'astro:content';
+
+const page = await getEntry('pages', 'webcam.en');
+const { Content } = page ? await render(page) : { Content: () => null };
+---
+
+<BaseLayout
+  title={page?.data.title ?? 'Live WebCam'}
+  description={page?.data.description ?? 'Live view from DC Mihurić in Selce.'}
+>
+  <Container size="default" class="py-[var(--spacing-section)]">
+    <h1 class="text-3xl md:text-4xl font-semibold">Live WebCam — Selce</h1>
+    <p class="mt-2 text-[var(--color-ink-muted)]">What the bay looks like right now.</p>
+    <article class="mt-8 prose max-w-none"><Content /></article>
+  </Container>
+</BaseLayout>

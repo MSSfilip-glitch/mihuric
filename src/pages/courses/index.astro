@@ -1,0 +1,40 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+import Card from '@/components/ui/Card.astro';
+import Badge from '@/components/ui/Badge.astro';
+import { getCollection } from 'astro:content';
+
+const courses = (await getCollection('courses', (e) => e.data.locale === 'en' && !e.data.draft))
+  .sort((a, b) => {
+    const order = ['discovery', 'recreational', 'specialty', 'professional', 'tec'];
+    return order.indexOf(a.data.track) - order.indexOf(b.data.track);
+  });
+---
+
+<BaseLayout
+  title="PADI courses"
+  description="PADI courses from Discover Scuba to Technical Diving, taught at DC Mihurić's PADI 5★ Gold Palm IDC resort in Selce, Croatia."
+>
+  <Container size="wide" class="py-[var(--spacing-section)]">
+    <p class="text-sm uppercase tracking-wider text-[var(--color-ink-muted)]">Courses</p>
+    <h1 class="text-4xl md:text-5xl font-semibold mt-2">From your first breath underwater to Tec instructor</h1>
+    <p class="mt-4 max-w-2xl text-[var(--color-ink-muted)]">
+      DC Mihurić is a PADI 5★ Gold Palm IDC resort — we run the full pathway
+      from Discover Scuba through Open Water, Advanced, Specialty, Rescue,
+      Divemaster, Instructor, and Technical.
+    </p>
+
+    <ul class="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      {courses.map((c) => (
+        <li>
+          <Card href={`/courses/${c.data.slug}/`} class="p-6">
+            <Badge variant="muted">{c.data.track}</Badge>
+            <h2 class="mt-2 text-xl font-semibold">{c.data.title}</h2>
+            <p class="mt-2 text-sm text-[var(--color-ink-muted)] line-clamp-3">{c.data.summary}</p>
+          </Card>
+        </li>
+      ))}
+    </ul>
+  </Container>
+</BaseLayout>

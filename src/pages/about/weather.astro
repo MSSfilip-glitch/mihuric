@@ -1,0 +1,18 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+import { getEntry, render } from 'astro:content';
+
+const page = await getEntry('pages', 'weather.en');
+const { Content } = page ? await render(page) : { Content: () => null };
+---
+
+<BaseLayout
+  title={page?.data.title ?? 'Weather & climate'}
+  description={page?.data.description ?? 'Diving weather for Selce, Croatia.'}
+>
+  <Container size="narrow" class="py-[var(--spacing-section)]">
+    <h1 class="text-3xl md:text-4xl font-semibold">{page?.data.title ?? 'Weather & climate'}</h1>
+    <article class="mt-8 prose max-w-none"><Content /></article>
+  </Container>
+</BaseLayout>

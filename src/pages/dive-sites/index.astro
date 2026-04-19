@@ -1,0 +1,64 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+import Card from '@/components/ui/Card.astro';
+import Badge from '@/components/ui/Badge.astro';
+import { getCollection } from 'astro:content';
+
+const all = await getCollection('diveSites', (e) => e.data.locale === 'en' && !e.data.draft);
+
+const grouped = all.reduce<Record<string, typeof all>>((acc, site) => {
+  const key = site.data.category ?? 'reef';
+  (acc[key] ??= []).push(site);
+  return acc;
+}, {});
+
+const order: Array<keyof typeof grouped> = ['house-reef', 'wreck', 'reef', 'wall', 'cave'];
+const labels: Record<string, string> = {
+  'house-reef': 'House reef',
+  wreck: 'Wrecks',
+  reef: 'Reefs',
+  wall: 'Walls',
+  cave: 'Caves & tunnels',
+};
+---
+
+<BaseLayout
+  title="Dive sites"
+  description="30+ dive sites around Selce and the Kvarner coast — wrecks, reefs, caves and walls of the Adriatic, with depth and certification info for each."
+  alternates={{ en: '/dive-sites/', hr: '/hr/lokacije/' }}
+>
+  <Container size="wide" class="py-[var(--spacing-section)]">
+    <p class="text-sm uppercase tracking-wider text-[var(--color-ink-muted)]">Dive sites</p>
+    <h1 class="text-4xl md:text-5xl font-semibold mt-2">30+ sites across the Kvarner coast</h1>
+    <p class="mt-4 max-w-2xl text-[var(--color-ink-muted)]">
+      Every site we dive, grouped by character. Depths and certification
+      requirements shown per site — if you're unsure what you're qualified
+      for, <a href="/contact/" class="underline">ask us</a>.
+    </p>
+
+    {order.map((cat) => (
+      grouped[cat] && grouped[cat].length > 0 && (
+        <section class="mt-12">
+          <h2 class="text-2xl font-semibold">{labels[cat]}</h2>
+          <ul class="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {grouped[cat]!.map((s) => (
+              <li>
+                <Card href={`/dive-sites/${s.data.slug}/`} class="p-6">
+                  <div class="flex items-center gap-2">
+                    <Badge variant="outline">
+                      {s.data.depth.max > 0 ? `${s.data.depth.min}–${s.data.depth.max} m` : '—'}
+                    </Badge>
+                    <Badge variant="muted">{s.data.certification}</Badge>
+                  </div>
+                  <h3 class="mt-2 text-lg font-semibold">{s.data.title}</h3>
+                  <p class="mt-2 text-sm text-[var(--color-ink-muted)] line-clamp-3">{s.data.summary}</p>
+                </Card>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    ))}
+  </Container>
+</BaseLayout>

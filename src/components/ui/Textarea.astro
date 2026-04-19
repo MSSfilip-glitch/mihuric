@@ -1,0 +1,42 @@
+---
+import { cn } from '@/lib/utils';
+
+interface Props {
+  name: string;
+  rows?: number;
+  placeholder?: string;
+  required?: boolean;
+  disabled?: boolean;
+  id?: string;
+  class?: string;
+  [key: string]: unknown;
+}
+
+const {
+  name,
+  rows = 5,
+  placeholder,
+  required,
+  disabled,
+  id,
+  class: className,
+  ...rest
+} = Astro.props;
+
+const base =
+  'block w-full px-3 py-2 text-base bg-[var(--color-surface)] text-[var(--color-ink)] ' +
+  'border border-[var(--color-border)] rounded-[var(--radius-input)] resize-y ' +
+  'placeholder:text-[var(--color-ink-muted)] ' +
+  'focus-visible:outline-2 focus-visible:outline-[var(--color-ring)] ' +
+  'disabled:cursor-not-allowed disabled:opacity-50';
+---
+
+<textarea
+  id={id ?? name}
+  name={name}
+  rows={rows}
+  placeholder={placeholder}
+  required={required}
+  disabled={disabled}
+  class={cn(base, className)}
+  {...rest}><slot /></textarea>

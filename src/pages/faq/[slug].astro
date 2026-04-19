@@ -1,0 +1,28 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('faq', (e) => e.data.locale === 'en');
+  return entries.map((entry) => ({ params: { slug: entry.data.slug }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+---
+
+<BaseLayout title={`${d.title} — FAQ`} description={d.title} schemaType="none">
+  <Container size="narrow" class="py-[var(--spacing-section)]">
+    <nav aria-label="Breadcrumb" class="text-sm text-[var(--color-ink-muted)]">
+      <a href="/" class="hover:underline">Home</a> /
+      <a href="/faq/" class="hover:underline">FAQ</a> /
+      <span>{d.title}</span>
+    </nav>
+    <h1 class="mt-4 text-3xl md:text-4xl font-semibold">{d.title}</h1>
+    <article class="mt-8 prose max-w-none">
+      <Content />
+    </article>
+  </Container>
+</BaseLayout>

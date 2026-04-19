@@ -1,0 +1,105 @@
+---
+/**
+ * Emits JSON-LD structured data. Current site ships none; this alone is
+ * a material SEO lift.
+ *
+ * Three shapes are supported via `type`:
+ *   - 'localBusiness' (used on home, contact, about)
+ *   - 'diveSite'      (used on /dive-sites/[slug]/)
+ *   - 'course'        (used on /courses/[slug]/)
+ *
+ * Data is merged with the global org record so every page carries brand
+ * identity regardless.
+ */
+import { SITE } from '@/lib/site';
+
+type Common = { type: 'localBusiness' };
+
+type DiveSite = {
+  type: 'diveSite';
+  name: string;
+  description: string;
+  image?: string;
+  gps?: { lat: number; lng: number };
+};
+
+type Course = {
+  type: 'course';
+  name: string;
+  description: string;
+  priceFrom?: { amount: number; currency: string };
+};
+
+type Props = Common | DiveSite | Course;
+
+const props = Astro.props as Props;
+
+const org = {
+  '@type': 'LocalBusiness',
+  '@id': `${SITE.url}#org`,
+  name: SITE.name,
+  alternateName: SITE.shortName,
+  description: SITE.tagline,
+  url: SITE.url,
+  telephone: SITE.phones[0],
+  email: SITE.email,
+  priceRange: '€€',
+  foundingDate: String(SITE.padi.operatingSince),
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: SITE.address.street,
+    postalCode: SITE.address.postal,
+    addressLocality: SITE.address.city,
+    addressCountry: SITE.address.countryCode,
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: SITE.gps.lat,
+    longitude: SITE.gps.lng,
+  },
+  sameAs: [SITE.social.facebook, SITE.social.instagram],
+};
+
+let json: Record<string, unknown>;
+
+switch (props.type) {
+  case 'diveSite':
+    json = {
+      '@context': 'https://schema.org',
+      '@type': 'TouristAttraction',
+      name: props.name,
+      description: props.description,
+      image: props.image,
+      geo: props.gps
+        ? { '@type': 'GeoCoordinates', latitude: props.gps.lat, longitude: props.gps.lng }
+        : undefined,
+      isPartOf: { '@id': `${SITE.url}#org` },
+      additionalType: 'https://www.wikidata.org/wiki/Q182093', // dive site
+    };
+    break;
+
+  case 'course':
+    json = {
+      '@context': 'https://schema.org',
+      '@type': 'Course',
+      name: props.name,
+      description: props.description,
+      provider: { '@id': `${SITE.url}#org` },
+      offers: props.priceFrom
+        ? {
+            '@type': 'Offer',
+            price: props.priceFrom.amount,
+            priceCurrency: props.priceFrom.currency,
+          }
+        : undefined,
+    };
+    break;
+
+  case 'localBusiness':
+  default:
+    json = { '@context': 'https://schema.org', ...org };
+    break;
+}
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(json, null, 2)} />

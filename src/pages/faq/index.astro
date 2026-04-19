@@ -1,0 +1,38 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+import Card from '@/components/ui/Card.astro';
+import { getCollection } from 'astro:content';
+
+const faqs = (await getCollection('faq', (e) => e.data.locale === 'en'))
+  .sort((a, b) => a.data.topic.localeCompare(b.data.topic));
+
+const labels: Record<string, string> = {
+  courses: 'Courses',
+  diving: 'Diving',
+  equipment: 'Equipment',
+  cost: 'Cost & payment',
+  safety: 'Safety & health',
+  vacationing: 'Vacationing in Selce',
+};
+---
+
+<BaseLayout
+  title="FAQ"
+  description="Frequently asked questions about diving, courses, equipment, cost, safety and vacationing in Selce."
+>
+  <Container size="default" class="py-[var(--spacing-section)]">
+    <h1 class="text-4xl md:text-5xl font-semibold">FAQ</h1>
+    <p class="mt-4 text-[var(--color-ink-muted)]">Six topics. Pick the one closest to your question.</p>
+    <ul class="mt-8 grid gap-4 md:grid-cols-2">
+      {faqs.map((f) => (
+        <li>
+          <Card href={`/faq/${f.data.slug}/`} class="p-6">
+            <h2 class="text-lg font-semibold">{labels[f.data.topic] ?? f.data.title}</h2>
+            <p class="mt-2 text-sm text-[var(--color-ink-muted)]">{f.data.title}</p>
+          </Card>
+        </li>
+      ))}
+    </ul>
+  </Container>
+</BaseLayout>

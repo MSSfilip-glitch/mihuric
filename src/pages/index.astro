@@ -1,0 +1,78 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+import Card from '@/components/ui/Card.astro';
+import Badge from '@/components/ui/Badge.astro';
+import Button from '@/components/ui/Button.astro';
+import { getCollection } from 'astro:content';
+import { SITE } from '@/lib/site';
+
+const diveSites = (await getCollection('diveSites', (e) => e.data.locale === 'en'))
+  .sort(() => 0.5 - Math.random())
+  .slice(0, 6);
+
+const courses = (await getCollection('courses', (e) => e.data.locale === 'en'))
+  .sort((a, b) => {
+    const order = ['discovery', 'recreational', 'specialty', 'professional', 'tec'];
+    return order.indexOf(a.data.track) - order.indexOf(b.data.track);
+  });
+---
+
+<BaseLayout
+  title={SITE.name}
+  description={`${SITE.tagline}. PADI courses, guided dives at 30+ Adriatic sites — wrecks, reefs, caves, walls.`}
+  alternates={{ en: '/', hr: '/hr/' }}
+>
+  <Container size="wide" class="py-[var(--spacing-section)]">
+    <section class="max-w-3xl">
+      <p class="text-sm uppercase tracking-wider text-[var(--color-ink-muted)]">
+        {SITE.padi.rating} · Selce, Croatia
+      </p>
+      <h1 class="text-4xl md:text-6xl font-semibold mt-2">
+        {SITE.name}
+      </h1>
+      <p class="mt-4 text-lg text-[var(--color-ink-muted)]">
+        Family-run dive center on the Kvarner coast since {SITE.padi.operatingSince}.
+        PADI courses from Discovery to Tec, and guided dives at 30+ sites —
+        wrecks, reefs, caves and walls of the Adriatic.
+      </p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <Button as="a" href="/contact/" size="lg">Plan your dive</Button>
+        <Button as="a" href="/dive-sites/" variant="outline" size="lg">Explore dive sites</Button>
+      </div>
+    </section>
+  </Container>
+
+  <Container size="wide" class="py-[var(--spacing-section)]">
+    <h2 class="text-2xl font-semibold">Courses</h2>
+    <ul class="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      {courses.map((c) => (
+        <li>
+          <Card href={`/courses/${c.data.slug}/`} class="p-6">
+            <Badge variant="muted">{c.data.track}</Badge>
+            <h3 class="mt-2 text-lg font-semibold">{c.data.title}</h3>
+            <p class="mt-2 text-sm text-[var(--color-ink-muted)]">{c.data.summary}</p>
+          </Card>
+        </li>
+      ))}
+    </ul>
+  </Container>
+
+  <Container size="wide" class="py-[var(--spacing-section)]">
+    <div class="flex items-baseline justify-between">
+      <h2 class="text-2xl font-semibold">Featured dive sites</h2>
+      <a href="/dive-sites/" class="text-sm hover:underline">All 30+ sites →</a>
+    </div>
+    <ul class="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      {diveSites.map((s) => (
+        <li>
+          <Card href={`/dive-sites/${s.data.slug}/`} class="p-6">
+            <Badge variant="muted">{s.data.category}</Badge>
+            <h3 class="mt-2 text-lg font-semibold">{s.data.title}</h3>
+            <p class="mt-2 text-sm text-[var(--color-ink-muted)] line-clamp-3">{s.data.summary}</p>
+          </Card>
+        </li>
+      ))}
+    </ul>
+  </Container>
+</BaseLayout>

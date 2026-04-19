@@ -1,0 +1,135 @@
+# Cloudflare Pages redirect map — activated when mihuric.hr DNS flips here.
+# Every URL that was live on the old WordPress → its new route.
+#
+# Syntax: source  destination  status-code
+# 301 = permanent (SEO authority passes through).
+
+# ── homepage & old front pages ─────────────────────────────────────────
+/index.html                          /                            301
+/sample-page                         /                            410
+/sample-page/                        /                            410
+
+# ── pages ──────────────────────────────────────────────────────────────
+/our-story                           /about/                      301
+/our-story/                          /about/                      301
+/services                            /what-we-offer/              301
+/services/                           /what-we-offer/              301
+/diving-at-dc-mihuric                /what-we-offer/diving/       301
+/diving-at-dc-mihuric/               /what-we-offer/diving/       301
+/weather-and-climate                 /about/weather/              301
+/weather-and-climate/                /about/weather/              301
+/media-center                        /media/                      301
+/media-center/                       /media/                      301
+/mihuric-web-cam-live                /webcam/                     301
+/mihuric-web-cam-live/               /webcam/                     301
+/sign-up                             /contact/                    301
+/sign-up/                            /contact/                    301
+
+# ── courses ────────────────────────────────────────────────────────────
+/discovery-dives                     /courses/discovery/          301
+/discovery-dives/                    /courses/discovery/          301
+/padi-recreational-courses           /courses/recreational/       301
+/padi-recreational-courses/          /courses/recreational/       301
+/padi-specialty-courses              /courses/specialty/          301
+/padi-specialty-courses/             /courses/specialty/          301
+/padi-pro                            /courses/professional/       301
+/padi-pro/                           /courses/professional/       301
+/padi-tec-courses                    /courses/tec/                301
+/padi-tec-courses/                   /courses/tec/                301
+
+# ── FAQ ────────────────────────────────────────────────────────────────
+/courses-faq                         /faq/courses/                301
+/courses-faq/                        /faq/courses/                301
+/diving-faq                          /faq/diving/                 301
+/diving-faq/                         /faq/diving/                 301
+/equipment-faq                       /faq/equipment/              301
+/equipment-faq/                      /faq/equipment/              301
+/cost-and-payment-faq                /faq/cost/                   301
+/cost-and-payment-faq/               /faq/cost/                   301
+/safety-and-health-faq               /faq/safety/                 301
+/safety-and-health-faq/              /faq/safety/                 301
+/vacationing-in-selce-faq            /faq/vacationing/            301
+/vacationing-in-selce-faq/           /faq/vacationing/            301
+
+# ── dive sites (same slugs — kept identical to preserve backlinks) ────
+/house-reef                          /dive-sites/house-reef/                301
+/house-reef/                         /dive-sites/house-reef/                301
+/shipwreck-peltastis                 /dive-sites/shipwreck-peltastis/       301
+/shipwreck-peltastis/                /dive-sites/shipwreck-peltastis/       301
+/punta-silo                          /dive-sites/punta-silo/                301
+/punta-silo/                         /dive-sites/punta-silo/                301
+/vanjsko-silo                        /dive-sites/vanjsko-silo/              301
+/vanjsko-silo/                       /dive-sites/vanjsko-silo/              301
+/plic-tenki                          /dive-sites/plic-tenki/                301
+/plic-tenki/                         /dive-sites/plic-tenki/                301
+/hrid-kamenjak                       /dive-sites/hrid-kamenjak/             301
+/hrid-kamenjak/                      /dive-sites/hrid-kamenjak/             301
+/punta-glavina                       /dive-sites/punta-glavina/             301
+/punta-glavina/                      /dive-sites/punta-glavina/             301
+/hrid-mala-glavina                   /dive-sites/hrid-mala-glavina/         301
+/hrid-mala-glavina/                  /dive-sites/hrid-mala-glavina/         301
+/zid-mala-glavina                    /dive-sites/zid-mala-glavina/          301
+/zid-mala-glavina/                   /dive-sites/zid-mala-glavina/          301
+/cavern-bay                          /dive-sites/cavern-bay/                301
+/cavern-bay/                         /dive-sites/cavern-bay/                301
+/zid-cavern-bay                      /dive-sites/zid-cavern-bay/            301
+/zid-cavern-bay/                     /dive-sites/zid-cavern-bay/            301
+/zid-mala-luka                       /dive-sites/zid-mala-luka/             301
+/zid-mala-luka/                      /dive-sites/zid-mala-luka/             301
+/yellow-coral                        /dive-sites/yellow-coral/              301
+/yellow-coral/                       /dive-sites/yellow-coral/              301
+/vanjski-kamenjak                    /dive-sites/vanjski-kamenjak/          301
+/vanjski-kamenjak/                   /dive-sites/vanjski-kamenjak/          301
+/zid-polonijo                        /dive-sites/zid-polonijo/              301
+/zid-polonijo/                       /dive-sites/zid-polonijo/              301
+/reef-katedrala                      /dive-sites/reef-katedrala/            301
+/reef-katedrala/                     /dive-sites/reef-katedrala/            301
+/plovanov-stol                       /dive-sites/plovanov-stol/             301
+/plovanov-stol/                      /dive-sites/plovanov-stol/             301
+/hrid-piramida                       /dive-sites/hrid-piramida/             301
+/hrid-piramida/                      /dive-sites/hrid-piramida/             301
+/reef-languste                       /dive-sites/reef-languste/             301
+/reef-languste/                      /dive-sites/reef-languste/             301
+/matanovo                            /dive-sites/matanovo/                  301
+/matanovo/                           /dive-sites/matanovo/                  301
+/island-zec                          /dive-sites/island-zec/                301
+/island-zec/                         /dive-sites/island-zec/                301
+/punta-fratar-prvic-island           /dive-sites/punta-fratar-prvic-island/ 301
+/punta-fratar-prvic-island/          /dive-sites/punta-fratar-prvic-island/ 301
+/punta-silo-prvic-island             /dive-sites/punta-silo-prvic-island/   301
+/punta-silo-prvic-island/            /dive-sites/punta-silo-prvic-island/   301
+/tunnel-prvic                        /dive-sites/tunnel-prvic/              301
+/tunnel-prvic/                       /dive-sites/tunnel-prvic/              301
+/ow-reef-druzenjin                   /dive-sites/ow-reef-druzenjin/         301
+/ow-reef-druzenjin/                  /dive-sites/ow-reef-druzenjin/         301
+/reef-scerba                         /dive-sites/reef-scerba/               301
+/reef-scerba/                        /dive-sites/reef-scerba/               301
+/st-marak                            /dive-sites/st-marak/                  301
+/st-marak/                           /dive-sites/st-marak/                  301
+/timos-caves                         /dive-sites/timos-caves/               301
+/timos-caves/                        /dive-sites/timos-caves/               301
+/shipwreck-ss-regolo                 /dive-sites/shipwreck-ss-regolo/       301
+/shipwreck-ss-regolo/                /dive-sites/shipwreck-ss-regolo/       301
+/shipwreck-jakljan                   /dive-sites/shipwreck-jakljan/         301
+/shipwreck-jakljan/                  /dive-sites/shipwreck-jakljan/         301
+
+# ── dead ends that Google has indexed (return 410 so they're dropped) ─
+/portfolio-item/*                    /                            410
+/en                                  /                            410
+/en/                                 /                            410
+/shop                                /                            410
+/shop/                               /                            410
+/cart                                /                            410
+/cart/                               /                            410
+/checkout                            /                            410
+/checkout/                           /                            410
+/my-account                          /                            410
+/my-account/                         /                            410
+/blog                                /                            410
+/blog/                               /                            410
+
+# ── WordPress noise that Googlebot tries periodically ─────────────────
+/wp-login.php                        /                            410
+/xmlrpc.php                          /                            410
+/wp-content/*                        /                            410
+/wp-admin/*                          /                            410

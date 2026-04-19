@@ -1,0 +1,61 @@
+---
+/**
+ * Base page chrome.
+ *
+ * Intentionally unstyled — a plain semantic frame. Claude Design owns
+ * header/footer/nav visual treatment and will overwrite via handoff.
+ */
+import '@/styles/globals.css';
+import SEO from '@/components/SEO.astro';
+import Schema from '@/components/Schema.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import SiteFooter from '@/components/SiteFooter.astro';
+import { SITE, type Locale } from '@/lib/site';
+
+interface Props {
+  title: string;
+  description: string;
+  locale?: Locale;
+  image?: string;
+  noindex?: boolean;
+  alternates?: Partial<Record<Locale, string>>;
+  schemaType?: 'localBusiness' | 'none';
+}
+
+const {
+  title,
+  description,
+  locale = 'en',
+  image,
+  noindex,
+  alternates,
+  schemaType = 'localBusiness',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <SEO
+      title={title}
+      description={description}
+      locale={locale}
+      image={image}
+      noindex={noindex}
+      alternates={alternates}
+    />
+    {schemaType === 'localBusiness' && <Schema type="localBusiness" />}
+    <slot name="head" />
+  </head>
+  <body>
+    <a href="#main" class="sr-only focus:not-sr-only">Skip to content</a>
+    <SiteHeader locale={locale} />
+    <main id="main">
+      <slot />
+    </main>
+    <SiteFooter locale={locale} />
+  </body>
+</html>

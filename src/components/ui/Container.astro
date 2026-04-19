@@ -1,0 +1,23 @@
+---
+import { cn } from '@/lib/utils';
+
+interface Props {
+  size?: 'narrow' | 'default' | 'wide';
+  as?: 'div' | 'section' | 'main' | 'article' | 'header' | 'footer';
+  class?: string;
+}
+
+const { size = 'default', as = 'div', class: className } = Astro.props;
+
+const sizes: Record<'narrow' | 'default' | 'wide', string> = {
+  narrow:  'max-w-2xl',
+  default: 'max-w-5xl',
+  wide:    'max-w-7xl',
+};
+
+const Tag = as;
+---
+
+<Tag class={cn('mx-auto w-full px-[var(--spacing-gutter)]', sizes[size], className)}>
+  <slot />
+</Tag>

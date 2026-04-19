@@ -1,0 +1,62 @@
+---
+/**
+ * Button primitive — structural only.
+ *
+ * Claude Design owns the visual treatment via Tailwind classes passed
+ * through `class`, plus the `--color-brand`, `--radius-button`, and
+ * `--font-display` tokens in globals.css.
+ */
+import { cn } from '@/lib/utils';
+
+export interface Props {
+  variant?: 'default' | 'secondary' | 'outline' | 'ghost' | 'link' | 'destructive';
+  size?: 'sm' | 'md' | 'lg' | 'icon';
+  as?: 'button' | 'a';
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
+  class?: string;
+}
+
+const props = Astro.props;
+const variant = props.variant ?? 'default';
+const size = props.size ?? 'md';
+const as = props.as ?? 'button';
+const type = props.type ?? 'button';
+const { href, disabled } = props;
+const className = props.class;
+
+const base =
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap border transition-colors ' +
+  'disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-[var(--color-ring)]';
+
+const variantClasses = {
+  default:     'bg-[var(--color-brand)] text-[var(--color-brand-foreground)] border-transparent hover:opacity-90',
+  secondary:   'bg-[var(--color-surface-muted)] text-[var(--color-ink)] border-transparent hover:bg-[var(--color-surface-sunk)]',
+  outline:     'bg-transparent text-[var(--color-ink)] border-[var(--color-border)] hover:bg-[var(--color-surface-muted)]',
+  ghost:       'bg-transparent text-[var(--color-ink)] border-transparent hover:bg-[var(--color-surface-muted)]',
+  link:        'bg-transparent text-[var(--color-ink)] border-transparent underline-offset-4 hover:underline p-0 h-auto',
+  destructive: 'bg-[var(--color-danger)] text-white border-transparent hover:opacity-90',
+};
+
+const sizeClasses = {
+  sm:   'h-9 px-3 text-sm rounded-[var(--radius-button)]',
+  md:   'h-10 px-4 text-base rounded-[var(--radius-button)]',
+  lg:   'h-12 px-6 text-lg rounded-[var(--radius-button)]',
+  icon: 'h-10 w-10 rounded-[var(--radius-button)]',
+};
+
+const classes = cn(base, variantClasses[variant], sizeClasses[size], className);
+---
+
+{
+  as === 'a' ? (
+    <a href={href} class={classes}>
+      <slot />
+    </a>
+  ) : (
+    <button type={type} class={classes} disabled={disabled}>
+      <slot />
+    </button>
+  )
+}
