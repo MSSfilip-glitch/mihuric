@@ -402,6 +402,22 @@ import teamBriefing from '@/assets/design/home-assets/team-briefing.jpg';
   @keyframes heroFade { from { opacity: 0 } to { opacity: 1 } }
   @keyframes heroBgKenBurns { from { transform: scale(1.08) } to { transform: scale(1) } }
 
+  /* Reveal-on-scroll — JS adds .in-view when section enters viewport */
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition:
+      opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .reveal.in-view { opacity: 1; transform: translateY(0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-bg,
+    .hero-eyebrow, .hero-headline, .hero-deck, .hero-ctas, .hero-meta,
+    .reveal { animation: none !important; opacity: 1 !important; transform: none !important; }
+  }
+
   .hero-inner {
     flex: 1;
     display: grid;
@@ -1263,6 +1279,21 @@ import teamBriefing from '@/assets/design/home-assets/team-briefing.jpg';
 </style>
 
 <script is:inline>
+  (function initReveal() {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const sections = document.querySelectorAll('main section:not(.hero)');
+    sections.forEach((s) => s.classList.add('reveal'));
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) {
+          e.target.classList.add('in-view');
+          io.unobserve(e.target);
+        }
+      }
+    }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+    sections.forEach((s) => io.observe(s));
+  })();
+
   (function initBubbles() {
     const layer = document.getElementById('bubble-layer');
     if (!layer) return;
