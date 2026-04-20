@@ -1,0 +1,1804 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Mihurić — Design System</title>
+<link rel="icon" href="/favicon.png" type="image/png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Source+Serif+4:ital,opsz,wght@0,8..60,300..700;1,8..60,400..600&family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=IBM+Plex+Sans:ital,wght@0,300..700;1,400..500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ─── PALETTES ────────────────────────────────────────────────────────────
+   Three directions. Each cycles via [data-palette="A|B|C"] on :root.
+   Tokens are named to match the real-project globals.css contract.
+   ──────────────────────────────────────────────────────────────────────── */
+
+:root[data-palette="A"] {
+  /* ADRIATIC DEEP — silhouette/wreck register. */
+  --color-brand:            oklch(0.52 0.11 235);   /* Kvarner sunshaft blue */
+  --color-brand-contrast:   oklch(0.98 0.01 90);
+  --color-secondary:        oklch(0.30 0.06 240);   /* deep adriatic mid */
+  --color-accent:           oklch(0.55 0.18 25);    /* gorgonian red */
+  --color-accent-warm:      oklch(0.78 0.14 85);    /* logo yellow, softened */
+  --color-ink:              oklch(0.16 0.03 245);   /* near-black navy */
+  --color-ink-muted:        oklch(0.46 0.03 245);
+  --color-surface:          oklch(0.975 0.008 85);  /* limestone bone */
+  --color-surface-muted:    oklch(0.945 0.012 85);
+  --color-surface-sunk:     oklch(0.905 0.014 85);
+  --color-border:           oklch(0.88 0.01 85);
+  --color-deep-ink:         oklch(0.13 0.04 245);   /* used for dive-site/hero dark surfaces */
+  --color-deep-surface:     oklch(0.19 0.04 245);
+  --color-deep-border:      oklch(0.28 0.03 245);
+  --color-deep-ink-muted:   oklch(0.72 0.02 245);
+
+  /* Ramps — generated off each token's hue. */
+  --brand-50:   oklch(0.97 0.015 235); --brand-100: oklch(0.93 0.03 235); --brand-200: oklch(0.87 0.05 235);
+  --brand-300:  oklch(0.78 0.08 235); --brand-400: oklch(0.66 0.10 235); --brand-500: oklch(0.52 0.11 235);
+  --brand-600:  oklch(0.42 0.10 235); --brand-700: oklch(0.33 0.08 240); --brand-800: oklch(0.24 0.06 240);
+  --brand-900:  oklch(0.16 0.04 245);
+
+  --sec-50:  oklch(0.96 0.012 240); --sec-100: oklch(0.90 0.024 240); --sec-200: oklch(0.82 0.036 240);
+  --sec-300: oklch(0.70 0.048 240); --sec-400: oklch(0.56 0.058 240); --sec-500: oklch(0.30 0.06 240);
+  --sec-600: oklch(0.24 0.06 240); --sec-700: oklch(0.20 0.05 243); --sec-800: oklch(0.16 0.04 245);
+  --sec-900: oklch(0.11 0.03 246);
+
+  --acc-50:  oklch(0.97 0.013 25); --acc-100: oklch(0.93 0.035 25); --acc-200: oklch(0.86 0.07 25);
+  --acc-300: oklch(0.77 0.11 25); --acc-400: oklch(0.67 0.15 25); --acc-500: oklch(0.55 0.18 25);
+  --acc-600: oklch(0.47 0.17 25); --acc-700: oklch(0.39 0.14 25); --acc-800: oklch(0.30 0.10 25);
+  --acc-900: oklch(0.22 0.07 25);
+
+  --ink-50:  oklch(0.98 0.005 85); --ink-100: oklch(0.93 0.008 85); --ink-200: oklch(0.85 0.012 85);
+  --ink-300: oklch(0.72 0.018 90); --ink-400: oklch(0.58 0.022 200); --ink-500: oklch(0.46 0.03 245);
+  --ink-600: oklch(0.36 0.03 245); --ink-700: oklch(0.26 0.03 245); --ink-800: oklch(0.20 0.03 245);
+  --ink-900: oklch(0.12 0.03 245);
+
+  --surf-50: oklch(0.99 0.004 85); --surf-100: oklch(0.975 0.008 85); --surf-200: oklch(0.96 0.010 85);
+  --surf-300: oklch(0.945 0.012 85); --surf-400: oklch(0.93 0.013 85); --surf-500: oklch(0.905 0.014 85);
+  --surf-600: oklch(0.82 0.015 85); --surf-700: oklch(0.68 0.016 85); --surf-800: oklch(0.48 0.018 90);
+  --surf-900: oklch(0.30 0.02 90);
+}
+
+:root[data-palette="B"] {
+  /* ADRIATIC BRIGHT — shallow-posidonia warmth, family-trip register. */
+  --color-brand:            oklch(0.42 0.11 240);   /* mid adriatic */
+  --color-brand-contrast:   oklch(0.98 0.01 90);
+  --color-secondary:        oklch(0.64 0.11 195);   /* posidonia turquoise */
+  --color-accent:           oklch(0.55 0.18 25);
+  --color-accent-warm:      oklch(0.80 0.13 85);
+  --color-ink:              oklch(0.22 0.04 245);
+  --color-ink-muted:        oklch(0.46 0.03 245);
+  --color-surface:          oklch(0.985 0.006 85);
+  --color-surface-muted:    oklch(0.955 0.009 80);
+  --color-surface-sunk:     oklch(0.92 0.012 80);
+  --color-border:           oklch(0.89 0.01 80);
+  --color-deep-ink:         oklch(0.16 0.04 240);
+  --color-deep-surface:     oklch(0.22 0.05 240);
+  --color-deep-border:      oklch(0.32 0.04 240);
+  --color-deep-ink-muted:   oklch(0.74 0.02 240);
+
+  --brand-50:   oklch(0.97 0.014 240); --brand-100: oklch(0.92 0.028 240); --brand-200: oklch(0.85 0.05 240);
+  --brand-300:  oklch(0.74 0.08 240); --brand-400: oklch(0.58 0.10 240); --brand-500: oklch(0.42 0.11 240);
+  --brand-600:  oklch(0.35 0.10 243); --brand-700: oklch(0.28 0.08 245); --brand-800: oklch(0.22 0.06 246);
+  --brand-900:  oklch(0.14 0.04 248);
+
+  --sec-50:  oklch(0.97 0.012 195); --sec-100: oklch(0.92 0.030 195); --sec-200: oklch(0.86 0.055 195);
+  --sec-300: oklch(0.77 0.080 195); --sec-400: oklch(0.70 0.100 195); --sec-500: oklch(0.64 0.11 195);
+  --sec-600: oklch(0.55 0.10 198); --sec-700: oklch(0.45 0.08 200); --sec-800: oklch(0.34 0.06 205);
+  --sec-900: oklch(0.24 0.04 210);
+
+  --acc-50:  oklch(0.97 0.013 25); --acc-100: oklch(0.93 0.035 25); --acc-200: oklch(0.86 0.07 25);
+  --acc-300: oklch(0.77 0.11 25); --acc-400: oklch(0.67 0.15 25); --acc-500: oklch(0.55 0.18 25);
+  --acc-600: oklch(0.47 0.17 25); --acc-700: oklch(0.39 0.14 25); --acc-800: oklch(0.30 0.10 25);
+  --acc-900: oklch(0.22 0.07 25);
+
+  --ink-50:  oklch(0.98 0.005 85); --ink-100: oklch(0.93 0.008 85); --ink-200: oklch(0.86 0.012 85);
+  --ink-300: oklch(0.73 0.018 90); --ink-400: oklch(0.58 0.022 200); --ink-500: oklch(0.46 0.03 245);
+  --ink-600: oklch(0.36 0.03 245); --ink-700: oklch(0.28 0.03 245); --ink-800: oklch(0.22 0.04 245);
+  --ink-900: oklch(0.14 0.03 245);
+
+  --surf-50: oklch(0.995 0.003 85); --surf-100: oklch(0.985 0.006 85); --surf-200: oklch(0.97 0.008 85);
+  --surf-300: oklch(0.955 0.009 80); --surf-400: oklch(0.94 0.011 80); --surf-500: oklch(0.92 0.012 80);
+  --surf-600: oklch(0.83 0.014 80); --surf-700: oklch(0.68 0.016 80); --surf-800: oklch(0.48 0.018 90);
+  --surf-900: oklch(0.30 0.02 90);
+}
+
+:root[data-palette="C"] {
+  /* SURFACED — above-water limestone bias, logo-yellow as accent. */
+  --color-brand:            oklch(0.28 0.06 240);   /* deep adriatic, restrained */
+  --color-brand-contrast:   oklch(0.98 0.01 85);
+  --color-secondary:        oklch(0.50 0.10 235);   /* sunshaft */
+  --color-accent:           oklch(0.80 0.15 85);    /* sulphur yellow (logo) */
+  --color-accent-warm:      oklch(0.55 0.18 25);    /* gorgonian, demoted to micro */
+  --color-ink:              oklch(0.18 0.02 85);
+  --color-ink-muted:        oklch(0.45 0.02 85);
+  --color-surface:          oklch(0.97 0.01 85);    /* limestone */
+  --color-surface-muted:    oklch(0.94 0.014 80);
+  --color-surface-sunk:     oklch(0.895 0.018 75);
+  --color-border:           oklch(0.86 0.015 80);
+  --color-deep-ink:         oklch(0.15 0.03 240);
+  --color-deep-surface:     oklch(0.22 0.04 240);
+  --color-deep-border:      oklch(0.32 0.03 240);
+  --color-deep-ink-muted:   oklch(0.72 0.02 240);
+
+  --brand-50:   oklch(0.95 0.012 240); --brand-100: oklch(0.88 0.025 240); --brand-200: oklch(0.78 0.045 240);
+  --brand-300:  oklch(0.64 0.065 240); --brand-400: oklch(0.48 0.072 240); --brand-500: oklch(0.28 0.06 240);
+  --brand-600:  oklch(0.23 0.055 243); --brand-700: oklch(0.19 0.05 245); --brand-800: oklch(0.15 0.04 246);
+  --brand-900:  oklch(0.10 0.03 248);
+
+  --sec-50:  oklch(0.97 0.014 235); --sec-100: oklch(0.92 0.028 235); --sec-200: oklch(0.86 0.05 235);
+  --sec-300: oklch(0.76 0.08 235); --sec-400: oklch(0.64 0.095 235); --sec-500: oklch(0.50 0.10 235);
+  --sec-600: oklch(0.40 0.09 238); --sec-700: oklch(0.32 0.07 240); --sec-800: oklch(0.24 0.055 243);
+  --sec-900: oklch(0.16 0.04 246);
+
+  --acc-50:  oklch(0.98 0.015 85); --acc-100: oklch(0.95 0.035 85); --acc-200: oklch(0.92 0.06 85);
+  --acc-300: oklch(0.88 0.09 85); --acc-400: oklch(0.84 0.12 85); --acc-500: oklch(0.80 0.15 85);
+  --acc-600: oklch(0.70 0.14 82); --acc-700: oklch(0.58 0.12 78); --acc-800: oklch(0.44 0.09 75);
+  --acc-900: oklch(0.30 0.07 72);
+
+  --ink-50:  oklch(0.98 0.005 85); --ink-100: oklch(0.94 0.008 85); --ink-200: oklch(0.87 0.012 85);
+  --ink-300: oklch(0.74 0.018 85); --ink-400: oklch(0.60 0.020 85); --ink-500: oklch(0.45 0.02 85);
+  --ink-600: oklch(0.36 0.02 85); --ink-700: oklch(0.28 0.02 85); --ink-800: oklch(0.22 0.02 85);
+  --ink-900: oklch(0.14 0.02 85);
+
+  --surf-50: oklch(0.99 0.005 85); --surf-100: oklch(0.97 0.010 85); --surf-200: oklch(0.955 0.012 80);
+  --surf-300: oklch(0.94 0.014 80); --surf-400: oklch(0.92 0.016 78); --surf-500: oklch(0.895 0.018 75);
+  --surf-600: oklch(0.80 0.020 75); --surf-700: oklch(0.65 0.022 75); --surf-800: oklch(0.46 0.024 80);
+  --surf-900: oklch(0.28 0.022 80);
+}
+
+/* ─── TYPE PAIRINGS ────────────────────────────────────────────────────── */
+:root[data-type="serif"] {
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-body:    "Source Serif 4", ui-serif, Georgia, serif;
+  --font-ui:      "Source Serif 4", ui-serif, Georgia, serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, monospace;
+  --display-tracking: -0.015em;
+  --display-weight: 400;
+  --display-feature: "ss01" 1, "ss02" 1;
+  --display-soft: 30;
+}
+:root[data-type="sans"] {
+  --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --font-body:    "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-ui:      "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, monospace;
+  --display-tracking: -0.025em;
+  --display-weight: 500;
+  --display-feature: "normal";
+  --display-soft: 0;
+}
+
+/* ─── SHARED TOKENS ────────────────────────────────────────────────────── */
+:root {
+  --radius-xs:     2px;
+  --radius-sm:     4px;
+  --radius-md:     8px;
+  --radius-lg:     12px;
+  --radius-xl:     20px;
+  --radius-card:   12px;      /* tuned for dive-site cards */
+  --radius-button: 8px;
+  --radius-input:  8px;
+  --radius-pill:   999px;
+
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+  --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-10: 40px;
+  --space-12: 48px; --space-16: 64px; --space-20: 80px; --space-24: 96px;
+  --space-32: 128px;
+  --spacing-gutter:  var(--space-6);
+  --spacing-section: var(--space-20);
+
+  --shadow-xs:    0 0 0 1px var(--color-border);
+  --shadow-sm:    0 1px 2px -1px oklch(0 0 0 / 0.06), 0 0 0 1px var(--color-border);
+  --shadow-card:  0 1px 2px -1px oklch(0 0 0 / 0.06), 0 0 0 1px var(--color-border);
+  --shadow-md:    0 4px 16px -6px oklch(0 0 0 / 0.12), 0 0 0 1px var(--color-border);
+  --shadow-hover: 0 12px 32px -12px oklch(0 0 0 / 0.18), 0 0 0 1px var(--color-border);
+
+  --ease-swim:   cubic-bezier(.22,.61,.36,1);
+  --ease-rise:   cubic-bezier(.16,.84,.44,1);
+  --dur-fast:    160ms;
+  --dur-med:     320ms;
+  --dur-slow:    640ms;
+}
+
+/* ─── RESET + BASE ─────────────────────────────────────────────────────── */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+html {
+  font-family: var(--font-body);
+  color: var(--color-ink);
+  background: var(--color-surface);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+body { line-height: 1.55; font-size: 17px; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  line-height: 1.08;
+  margin: 0;
+  color: var(--color-ink);
+  font-feature-settings: var(--display-feature);
+  font-variation-settings: "opsz" 72, "SOFT" var(--display-soft);
+}
+[data-type="serif"] h1, [data-type="serif"] .display {
+  font-variation-settings: "opsz" 144, "SOFT" 30, "wght" 400;
+}
+p { margin: 0 0 1em; text-wrap: pretty; }
+a { color: var(--color-brand); text-decoration-thickness: 1px; text-underline-offset: 0.15em; }
+img, svg, video { max-width: 100%; height: auto; display: block; }
+code, pre { font-family: var(--font-mono); }
+::selection { background: var(--color-accent); color: var(--color-brand-contrast); }
+
+/* ─── LAYOUT ───────────────────────────────────────────────────────────── */
+.page { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+@media (min-width: 900px) { .page { padding: 0 48px; } }
+
+.section { padding-block: var(--spacing-section); border-top: 1px solid var(--color-border); }
+.section:first-of-type { border-top: 0; }
+.section-eyebrow {
+  font-family: var(--font-ui);
+  font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--color-ink-muted);
+  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.section-eyebrow::before {
+  content: ""; width: 28px; height: 1px; background: var(--color-ink-muted);
+}
+.section-title {
+  font-size: clamp(36px, 5vw, 64px);
+  line-height: 1.02;
+  max-width: 18ch;
+  margin-bottom: 16px;
+}
+.section-lead {
+  max-width: 60ch;
+  color: var(--color-ink-muted);
+  font-size: 19px;
+  line-height: 1.55;
+  margin-bottom: 48px;
+}
+
+/* ─── SITE HEADER ──────────────────────────────────────────────────────── */
+.sitehead {
+  position: sticky; top: 0; z-index: 20;
+  background: color-mix(in oklch, var(--color-surface) 86%, transparent);
+  backdrop-filter: saturate(1.2) blur(10px);
+  border-bottom: 1px solid var(--color-border);
+}
+.sitehead .row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 24px;
+  max-width: 1200px; margin: 0 auto;
+  font-family: var(--font-ui);
+}
+@media (min-width: 900px) { .sitehead .row { padding: 14px 48px; } }
+.sitehead .mark { display: flex; align-items: center; gap: 12px; }
+.sitehead .mark .roundel {
+  width: 28px; height: 28px; border-radius: var(--radius-pill);
+  background: var(--color-brand); color: var(--color-brand-contrast);
+  display: grid; place-items: center; font-size: 11px; letter-spacing: 0.04em;
+  font-weight: 600; position: relative;
+}
+.sitehead .mark .roundel::after {
+  content: ""; position: absolute; top: -3px; right: -1px;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--color-brand-contrast);
+  box-shadow:
+    4px 2px 0 -1px var(--color-brand-contrast),
+    1px -4px 0 -1.5px var(--color-brand-contrast);
+}
+.sitehead .mark .name { font-weight: 500; font-size: 15px; letter-spacing: -0.01em; }
+.sitehead .mark .sub  { font-size: 12px; color: var(--color-ink-muted); letter-spacing: 0.06em; text-transform: uppercase; }
+.sitehead .meta { font-size: 12px; color: var(--color-ink-muted); letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* ─── COVER ────────────────────────────────────────────────────────────── */
+.cover { position: relative; overflow: hidden; background: var(--color-ink); color: var(--color-surface); min-height: 90vh; display: grid; }
+.cover .bg {
+  position: absolute; inset: 0;
+  background: url("assets/hero-panoramic.jpg") center/cover no-repeat;
+  filter: saturate(1.02) contrast(1.02);
+  opacity: 0.55;
+}
+.cover .bg::after {
+  content: ""; position: absolute; inset: 0;
+  background:
+    radial-gradient(120% 80% at 50% 0%, transparent 40%, oklch(0.08 0.03 245 / 0.75) 100%),
+    linear-gradient(180deg, oklch(0.08 0.03 245 / 0.35) 0%, oklch(0.08 0.03 245 / 0.0) 50%, oklch(0.08 0.03 245 / 0.85) 100%);
+}
+.cover .inner {
+  position: relative; z-index: 2;
+  max-width: 1200px; margin: 0 auto; padding: 88px 24px 48px;
+  align-self: end; width: 100%;
+}
+@media (min-width: 900px) { .cover .inner { padding: 88px 48px 64px; } }
+.cover .eyebrow {
+  font-family: var(--font-ui);
+  font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: oklch(0.98 0.01 90 / 0.8);
+  display: flex; gap: 18px; flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+.cover .eyebrow span { display: inline-flex; align-items: center; gap: 8px; }
+.cover .eyebrow .dot {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--color-accent);
+}
+.cover h1 {
+  font-size: clamp(48px, 8vw, 128px);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  max-width: 14ch;
+  color: inherit;
+  font-weight: var(--display-weight);
+}
+[data-type="serif"] .cover h1 {
+  font-variation-settings: "opsz" 144, "SOFT" 40, "wght" 340;
+  font-style: normal;
+}
+.cover h1 em { font-style: italic; color: var(--color-accent-warm, var(--color-accent)); font-weight: 300; }
+.cover .deck {
+  margin-top: 28px; max-width: 58ch; font-size: 19px; line-height: 1.55;
+  color: oklch(0.98 0.01 90 / 0.78);
+}
+.cover .meta-row {
+  margin-top: 56px; padding-top: 24px;
+  border-top: 1px solid oklch(0.98 0.01 90 / 0.2);
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 24px;
+  font-family: var(--font-ui);
+  font-size: 13px;
+}
+.cover .meta-row b { display: block; font-weight: 600; font-size: 14px; color: oklch(0.98 0.01 90 / 1); margin-bottom: 4px; letter-spacing: 0.02em; }
+.cover .meta-row span { color: oklch(0.98 0.01 90 / 0.6); letter-spacing: 0.06em; text-transform: uppercase; font-size: 11px; }
+
+/* bubble simulation canvas behind the cover */
+.bubble-canvas {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  width: 100%; height: 100%;
+  opacity: 0.85;
+}
+
+/* ─── SYSTEM NOTES ─────────────────────────────────────────────────────── */
+.notes { background: var(--color-surface-muted); }
+.notes .grid {
+  display: grid; gap: 28px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+.notes .card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  padding: 28px;
+}
+.notes .card h3 {
+  font-size: 22px; margin-bottom: 10px;
+  font-weight: var(--display-weight);
+}
+.notes .card p { color: var(--color-ink-muted); font-size: 15px; margin: 0; }
+.notes .card small {
+  display: inline-block; margin-bottom: 12px;
+  font-family: var(--font-ui); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+/* ─── PALETTE STRIPS ───────────────────────────────────────────────────── */
+.strip {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  padding: 24px;
+  margin-bottom: 20px;
+}
+.strip header {
+  display: grid; gap: 4px; grid-template-columns: 36px 1fr auto;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.strip .letter {
+  width: 36px; height: 36px; border-radius: var(--radius-pill);
+  display: grid; place-items: center;
+  font-family: var(--font-display); font-size: 18px; font-weight: 500;
+  color: var(--color-brand-contrast);
+}
+.strip .letter.A { background: oklch(0.52 0.11 235); }
+.strip .letter.B { background: oklch(0.42 0.11 240); }
+.strip .letter.C { background: oklch(0.28 0.06 240); }
+.strip h3 { font-size: 22px; margin: 0; }
+.strip .sub { font-family: var(--font-ui); font-size: 13px; color: var(--color-ink-muted); }
+.strip .anchor {
+  font-family: var(--font-ui); font-size: 11px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--color-ink-muted);
+  grid-column: 2 / -1; margin-top: 2px;
+}
+.swatches {
+  display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px;
+}
+@media (max-width: 700px) { .swatches { grid-template-columns: repeat(3, 1fr); } }
+.swatch { border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--color-border); }
+.swatch .chip { aspect-ratio: 1.2 / 1; display: flex; align-items: end; padding: 12px; }
+.swatch .chip span {
+  color: var(--_on, white);
+  font-family: var(--font-ui); font-size: 11px; letter-spacing: 0.04em;
+  font-feature-settings: "tnum" 1;
+}
+.swatch .meta {
+  padding: 10px 12px; background: var(--color-surface);
+  font-family: var(--font-ui); font-size: 12px;
+  display: flex; justify-content: space-between; gap: 8px;
+  color: var(--color-ink-muted);
+}
+.swatch .meta b { color: var(--color-ink); font-weight: 600; }
+
+/* Selected-palette highlight card on the strip row */
+.strip[data-selected] {
+  box-shadow: 0 0 0 2px var(--color-accent), 0 12px 32px -20px oklch(0 0 0 / 0.2);
+  border-color: transparent;
+}
+.strip .choose {
+  grid-column: 3; justify-self: end;
+  font-family: var(--font-ui); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+  background: var(--color-ink); color: var(--color-surface);
+  border: 0; padding: 8px 14px; border-radius: var(--radius-pill); cursor: pointer;
+  transition: background var(--dur-fast);
+}
+.strip[data-selected] .choose { background: var(--color-accent); }
+.strip .choose:hover { background: var(--color-accent); }
+
+/* ─── TONAL RAMPS ──────────────────────────────────────────────────────── */
+.ramps { display: grid; gap: 20px; }
+.ramp {
+  display: grid; grid-template-columns: 140px 1fr; gap: 16px;
+  align-items: stretch;
+}
+@media (max-width: 700px) { .ramp { grid-template-columns: 1fr; } }
+.ramp .label {
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  display: grid; align-content: center; gap: 4px;
+}
+.ramp .label b { font-family: var(--font-display); font-size: 17px; letter-spacing: -0.01em; font-weight: 500; }
+.ramp .label small { font-family: var(--font-ui); font-size: 11px; color: var(--color-ink-muted); letter-spacing: 0.06em; text-transform: uppercase; }
+.ramp .steps { display: grid; grid-template-columns: repeat(10, 1fr); border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--color-border); }
+.ramp .step {
+  aspect-ratio: 1/1.25; display: flex; align-items: end; justify-content: center; padding: 6px;
+  font-family: var(--font-ui); font-size: 10px; letter-spacing: 0.04em;
+}
+@media (max-width: 900px) { .ramp .steps { grid-template-columns: repeat(5, 1fr); } .ramp .step { aspect-ratio: 1/0.8; } }
+
+/* ─── TYPOGRAPHY ───────────────────────────────────────────────────────── */
+.type-compare { display: grid; gap: 24px; grid-template-columns: 1fr; }
+@media (min-width: 980px) { .type-compare { grid-template-columns: 1fr 1fr; } }
+.type-card {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  padding: 32px;
+  position: relative;
+}
+.type-card[data-variant="serif"] { --_font-display: "Fraunces", ui-serif, serif; --_font-body: "Source Serif 4", ui-serif, serif; }
+.type-card[data-variant="sans"]  { --_font-display: "Bricolage Grotesque", ui-sans-serif, sans-serif; --_font-body: "IBM Plex Sans", ui-sans-serif, sans-serif; }
+.type-card header {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding-bottom: 20px; margin-bottom: 24px; border-bottom: 1px solid var(--color-border);
+}
+.type-card .specname { font-family: var(--_font-display); font-size: 24px; font-weight: 500; font-variation-settings: "opsz" 72, "SOFT" 30; letter-spacing: -0.015em; }
+.type-card .recipe { font-family: var(--font-ui); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-ink-muted); }
+
+.type-card .display {
+  font-family: var(--_font-display);
+  font-size: clamp(48px, 5vw, 72px);
+  line-height: 0.98; letter-spacing: -0.025em;
+  font-weight: 400;
+  font-variation-settings: "opsz" 144, "SOFT" 40, "wght" 340;
+  margin-bottom: 16px;
+}
+.type-card[data-variant="sans"] .display { font-weight: 500; letter-spacing: -0.03em; }
+.type-card[data-variant="sans"] .display { font-variation-settings: "wght" 500; }
+.type-card .display em { font-style: italic; color: var(--color-accent); font-weight: 300; }
+
+.type-card .heading { font-family: var(--_font-display); font-size: 28px; font-weight: 500; letter-spacing: -0.015em; margin: 28px 0 12px; }
+.type-card[data-variant="sans"] .heading { font-weight: 500; }
+.type-card .body { font-family: var(--_font-body); font-size: 16px; line-height: 1.6; color: var(--color-ink); max-width: 56ch; }
+.type-card .body + .body { margin-top: 10px; color: var(--color-ink-muted); }
+.type-card .meta {
+  margin-top: 28px;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 12px;
+  padding-top: 20px; border-top: 1px solid var(--color-border);
+  font-family: var(--font-ui); font-size: 12px;
+}
+.type-card .meta b { display: block; font-weight: 600; margin-bottom: 2px; font-size: 13px; }
+.type-card .meta span { color: var(--color-ink-muted); letter-spacing: 0.04em; }
+
+.typescale { margin-top: 28px; border: 1px solid var(--color-border); border-radius: var(--radius-lg); overflow: hidden; }
+.ts-row { display: grid; grid-template-columns: 140px 1fr; align-items: center; border-top: 1px solid var(--color-border); padding: 16px 24px; }
+.ts-row:first-child { border-top: 0; }
+.ts-row .ts-label { font-family: var(--font-ui); font-size: 12px; color: var(--color-ink-muted); letter-spacing: 0.06em; text-transform: uppercase; }
+.ts-row .ts-sample { font-family: var(--font-display); letter-spacing: var(--display-tracking); line-height: 1.1; font-feature-settings: var(--display-feature); }
+
+/* ─── SPACING SCALE ────────────────────────────────────────────────────── */
+.space-list { display: grid; gap: 10px; }
+.space-row {
+  display: grid; grid-template-columns: 80px 80px 1fr; align-items: center; gap: 16px;
+  padding: 8px 16px; border-radius: var(--radius-md);
+}
+.space-row:nth-child(odd) { background: var(--color-surface-muted); }
+.space-row .sk { font-family: var(--font-mono); font-size: 13px; color: var(--color-ink); }
+.space-row .sv { font-family: var(--font-mono); font-size: 12px; color: var(--color-ink-muted); }
+.space-row .bar { height: 16px; background: var(--color-brand); border-radius: 3px; }
+
+/* ─── RADIUS + SHADOW ──────────────────────────────────────────────────── */
+.r-shadow { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.r-card {
+  background: var(--color-surface); border: 1px solid var(--color-border); padding: 24px;
+  border-radius: var(--radius-lg);
+  display: grid; gap: 16px;
+}
+.r-card .sample {
+  height: 110px; background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+}
+.r-card .sample.sh { border: 0; background: var(--color-surface); }
+.r-card .k { font-family: var(--font-mono); font-size: 12px; color: var(--color-ink-muted); }
+
+/* ─── INPUTS ───────────────────────────────────────────────────────────── */
+.inputs-grid { display: grid; gap: 32px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.inp-group label {
+  display: block; margin-bottom: 6px;
+  font-family: var(--font-ui); font-size: 13px; font-weight: 500; color: var(--color-ink);
+}
+.inp-group .hint { font-family: var(--font-ui); font-size: 12px; color: var(--color-ink-muted); margin-top: 6px; }
+.inp-group small.state { display: block; margin-bottom: 8px; font-family: var(--font-ui); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-muted); }
+
+.inp, .sel, .tarea {
+  font-family: var(--font-ui); font-size: 15px;
+  width: 100%; padding: 10px 14px; min-height: 44px;
+  background: var(--color-surface);
+  color: var(--color-ink);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-input);
+  transition: border-color var(--dur-fast), box-shadow var(--dur-fast), background var(--dur-fast);
+  outline: none;
+}
+.inp::placeholder, .tarea::placeholder { color: var(--color-ink-muted); }
+.inp:hover, .sel:hover, .tarea:hover { border-color: oklch(from var(--color-ink) l c h / 0.35); }
+.inp:focus-visible, .sel:focus-visible, .tarea:focus-visible {
+  border-color: var(--color-brand);
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-brand) 25%, transparent);
+}
+.inp[disabled], .sel[disabled], .tarea[disabled] { background: var(--color-surface-muted); color: var(--color-ink-muted); cursor: not-allowed; }
+.inp[aria-invalid="true"] { border-color: var(--color-accent); box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-accent) 25%, transparent); }
+.tarea { min-height: 110px; resize: vertical; line-height: 1.5; }
+
+.sel {
+  appearance: none; -webkit-appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--color-ink-muted) 50%), linear-gradient(135deg, var(--color-ink-muted) 50%, transparent 50%);
+  background-position: calc(100% - 18px) 52%, calc(100% - 13px) 52%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 36px;
+}
+
+.inp-with-icon { position: relative; }
+.inp-with-icon .ico { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--color-ink-muted); pointer-events: none; }
+.inp-with-icon .inp { padding-left: 42px; }
+
+.checkbox-row, .radio-row { display: flex; align-items: center; gap: 10px; font-family: var(--font-ui); font-size: 14px; cursor: pointer; }
+.chk, .rdo { width: 18px; height: 18px; border: 1px solid var(--color-border); background: var(--color-surface); position: relative; cursor: pointer; appearance: none; -webkit-appearance: none; }
+.chk { border-radius: 4px; }
+.rdo { border-radius: 50%; }
+.chk:checked, .rdo:checked { background: var(--color-brand); border-color: var(--color-brand); }
+.chk:checked::after { content: ""; position: absolute; inset: 2px 3px; border: solid var(--color-brand-contrast); border-width: 0 2px 2px 0; transform: rotate(45deg) translate(-1px, -2px); }
+.rdo:checked::after { content: ""; position: absolute; inset: 4px; border-radius: 50%; background: var(--color-brand-contrast); }
+
+/* ─── BUTTONS ──────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 12px 20px; min-height: 44px;
+  font-family: var(--font-ui); font-size: 14px; font-weight: 500; letter-spacing: 0.01em;
+  border-radius: var(--radius-button); border: 1px solid transparent; cursor: pointer;
+  transition: transform var(--dur-fast), background var(--dur-fast), border-color var(--dur-fast), color var(--dur-fast), box-shadow var(--dur-fast);
+  text-decoration: none;
+}
+.btn:active { transform: translateY(0.5px); }
+.btn-primary   { background: var(--color-ink); color: var(--color-surface); }
+.btn-primary:hover { background: var(--color-brand); }
+.btn-secondary { background: var(--color-surface); color: var(--color-ink); border-color: var(--color-border); }
+.btn-secondary:hover { border-color: var(--color-ink); }
+.btn-ghost     { background: transparent; color: var(--color-ink); }
+.btn-ghost:hover { background: var(--color-surface-muted); }
+.btn-accent    { background: var(--color-accent); color: var(--color-brand-contrast); }
+.btn-accent:hover { background: var(--color-accent-800, oklch(0.40 0.13 25)); }
+.btn-sm { padding: 8px 14px; min-height: 36px; font-size: 13px; }
+.btn-lg { padding: 16px 28px; min-height: 52px; font-size: 15px; }
+
+/* ─── CARDS (dive-site + course + photo-led) ──────────────────────────── */
+.components-grid { display: grid; gap: 28px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+
+.ds-card {
+  border: 1px solid var(--color-border); border-radius: var(--radius-card);
+  background: var(--color-surface); overflow: hidden;
+  transition: box-shadow var(--dur-med), transform var(--dur-med);
+  display: flex; flex-direction: column;
+}
+.ds-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+.ds-card .img { aspect-ratio: 4/3; background: var(--color-surface-muted) center/cover no-repeat; position: relative; }
+.ds-card .img .tag {
+  position: absolute; top: 12px; left: 12px;
+  font-family: var(--font-ui); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 6px 10px; border-radius: var(--radius-pill);
+  background: color-mix(in oklch, var(--color-deep-ink) 85%, transparent);
+  color: oklch(0.98 0.01 85);
+  backdrop-filter: blur(4px);
+}
+.ds-card .body { padding: 20px; display: grid; gap: 10px; flex: 1; }
+.ds-card h4 { font-family: var(--font-display); font-size: 22px; letter-spacing: -0.01em; font-weight: 500; }
+.ds-card .stats {
+  display: flex; gap: 18px; flex-wrap: wrap;
+  margin-top: 6px; padding-top: 12px; border-top: 1px dashed var(--color-border);
+  font-family: var(--font-ui); font-size: 12px;
+}
+.ds-card .stats b { display: block; font-size: 15px; letter-spacing: -0.01em; font-weight: 600; color: var(--color-ink); font-family: var(--font-display); }
+.ds-card .stats span { color: var(--color-ink-muted); letter-spacing: 0.06em; text-transform: uppercase; font-size: 10px; }
+
+.course-card {
+  border: 1px solid var(--color-border); border-radius: var(--radius-card);
+  background: var(--color-surface); overflow: hidden;
+  padding: 24px; display: grid; gap: 14px;
+  position: relative;
+}
+.course-card::before {
+  content: ""; position: absolute; left: 0; top: 24px; bottom: 24px; width: 3px;
+  background: var(--color-accent);
+  transform: scaleY(0.3); transform-origin: top;
+  transition: transform var(--dur-med) var(--ease-rise);
+}
+.course-card:hover::before { transform: scaleY(1); }
+.course-card .lvl { font-family: var(--font-ui); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent); font-weight: 600; }
+.course-card h4 { font-size: 26px; letter-spacing: -0.015em; font-weight: 500; font-family: var(--font-display); }
+.course-card p { color: var(--color-ink-muted); font-size: 14.5px; margin: 0; }
+.course-card .specs {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 8px;
+  font-family: var(--font-ui); font-size: 12px;
+}
+.course-card .specs b { display: block; font-family: var(--font-display); font-size: 17px; font-weight: 500; }
+.course-card .specs span { color: var(--color-ink-muted); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+.photo-card {
+  border-radius: var(--radius-card); overflow: hidden; position: relative;
+  aspect-ratio: 4/5; background: var(--color-ink);
+}
+.photo-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-slow) var(--ease-swim); }
+.photo-card:hover img { transform: scale(1.04); }
+.photo-card .overlay {
+  position: absolute; inset: auto 0 0 0; padding: 20px;
+  color: oklch(0.98 0.01 85);
+  background: linear-gradient(180deg, transparent 0%, oklch(0.08 0.03 245 / 0.85) 100%);
+}
+.photo-card .overlay h4 { color: inherit; font-size: 22px; font-family: var(--font-display); font-weight: 500; letter-spacing: -0.01em; }
+.photo-card .overlay small { font-family: var(--font-ui); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.75; }
+
+/* ─── BADGES ───────────────────────────────────────────────────────────── */
+.badges-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
+.bdg {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-ui); font-size: 11px; font-weight: 500; letter-spacing: 0.06em;
+  padding: 5px 10px; border-radius: var(--radius-pill);
+  text-transform: uppercase;
+}
+.bdg.cat { background: var(--color-surface-muted); color: var(--color-ink); border: 1px solid var(--color-border); }
+.bdg.cert { background: color-mix(in oklch, var(--color-brand) 14%, var(--color-surface)); color: var(--color-brand); border: 1px solid color-mix(in oklch, var(--color-brand) 30%, transparent); }
+.bdg.diff { background: color-mix(in oklch, var(--color-accent) 14%, var(--color-surface)); color: var(--color-accent); border: 1px solid color-mix(in oklch, var(--color-accent) 30%, transparent); }
+.bdg.depth { background: var(--color-ink); color: var(--color-surface); font-family: var(--font-mono); text-transform: none; letter-spacing: 0.02em; }
+.bdg.depth::before { content: "▾"; margin-right: 2px; opacity: 0.7; }
+.bdg.warm { background: color-mix(in oklch, var(--color-accent-warm) 30%, var(--color-surface)); color: oklch(0.30 0.07 72); border: 1px solid color-mix(in oklch, var(--color-accent-warm) 50%, transparent); }
+
+/* ─── DARK SURFACE (dive-site page preview) ────────────────────────────── */
+.dark-surface {
+  background: var(--color-deep-ink); color: oklch(0.98 0.01 85);
+  padding: 88px 0;
+  position: relative; overflow: hidden;
+  border-top: 0;
+}
+.dark-surface::before {
+  content: ""; position: absolute; inset: 0;
+  background:
+    radial-gradient(60% 60% at 50% 0%, oklch(0.52 0.11 235 / 0.18), transparent 70%),
+    radial-gradient(40% 40% at 90% 80%, oklch(0.55 0.18 25 / 0.10), transparent 70%);
+  pointer-events: none;
+}
+.dark-surface h2 { color: oklch(0.98 0.01 85); }
+.dark-surface .section-eyebrow { color: oklch(0.98 0.01 85 / 0.65); }
+.dark-surface .section-eyebrow::before { background: oklch(0.98 0.01 85 / 0.55); }
+.dark-surface .section-lead { color: oklch(0.98 0.01 85 / 0.7); }
+
+.dark-card {
+  background: var(--color-deep-surface); border: 1px solid var(--color-deep-border);
+  border-radius: var(--radius-card); overflow: hidden;
+  color: oklch(0.98 0.01 85);
+}
+.dark-card .img { aspect-ratio: 16/9; background: center/cover no-repeat; }
+.dark-card .body { padding: 24px; }
+.dark-card h4 { color: oklch(0.98 0.01 85); font-family: var(--font-display); font-size: 24px; font-weight: 500; letter-spacing: -0.01em; }
+.dark-card p { color: oklch(0.98 0.01 85 / 0.72); font-size: 14.5px; }
+.dark-card .specs { display: grid; gap: 8px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--color-deep-border); font-family: var(--font-ui); font-size: 12px; }
+.dark-card .specs .row { display: flex; justify-content: space-between; }
+.dark-card .specs .row span { color: oklch(0.98 0.01 85 / 0.55); letter-spacing: 0.06em; text-transform: uppercase; font-size: 11px; }
+.dark-card .specs .row b { color: oklch(0.98 0.01 85); font-weight: 500; font-family: var(--font-display); }
+
+/* ─── BUBBLE MOTIF (moments) ───────────────────────────────────────────── */
+.bubble-strip {
+  display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  margin-top: 24px;
+}
+.bubble-card {
+  border: 1px solid var(--color-border); border-radius: var(--radius-lg);
+  padding: 24px; background: var(--color-surface);
+  position: relative; overflow: hidden;
+}
+.bubble-card h4 { font-size: 17px; margin-bottom: 6px; font-weight: 500; letter-spacing: -0.005em; font-family: var(--font-display); }
+.bubble-card p { font-size: 13px; color: var(--color-ink-muted); margin: 0; }
+
+/* rising bubble loader */
+.bubble-loader { height: 48px; position: relative; margin: 16px 0 4px; }
+.bubble-loader i {
+  position: absolute; bottom: 0; width: 10px; height: 10px; border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, var(--color-brand), oklch(from var(--color-brand) l c h / 0.25) 65%, transparent 80%);
+  animation: risebob 2.4s infinite ease-in;
+  box-shadow: inset 0 0 0 1px oklch(from var(--color-brand) l c h / 0.4);
+  opacity: 0;
+}
+.bubble-loader i:nth-child(1) { left: 22%; animation-delay: 0s;  }
+.bubble-loader i:nth-child(2) { left: 45%; animation-delay: 0.6s; width: 7px; height: 7px; }
+.bubble-loader i:nth-child(3) { left: 60%; animation-delay: 1.1s; width: 12px; height: 12px; }
+.bubble-loader i:nth-child(4) { left: 76%; animation-delay: 1.6s; width: 6px; height: 6px; }
+@keyframes risebob {
+  0%   { transform: translateY(0) scale(0.8); opacity: 0; }
+  15%  { opacity: 0.95; }
+  80%  { opacity: 0.6; }
+  100% { transform: translateY(-44px) scale(1.15); opacity: 0; }
+}
+
+/* bubble section divider */
+.bubble-divider { height: 28px; position: relative; margin: 0; }
+.bubble-divider svg { position: absolute; inset: 0; width: 100%; height: 100%; color: var(--color-border); }
+
+/* magnified hover (mask lens) */
+.lens {
+  position: relative; overflow: hidden; border-radius: var(--radius-lg); aspect-ratio: 4/3;
+  background: center/cover no-repeat;
+}
+.lens::after {
+  content: ""; position: absolute; width: 140px; height: 140px; border-radius: 50%;
+  left: var(--x, 50%); top: var(--y, 50%); transform: translate(-50%, -50%) scale(0);
+  background: inherit; background-size: 140%;
+  background-position: var(--bgx, 50%) var(--bgy, 50%);
+  box-shadow: 0 0 0 2px oklch(1 0 0 / 0.4), 0 10px 30px -5px oklch(0 0 0 / 0.3);
+  transition: transform var(--dur-med) var(--ease-rise);
+  pointer-events: none;
+}
+.lens:hover::after { transform: translate(-50%, -50%) scale(1); }
+
+/* ─── TOKENS CODE ──────────────────────────────────────────────────────── */
+.code-wrap {
+  background: var(--color-deep-ink); color: oklch(0.96 0.01 85);
+  border-radius: var(--radius-lg); overflow: hidden;
+  border: 1px solid var(--color-deep-border);
+}
+.code-wrap header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 20px; border-bottom: 1px solid var(--color-deep-border);
+  font-family: var(--font-ui); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+}
+.code-wrap header span { color: oklch(0.98 0.01 85 / 0.6); }
+.code-wrap header button {
+  background: transparent; color: oklch(0.98 0.01 85 / 0.85);
+  border: 1px solid oklch(0.98 0.01 85 / 0.25);
+  border-radius: var(--radius-sm); padding: 4px 10px; font-size: 11px; cursor: pointer;
+  font-family: var(--font-ui); letter-spacing: 0.08em;
+}
+.code-wrap header button:hover { border-color: var(--color-accent); color: var(--color-accent); }
+.code-wrap pre {
+  margin: 0; padding: 20px; overflow-x: auto;
+  font-size: 12.5px; line-height: 1.6; font-family: var(--font-mono);
+  color: oklch(0.9 0.02 85);
+}
+.code-wrap pre .c { color: oklch(0.65 0.03 85); font-style: italic; }
+.code-wrap pre .k { color: oklch(0.78 0.14 25); }
+.code-wrap pre .v { color: oklch(0.80 0.12 85); }
+.code-wrap pre .p { color: oklch(0.75 0.10 195); }
+
+/* ─── FOOTER ───────────────────────────────────────────────────────────── */
+.foot {
+  padding: 48px 24px; text-align: center;
+  font-family: var(--font-ui); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--color-ink-muted);
+  border-top: 1px solid var(--color-border);
+}
+.foot .dots { letter-spacing: 0.4em; margin-bottom: 8px; color: var(--color-accent); }
+
+/* ─── TWEAKS PANEL ─────────────────────────────────────────────────────── */
+.tweaks {
+  position: fixed; right: 24px; bottom: 24px;
+  z-index: 100;
+  background: oklch(from var(--color-ink) l c h / 0.96);
+  color: oklch(0.98 0.01 85);
+  border-radius: 16px;
+  padding: 16px 18px;
+  font-family: var(--font-ui); font-size: 13px;
+  backdrop-filter: blur(14px) saturate(1.4);
+  box-shadow: 0 20px 60px -20px oklch(0 0 0 / 0.5);
+  min-width: 260px;
+  transform: translateY(8px); opacity: 0; pointer-events: none;
+  transition: opacity var(--dur-med), transform var(--dur-med);
+}
+.tweaks[data-open="true"] { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.tweaks header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.7; }
+.tweaks header button { background: none; border: 0; color: inherit; cursor: pointer; font-size: 16px; line-height: 1; }
+.tweaks .group { margin-bottom: 14px; }
+.tweaks .group:last-child { margin-bottom: 0; }
+.tweaks .group > label { display: block; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.55; margin-bottom: 8px; }
+.tweaks .seg {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 3px;
+  background: oklch(0.98 0.01 85 / 0.08); border-radius: 8px;
+}
+.tweaks .seg button { background: transparent; color: oklch(0.98 0.01 85 / 0.7); border: 0; padding: 7px; border-radius: 6px; cursor: pointer; font-family: inherit; font-size: 12px; letter-spacing: 0.04em; transition: background var(--dur-fast), color var(--dur-fast); }
+.tweaks .seg button[aria-pressed="true"] { background: var(--color-accent); color: oklch(0.98 0.01 85); }
+.tweaks .seg.two { grid-template-columns: repeat(2, 1fr); }
+.tweaks .toggle-row { display: flex; justify-content: space-between; align-items: center; }
+.tweaks .toggle-row label { font-size: 13px; opacity: 0.85; }
+
+.tweaks-fab {
+  position: fixed; right: 24px; bottom: 24px; z-index: 99;
+  width: 52px; height: 52px; border-radius: 50%;
+  background: var(--color-ink); color: var(--color-surface);
+  border: 0; cursor: pointer;
+  box-shadow: 0 14px 36px -10px oklch(0 0 0 / 0.35);
+  display: none;
+  align-items: center; justify-content: center;
+  font-size: 18px;
+}
+.tweaks-fab.show { display: flex; }
+
+/* Motion toggle */
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0ms !important; transition-duration: 0ms !important; }
+}
+:root[data-motion="off"] .bubble-canvas,
+:root[data-motion="off"] .bubble-loader i { animation: none; opacity: 0; }
+:root[data-motion="off"] * { transition: none !important; }
+
+/* Notes format */
+.system-memo {
+  background: var(--color-surface);
+  border-left: 3px solid var(--color-accent);
+  padding: 20px 24px;
+  margin-top: 24px;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+.system-memo p { color: var(--color-ink-muted); margin: 0 0 10px; font-size: 15px; }
+.system-memo p:last-child { margin: 0; }
+.system-memo b { color: var(--color-ink); font-weight: 600; }
+</style>
+</head>
+
+<body data-palette="A" data-type="serif">
+<script>
+  // Apply stored palette/type on root before paint to avoid flash.
+  try {
+    const p = localStorage.getItem('mihuric-palette') || 'A';
+    const t = localStorage.getItem('mihuric-type') || 'serif';
+    const m = localStorage.getItem('mihuric-motion') || 'on';
+    document.body.setAttribute('data-palette', p);
+    document.body.setAttribute('data-type', t);
+    document.documentElement.setAttribute('data-palette', p);
+    document.documentElement.setAttribute('data-type', t);
+    document.documentElement.setAttribute('data-motion', m);
+  } catch(e) {}
+</script>
+
+<!-- ──────────── SITE HEADER (mock) ──────────── -->
+<header class="sitehead">
+  <div class="row">
+    <div class="mark">
+      <div class="roundel">M</div>
+      <div>
+        <div class="name">Mihurić — Design System</div>
+        <div class="sub">v0.1 · style guide</div>
+      </div>
+    </div>
+    <div class="meta">PADI 5★ IDC Resort · Selce, Croatia · since 1995</div>
+  </div>
+</header>
+
+<!-- ──────────── COVER ──────────── -->
+<section class="cover" data-screen-label="Cover">
+  <div class="bg"></div>
+  <canvas class="bubble-canvas" id="bubble-canvas" aria-hidden="true"></canvas>
+  <div class="inner">
+    <div class="eyebrow">
+      <span><span class="dot"></span>Design System · v0.1</span>
+      <span>Northern Adriatic · Kvarner Gulf</span>
+      <span>April 2026</span>
+    </div>
+    <h1>The bubble, <em>made system.</em></h1>
+    <p class="deck">A design language for Diving Center Mihurić — rooted in the real colours of the Kvarner Adriatic, built on a bubble motif, and ready to hand off as CSS variables.</p>
+    <div class="meta-row">
+      <div><span>Palette directions</span><b>3 side-by-side</b></div>
+      <div><span>Type pairings</span><b>Serif · Sans</b></div>
+      <div><span>Surface modes</span><b>Limestone · Deep</b></div>
+      <div><span>Tokens exported</span><b>globals.css ready</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────── DESIGNER NOTES ──────────── -->
+<section class="section notes page" data-screen-label="Notes">
+  <div class="section-eyebrow">Reading notes</div>
+  <h2 class="section-title">What I decided, and why.</h2>
+  <p class="section-lead">The brief asked for a palette grounded in the real water — not Caribbean teal, and not a generic resort. Mihurić's photos deliver an uncommonly specific set of colours. Everything below is anchored in them.</p>
+
+  <div class="grid">
+    <div class="card">
+      <small>Method</small>
+      <h3>Photos first, then tokens.</h3>
+      <p>Three palette directions. Each pulls colours directly from the Mihurić photo library (silhouette, wreck, coral wall, boat-briefing, harbour). No swatches invented. You pick one.</p>
+    </div>
+    <div class="card">
+      <small>Heritage</small>
+      <h3>The logo yellow gets a seat.</h3>
+      <p>The 1995 roundel is a memorable mark and its yellow is doing identity work. Gorgonian red is the new primary accent, but yellow is preserved as a small, warm micro-accent — quotes, indicators, heritage moments.</p>
+    </div>
+    <div class="card">
+      <small>Motion</small>
+      <h3>Bubbles, sparingly.</h3>
+      <p>Homepage hero gets the bubble field. Elsewhere, bubbles are a one-moment-per-surface grace note: a loader, a section divider, a cursor-following lens. An "aha, neat," not "wow, bubbles everywhere."</p>
+    </div>
+    <div class="card">
+      <small>Modes</small>
+      <h3>Light is home, dark is descent.</h3>
+      <p>The site is light-biased — editorial, Kvarner limestone. Dive-site detail pages and immersive hero sections flip to a near-black navy that's consistent with the photographer's working palette.</p>
+    </div>
+  </div>
+
+  <div class="system-memo">
+    <p><b>Manager, if I had to pick one:</b> Palette A (Adriatic Deep). It reads closest to the photographer's eye — the dark-to-light shaft of a silhouette dive — and leaves surface-colour warmth to come from photography rather than paint. But B makes the family-holiday register warmer and C keeps the 1995 logo louder. Flip them in the Tweaks panel.</p>
+    <p><b>Tokens match the existing contract.</b> The <code>globals.css</code> block at the bottom of this page uses the names already declared in the repo — <code>--color-brand</code>, <code>--color-surface</code>, <code>--font-display</code>, <code>--radius-card</code>, <code>--spacing-section</code>. Nothing renamed. Drop-in.</p>
+  </div>
+</section>
+
+<!-- ──────────── PALETTES ──────────── -->
+<section class="section page" data-screen-label="Palettes">
+  <div class="section-eyebrow">01 · Colour</div>
+  <h2 class="section-title">Three directions, all grounded in the water.</h2>
+  <p class="section-lead">Each strip shows the six working tokens: <em>brand</em>, <em>secondary</em>, <em>accent</em>, <em>accent-warm</em> (logo yellow), <em>ink</em>, <em>surface</em>. Hover a chip for the oklch value. Tap <b>Choose</b> to preview the full site in that palette.</p>
+
+  <!-- STRIP A -->
+  <div class="strip" data-palette-choice="A">
+    <header>
+      <div class="letter A">A</div>
+      <div>
+        <h3>Adriatic Deep</h3>
+        <div class="sub">Silhouette &amp; wreck register — photographer's default</div>
+      </div>
+      <button class="choose" data-choose="A">Choose A</button>
+      <div class="anchor">Anchors: <em>15-diver-silhouette-sun-column</em> · <em>17-wreck-mast-with-diver</em> · <em>12-bubble-ascent</em></div>
+    </header>
+    <div class="swatches">
+      <div class="swatch"><div class="chip" style="background:oklch(0.52 0.11 235); --_on:white;"><span>brand / sunshaft blue</span></div><div class="meta"><b>brand</b><span>.52 .11 235</span></div></div>
+      <div class="swatch"><div class="chip" style="background:oklch(0.30 0.06 240); --_on:white;"><span>secondary / deep adriatic</span></div><div class="meta"><b>secondary</b><span>.30 .06 240</span></div></div>
+      <div class="swatch"><div class="chip" style="background:oklch(0.55 0.18 25); --_on:white;"><span>accent / gorgonian red</span></div><div class="meta"><b>accent</b><span>.55 .18 25</span></div></div>
+      <div class="swatch"><div class="chip" style="background:oklch(0.78 0.14 85); --_on:#1a1200;"><span>accent-warm / logo yellow</span></div><div class="meta"><b>accent-warm</b><span>.78 .14 85</span></div></div>
+      <div class="swatch"><div class="chip" style="background:oklch(0.16 0.03 245); --_on:white;"><span>ink</span></div><div class="meta"><b>ink</b><span>.16 .03 245</span></div></div>
+      <div class="swatch"><div class="chip" style="background:oklch(0.975 0.008 85); --_on:#1a1200; border-top: 1px solid var(--color-border);"><span>surface / limestone</span></div><div class="meta"><b>surface</b><span>.975 .008 85</span></div></div>
+    </div>
+  </div>
+
+  <!-- STRIP B -->
+  <div class="strip" data-palette-choice="B">
+    <header>
+      <div class="letter B">B</div>
+      <div>
+        <h3>Adriatic Bright</h3>
+        <div class="sub">Shallow posidonia, family-trip warmth</div>
+      </div>
+      <button class="choose" data-choose="B">Choose B</button>
+      <div class="anchor">Anchors: <em>23-yellow-gorgonian-fans</em> · <em>09-split-over-under</em> · <em>19-diver-sunburst-ascent</em></div>
+    </header>
+    <div class="swatches">
+      <div class="swatch"><div class="chip" style="background:oklch(0.42 0.11 240); --_on:white;"><span>brand / mid adriatic</span></div><div class="meta"><b>brand</b><span>.42 .11 240</span></div></div>
+      <div class="swatch"><div class="chip" style="background:oklch(0.64 0.11 195); --_on:#001a18;"><span>secondary / posidonia</span></div><div class="meta"><b>secondary</b><span>.64 .11 195</span></div></div>
+      <div class="swatch"><div class="chip" style="background:oklch(0.55 0.18 25); --_on:white;"><span>accent / gorgonian red</span></div><div class="meta"><b>accent</b><span>.55 .18 25</span></div></div>
+      <div class="swatch"><div class="chip" style="background:oklch(0.80 0.13 85); --_on:#1a1200;"><span>accent-warm / logo yellow</span></div><div class="meta"><b>accent-warm</b><span>.80 .13 85</span></div></div>
+      <div class="swatch"><div class="chip" style="background:oklch(0.22 0.04 245); --_on:white;"><span>ink</span></div><div class="meta"><b>ink</b><span>.22 .04 245</span></div></div>
+      <div class="swatch"><div class="chip" style="background:oklch(0.985 0.006 85); --_on:#1a1200; border-top: 1px solid var(--color-border);"><span>surface / bleached limestone</span></div><div class="meta"><b>surface</b><span>.985 .006 85</span></div></div>
+    </div>
+  </div>
+
+  <!-- STRIP C -->
+  <div class="strip" data-palette-choice="C">
+    <header>
+      <div class="letter C">C</div>
+      <div>
+        <h3>Surfaced</h3>
+        <div class="sub">Limestone-led, logo-yellow as accent, demoted red</div>
+      </div>
+      <button class="choose" data-choose="C">Choose C</button>
+      <div class="anchor">Anchors: <em>01-selce-harbor</em> · <em>05-boat-briefing</em> · <em>27-aerial-boat</em> · logo yellow</div>
+    </header>
+    <div class="swatches">
+      <div class="swatch"><div class="chip" style="background:oklch(0.28 0.06 240); --_on:white;"><span>brand / deep adriatic</span></div><div class="meta"><b>brand</b><span>.28 .06 240</span></div></div>
+      <div class="swatch"><div class="chip" style="background:oklch(0.50 0.10 235); --_on:white;"><span>secondary / sunshaft</span></div><div class="meta"><b>secondary</b><span>.50 .10 235</span></div></div>
+      <div class="swatch"><div class="chip" style="background:oklch(0.80 0.15 85); --_on:#1a1200;"><span>accent / logo yellow</span></div><div class="meta"><b>accent</b><span>.80 .15 85</span></div></div>
+      <div class="swatch"><div class="chip" style="background:oklch(0.55 0.18 25); --_on:white;"><span>accent-warm / gorgonian</span></div><div class="meta"><b>accent-warm</b><span>.55 .18 25</span></div></div>
+      <div class="swatch"><div class="chip" style="background:oklch(0.18 0.02 85); --_on:white;"><span>ink / warm black</span></div><div class="meta"><b>ink</b><span>.18 .02 85</span></div></div>
+      <div class="swatch"><div class="chip" style="background:oklch(0.97 0.01 85); --_on:#1a1200; border-top: 1px solid var(--color-border);"><span>surface / limestone</span></div><div class="meta"><b>surface</b><span>.97 .01 85</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────── TONAL RAMPS ──────────── -->
+<section class="section page" data-screen-label="Ramps">
+  <div class="section-eyebrow">01b · Tonal ramps</div>
+  <h2 class="section-title">50 → 900, for the chosen palette.</h2>
+  <p class="section-lead">Each of the six tokens expands to a 10-step ramp. Used for hover states, borders, text hierarchy, backgrounds, and chart/data moments on the eventual Weather and dive-site pages. Values reflect the palette selected above.</p>
+
+  <div class="ramps" id="ramps">
+    <!-- ramps injected by JS -->
+  </div>
+</section>
+
+<!-- ──────────── TYPOGRAPHY ──────────── -->
+<section class="section page" data-screen-label="Typography">
+  <div class="section-eyebrow">02 · Typography</div>
+  <h2 class="section-title">Two pairings. Editorial, not SaaS.</h2>
+  <p class="section-lead">The brief calls for serif-leaning, editorial-dense pages — not tech-startup geometric. I'm evaluating one warm-serif pairing and one humanist-sans pairing. Both are variable fonts; both are Google-hosted; both render real headlines below.</p>
+
+  <div class="type-compare">
+    <div class="type-card" data-variant="serif">
+      <header>
+        <div class="specname">Fraunces + Source Serif 4</div>
+        <div class="recipe">Serif display · serif body</div>
+      </header>
+      <div class="display">Descending the <em>Peltastis</em>, bow-first, at thirty-one metres.</div>
+      <p class="body">The wreck is a sixty-metre Greek transport that went down in 1968 on a still October night. Today she lies upright on sand, her masts festooned with the Adriatic's knotted rope — yellow sponges, red gorgonians, a permanent colony of bogue.</p>
+      <div class="heading">What to bring</div>
+      <p class="body">AOWD certification, a dive light, and a buddy who can handle slight current at the stern. The mast column is the best photo line; save air for it.</p>
+      <p class="body">Min. depth 8 m / 26 feet. Max. depth 31 m / 100 feet. Visibility typically 15–25 m. Water 14–24°C seasonal.</p>
+      <div class="meta">
+        <div><b>Fraunces</b><span>ss01 · SOFT 40 · opsz 144</span></div>
+        <div><b>Source Serif 4</b><span>opsz 8–60 · 400/600</span></div>
+        <div><b>Used for</b><span>display · body</span></div>
+      </div>
+    </div>
+
+    <div class="type-card" data-variant="sans">
+      <header>
+        <div class="specname">Bricolage Grotesque + IBM Plex Sans</div>
+        <div class="recipe">Geometric-ish display · humanist sans body</div>
+      </header>
+      <div class="display">Descending the <em>Peltastis</em>, bow-first, at thirty-one metres.</div>
+      <p class="body">The wreck is a sixty-metre Greek transport that went down in 1968 on a still October night. Today she lies upright on sand, her masts festooned with the Adriatic's knotted rope — yellow sponges, red gorgonians, a permanent colony of bogue.</p>
+      <div class="heading">What to bring</div>
+      <p class="body">AOWD certification, a dive light, and a buddy who can handle slight current at the stern. The mast column is the best photo line; save air for it.</p>
+      <p class="body">Min. depth 8 m / 26 feet. Max. depth 31 m / 100 feet. Visibility typically 15–25 m. Water 14–24°C seasonal.</p>
+      <div class="meta">
+        <div><b>Bricolage Grotesque</b><span>variable · 500</span></div>
+        <div><b>IBM Plex Sans</b><span>variable · 400/600</span></div>
+        <div><b>Used for</b><span>display · body</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="typescale" style="margin-top: 40px;">
+    <div class="ts-row"><div class="ts-label">Display · 128 / 0.98</div><div class="ts-sample" style="font-size:96px;">Adriatic</div></div>
+    <div class="ts-row"><div class="ts-label">H1 · 64 / 1.02</div><div class="ts-sample" style="font-size:56px;">Shipwreck Peltastis</div></div>
+    <div class="ts-row"><div class="ts-label">H2 · 40 / 1.05</div><div class="ts-sample" style="font-size:40px;">Recreational courses</div></div>
+    <div class="ts-row"><div class="ts-label">H3 · 28 / 1.15</div><div class="ts-sample" style="font-size:28px;">What we offer</div></div>
+    <div class="ts-row"><div class="ts-label">H4 · 22 / 1.2</div><div class="ts-sample" style="font-size:22px;">Reef Katedrala</div></div>
+    <div class="ts-row"><div class="ts-label">Body · 17 / 1.6</div><div style="font-family: var(--font-body); font-size: 17px; line-height: 1.6; max-width: 60ch;">Ever since we've first opened our doors in 1995 we've been committed to quality diver training and to introducing our guests to our chunk of the underwater world — thirty named dive sites, from the house reef to the wrecks.</div></div>
+    <div class="ts-row"><div class="ts-label">Small · 13 / 1.5</div><div style="font-family: var(--font-ui); font-size: 13px; color: var(--color-ink-muted);">PADI 5★ IDC Resort · Selce, Croatia · Šetalište Ivana Jeličića bb · info@mihuric.hr</div></div>
+    <div class="ts-row"><div class="ts-label">Mono · 12</div><div style="font-family: var(--font-mono); font-size: 12px;">GPS 45.15246 · 14.71947 &nbsp; DEPTH 8–31 m &nbsp; CERT AOWD</div></div>
+  </div>
+</section>
+
+<!-- ──────────── SPACING / RADIUS / SHADOW ──────────── -->
+<section class="section page" style="background: var(--color-surface-muted);" data-screen-label="Scales">
+  <div class="section-eyebrow">03 · Spacing · Radius · Shadow</div>
+  <h2 class="section-title">The rhythm is 4 · 8 · 16 · 32.</h2>
+  <p class="section-lead">A single 4-unit base. Sections breathe at 80. Dive-site cards use 12px radius; buttons 8px; pills stay full-round for sparing, decisive use. Shadows stay flat or near-flat — photography is the texture.</p>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+    <div>
+      <h3 style="font-size: 17px; margin-bottom: 16px; font-family: var(--font-display); font-weight: 500;">Spacing scale</h3>
+      <div class="space-list">
+        <div class="space-row"><div class="sk">space-1</div><div class="sv">4px</div><div class="bar" style="width: 4px;"></div></div>
+        <div class="space-row"><div class="sk">space-2</div><div class="sv">8px</div><div class="bar" style="width: 8px;"></div></div>
+        <div class="space-row"><div class="sk">space-3</div><div class="sv">12px</div><div class="bar" style="width: 12px;"></div></div>
+        <div class="space-row"><div class="sk">space-4</div><div class="sv">16px</div><div class="bar" style="width: 16px;"></div></div>
+        <div class="space-row"><div class="sk">space-6</div><div class="sv">24px · gutter</div><div class="bar" style="width: 24px;"></div></div>
+        <div class="space-row"><div class="sk">space-8</div><div class="sv">32px</div><div class="bar" style="width: 32px;"></div></div>
+        <div class="space-row"><div class="sk">space-12</div><div class="sv">48px</div><div class="bar" style="width: 48px;"></div></div>
+        <div class="space-row"><div class="sk">space-16</div><div class="sv">64px</div><div class="bar" style="width: 64px;"></div></div>
+        <div class="space-row"><div class="sk">space-20</div><div class="sv">80px · section</div><div class="bar" style="width: 80px;"></div></div>
+        <div class="space-row"><div class="sk">space-24</div><div class="sv">96px</div><div class="bar" style="width: 96px;"></div></div>
+        <div class="space-row"><div class="sk">space-32</div><div class="sv">128px · cover</div><div class="bar" style="width: 128px;"></div></div>
+      </div>
+    </div>
+    <div>
+      <h3 style="font-size: 17px; margin-bottom: 16px; font-family: var(--font-display); font-weight: 500;">Radius</h3>
+      <div class="r-shadow">
+        <div class="r-card"><div class="sample" style="border-radius: 2px;"></div><div class="k">radius-xs · 2px</div></div>
+        <div class="r-card"><div class="sample" style="border-radius: 4px;"></div><div class="k">radius-sm · 4px · chips, keys</div></div>
+        <div class="r-card"><div class="sample" style="border-radius: 8px;"></div><div class="k">radius-md · 8px · buttons, inputs</div></div>
+        <div class="r-card"><div class="sample" style="border-radius: 12px;"></div><div class="k">radius-card · 12px · dive-site</div></div>
+        <div class="r-card"><div class="sample" style="border-radius: 20px;"></div><div class="k">radius-xl · 20px · hero cards</div></div>
+        <div class="r-card"><div class="sample" style="border-radius: 999px; height: 40px;"></div><div class="k">radius-pill · 999 · tags</div></div>
+      </div>
+
+      <h3 style="font-size: 17px; margin: 32px 0 16px; font-family: var(--font-display); font-weight: 500;">Shadow</h3>
+      <div class="r-shadow">
+        <div class="r-card"><div class="sample sh" style="box-shadow: var(--shadow-xs); border-radius: 8px;"></div><div class="k">shadow-xs · hairline</div></div>
+        <div class="r-card"><div class="sample sh" style="box-shadow: var(--shadow-card); border-radius: 8px;"></div><div class="k">shadow-card · default</div></div>
+        <div class="r-card"><div class="sample sh" style="box-shadow: var(--shadow-md); border-radius: 8px;"></div><div class="k">shadow-md · elevated</div></div>
+        <div class="r-card"><div class="sample sh" style="box-shadow: var(--shadow-hover); border-radius: 8px;"></div><div class="k">shadow-hover · card:hover</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────── INPUTS ──────────── -->
+<section class="section page" data-screen-label="Inputs">
+  <div class="section-eyebrow">04 · Inputs</div>
+  <h2 class="section-title">Enough for an inquiry form. Nothing more.</h2>
+  <p class="section-lead">The live site has no booking engine. The inputs system is scoped for a modest contact form: name, email, dates, message, course interest, plus the occasional select and checkbox on filter UIs.</p>
+
+  <div class="inputs-grid">
+    <div class="inp-group">
+      <small class="state">Text · default → focus → disabled → invalid</small>
+      <label>Your name</label>
+      <input class="inp" placeholder="e.g. Nikola Fijan" value="Nikola Fijan">
+      <input class="inp" placeholder="Focused" autofocus style="margin-top:10px;" value="Nikola Fijan">
+      <input class="inp" placeholder="Disabled" disabled style="margin-top:10px;" value="Nikola Fijan">
+      <input class="inp" aria-invalid="true" placeholder="Invalid" style="margin-top:10px;" value="nikola@">
+      <div class="hint">Error: please enter a complete email address.</div>
+    </div>
+
+    <div class="inp-group">
+      <small class="state">With leading icon</small>
+      <label>Email</label>
+      <div class="inp-with-icon">
+        <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+        <input class="inp" type="email" placeholder="you@email.com">
+      </div>
+      <div class="hint">We'll only use this to reply. No lists, no newsletters.</div>
+    </div>
+
+    <div class="inp-group">
+      <small class="state">Select</small>
+      <label>I'm interested in</label>
+      <select class="sel">
+        <option>Discovery dive (first time)</option>
+        <option>Open Water course</option>
+        <option>Advanced Open Water</option>
+        <option>Guided dives (certified)</option>
+        <option>Technical diving</option>
+      </select>
+    </div>
+
+    <div class="inp-group">
+      <small class="state">Textarea</small>
+      <label>Tell us about your trip</label>
+      <textarea class="tarea" placeholder="Dates, group size, experience, anything else you'd like us to know..."></textarea>
+    </div>
+
+    <div class="inp-group">
+      <small class="state">Checkbox group</small>
+      <label>I've dived before at</label>
+      <label class="checkbox-row"><input type="checkbox" class="chk" checked> House reef</label>
+      <label class="checkbox-row" style="margin-top:8px;"><input type="checkbox" class="chk"> Shipwreck Peltastis</label>
+      <label class="checkbox-row" style="margin-top:8px;"><input type="checkbox" class="chk"> Reef Katedrala</label>
+      <label class="checkbox-row" style="margin-top:8px;"><input type="checkbox" class="chk"> Somewhere else in the Mediterranean</label>
+    </div>
+
+    <div class="inp-group">
+      <small class="state">Radio group</small>
+      <label>Dive experience</label>
+      <label class="radio-row"><input type="radio" name="r" class="rdo"> First time — never dived</label>
+      <label class="radio-row" style="margin-top:8px;"><input type="radio" name="r" class="rdo" checked> Open Water certified</label>
+      <label class="radio-row" style="margin-top:8px;"><input type="radio" name="r" class="rdo"> AOWD+ with 50+ logged dives</label>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────── BUTTONS + BADGES + CARDS ──────────── -->
+<section class="section page" data-screen-label="Components">
+  <div class="section-eyebrow">05 · Components</div>
+  <h2 class="section-title">Buttons, badges, cards.</h2>
+  <p class="section-lead">The three component families the templates will lean on hardest. Primary CTA is "Get in touch" or "Plan your dive" — never "Book now." The accent red is reserved for the <em>one</em> action per page that matters.</p>
+
+  <h3 style="font-size: 17px; margin: 20px 0 16px; font-family: var(--font-display); font-weight: 500;">Buttons</h3>
+  <div style="display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 24px; align-items: center;">
+    <button class="btn btn-primary">Plan your dive</button>
+    <button class="btn btn-accent">Get in touch</button>
+    <button class="btn btn-secondary">View dive sites</button>
+    <button class="btn btn-ghost">Read the story →</button>
+    <button class="btn btn-primary btn-sm">Small</button>
+    <button class="btn btn-primary btn-lg">Large CTA</button>
+  </div>
+
+  <h3 style="font-size: 17px; margin: 32px 0 16px; font-family: var(--font-display); font-weight: 500;">Badges</h3>
+  <div class="badges-row">
+    <span class="bdg cat">Wreck</span>
+    <span class="bdg cat">Reef</span>
+    <span class="bdg cat">Cave</span>
+    <span class="bdg cat">Wall</span>
+    <span class="bdg cat">House reef</span>
+  </div>
+  <div class="badges-row">
+    <span class="bdg cert">Discover Scuba</span>
+    <span class="bdg cert">Open Water</span>
+    <span class="bdg cert">Advanced OW</span>
+    <span class="bdg cert">Rescue</span>
+    <span class="bdg cert">Tec</span>
+  </div>
+  <div class="badges-row">
+    <span class="bdg diff">Easy</span>
+    <span class="bdg diff">Moderate</span>
+    <span class="bdg diff">Challenging</span>
+    <span class="bdg diff">Advanced</span>
+  </div>
+  <div class="badges-row">
+    <span class="bdg depth">8–31 m</span>
+    <span class="bdg depth">5–18 m</span>
+    <span class="bdg depth">40 m</span>
+    <span class="bdg warm">Since 1995</span>
+    <span class="bdg warm">Owner's favourite</span>
+  </div>
+
+  <h3 style="font-size: 17px; margin: 40px 0 16px; font-family: var(--font-display); font-weight: 500;">Cards</h3>
+  <div class="components-grid">
+    <article class="ds-card">
+      <div class="img" style="background-image: url('assets/hero-wreck.jpg');">
+        <div class="tag">Wreck · AOWD</div>
+      </div>
+      <div class="body">
+        <span class="bdg cat" style="align-self: start;">Wreck</span>
+        <h4>Shipwreck Peltastis</h4>
+        <p style="color: var(--color-ink-muted); font-size: 14.5px;">60-metre Greek transport, upright on sand, 1968. The mast column is the photograph.</p>
+        <div class="stats">
+          <div><b>8–31 m</b><span>Depth</span></div>
+          <div><b>15–25 m</b><span>Visibility</span></div>
+          <div><b>Boat</b><span>Entry</span></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="course-card">
+      <span class="lvl">Recreational · level 1</span>
+      <h4>Open Water Diver</h4>
+      <p>Five days, nine dives. Min. age 12. Max. depth 18 m / 60 ft. Includes equipment, materials, certification card.</p>
+      <div class="specs">
+        <div><b>5 days</b><span>Duration</span></div>
+        <div><b>9</b><span>Dives</span></div>
+        <div><b>18 m</b><span>Max depth</span></div>
+      </div>
+    </article>
+
+    <article class="photo-card">
+      <img src="assets/gorgonian.jpg" alt="Red gorgonian fan coral with sunburst">
+      <div class="overlay">
+        <small>Reef Katedrala · 28 m</small>
+        <h4>Red fan at depth.</h4>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ──────────── DARK SURFACE (descent) ──────────── -->
+<section class="dark-surface" data-screen-label="Dark surface preview">
+  <div class="page">
+    <div class="section-eyebrow">06 · Dark surface</div>
+    <h2 class="section-title">Light is home. Dark is descent.</h2>
+    <p class="section-lead">Dive-site detail pages flip to a near-black navy. Photography carries the colour; UI recedes. Same token names, different values — wired through <code>--color-deep-*</code> variants and ready for page templates.</p>
+
+    <div style="display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+      <div class="dark-card">
+        <div class="img" style="background-image: url('assets/hero-silhouette.jpg');"></div>
+        <div class="body">
+          <h4>Into the blue, Prvić tunnel.</h4>
+          <p>A shaft of sunlight drops through the tunnel's west mouth at mid-morning. Come in from the north, exit south. 14 m maximum.</p>
+          <div class="specs">
+            <div class="row"><span>Certification</span><b>Open Water</b></div>
+            <div class="row"><span>Depth</span><b>6 – 14 m</b></div>
+            <div class="row"><span>Visibility</span><b>20 m</b></div>
+            <div class="row"><span>Entry</span><b>Boat</b></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dark-card">
+        <div class="img" style="background-image: url('assets/bubbles.jpg');"></div>
+        <div class="body">
+          <h4>Bubble ascent, 24 m, offshore Selce.</h4>
+          <p>House-reef bubbles on the way up. Shot at f/8, 1/125, Nikonos III. The little ones always race the big ones.</p>
+          <div class="specs">
+            <div class="row"><span>Photographer</span><b>N. Fijan (owner)</b></div>
+            <div class="row"><span>Camera</span><b>Nikonos III</b></div>
+            <div class="row"><span>Depth at frame</span><b>24 m</b></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dark-card">
+        <div class="img" style="background-image: url('assets/hero-panoramic.jpg');"></div>
+        <div class="body">
+          <h4>Plovanov stol, the long descent.</h4>
+          <p>Wall dive, 8 – 36 m, posidonia shelf on top, gorgonian forest in the blue. Recommended for AOWD+.</p>
+          <div class="specs">
+            <div class="row"><span>Certification</span><b>AOWD</b></div>
+            <div class="row"><span>Depth</span><b>8 – 36 m</b></div>
+            <div class="row"><span>Marine life</span><b>Gorgonia, scorpionfish</b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────── BUBBLE MOMENTS ──────────── -->
+<section class="section page" data-screen-label="Bubble motif">
+  <div class="section-eyebrow">07 · Bubble motif</div>
+  <h2 class="section-title">The motif, restrained.</h2>
+  <p class="section-lead">Bubbles appear in three places across the system: the homepage hero (continuous ambient field), small decorative UI (loaders, dividers, cursor moments), and the dot in the <em>ć</em>. Not on every surface. Not a background fill. An "aha, neat" — not a "wow, bubbles."</p>
+
+  <div class="bubble-strip">
+    <div class="bubble-card">
+      <small style="font-family: var(--font-ui); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent); display: block; margin-bottom: 12px;">Hero field</small>
+      <h4>Quiet, not busy.</h4>
+      <p>Canvas ambient field — ~18 bubbles, one pre-rendered sprite, sine-wobble on rise. Stays under 1% CPU, pauses when the hero scrolls off, honours <code>prefers-reduced-motion</code>. The negative space around the headline does the heavy lifting.</p>
+    </div>
+
+    <div class="bubble-card">
+      <small style="font-family: var(--font-ui); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent); display: block; margin-bottom: 12px;">Loader</small>
+      <h4>For async form sends.</h4>
+      <div class="bubble-loader"><i></i><i></i><i></i><i></i></div>
+      <p>Replaces the generic spinner when the inquiry form is posting. Four bubbles, staggered, silent.</p>
+    </div>
+
+    <div class="bubble-card">
+      <small style="font-family: var(--font-ui); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent); display: block; margin-bottom: 12px;">Section divider</small>
+      <h4>Where you'd use a rule.</h4>
+      <div class="bubble-divider" aria-hidden="true">
+        <svg viewBox="0 0 400 28" preserveAspectRatio="none">
+          <line x1="0" y1="14" x2="160" y2="14" stroke="currentColor" stroke-width="1"/>
+          <circle cx="180" cy="14" r="3" fill="none" stroke="currentColor"/>
+          <circle cx="195" cy="10" r="2" fill="none" stroke="currentColor"/>
+          <circle cx="205" cy="16" r="1.5" fill="none" stroke="currentColor"/>
+          <line x1="240" y1="14" x2="400" y2="14" stroke="currentColor" stroke-width="1"/>
+        </svg>
+      </div>
+      <p>Replaces &lt;hr&gt;. Three bubbles float up between two lines. Static, non-animated — respects reading flow.</p>
+    </div>
+
+    <div class="bubble-card">
+      <small style="font-family: var(--font-ui); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent); display: block; margin-bottom: 12px;">Mask-lens hover</small>
+      <h4>Hover this image.</h4>
+      <div class="lens" id="lens" style="background-image: url('assets/hero-wreck.jpg');"></div>
+      <p>On dive-site photo thumbs. Lens scale 1.4×, 140px circle, follows cursor. Used sparingly — dive-site detail only.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────── TOKENS CODE ──────────── -->
+<section class="section page" data-screen-label="Tokens">
+  <div class="section-eyebrow">08 · Tokens</div>
+  <h2 class="section-title">Drop-in for <code>globals.css</code>.</h2>
+  <p class="section-lead">Every token name here already exists in the repo. Paste the block below into <code>src/styles/globals.css</code>, replacing the placeholder <code>@theme</code> block. The values shown are for <b id="active-palette-name">Palette A — Adriatic Deep</b>. The other two are also exported at the bottom for easy swapping.</p>
+
+  <div class="code-wrap">
+    <header>
+      <span>globals.css · Tailwind v4 · @theme</span>
+      <button id="copy-code">Copy</button>
+    </header>
+    <pre id="code-block"></pre>
+  </div>
+</section>
+
+<!-- ──────────── FOOTER ──────────── -->
+<footer class="foot">
+  <div class="dots">• • •</div>
+  Mihurić Design System · v0.1 · April 2026 · ready for dive-site detail template
+</footer>
+
+<!-- ──────────── TWEAKS ──────────── -->
+<button class="tweaks-fab" id="tweaks-fab" aria-label="Open tweaks">⚙</button>
+
+<div class="tweaks" id="tweaks-panel" aria-label="Tweaks">
+  <header>
+    Tweaks
+    <button id="tweaks-close" aria-label="Close">×</button>
+  </header>
+  <div class="group">
+    <label>Palette</label>
+    <div class="seg" role="tablist">
+      <button data-pal="A">A · Deep</button>
+      <button data-pal="B">B · Bright</button>
+      <button data-pal="C">C · Surfaced</button>
+    </div>
+  </div>
+  <div class="group">
+    <label>Type pairing</label>
+    <div class="seg two">
+      <button data-type-set="serif">Serif</button>
+      <button data-type-set="sans">Sans</button>
+    </div>
+  </div>
+  <div class="group">
+    <label>Motion</label>
+    <div class="seg two">
+      <button data-motion-set="on">On</button>
+      <button data-motion-set="off">Off</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ─── BUBBLE SIM (lightweight) ─────────────────────────────────────────
+   Goal: quiet presence, not a showpiece. ~18 bubbles, one pre-rendered
+   sprite reused for all. Cheap transform-and-draw per frame. Pauses
+   off-screen, on tab blur, and when the motion toggle is off.
+   ──────────────────────────────────────────────────────────────────── */
+(function initBubbleSim() {
+  const canvas = document.getElementById('bubble-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d', { alpha: true });
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const DPR = Math.min(window.devicePixelRatio || 1, 1.5);
+  let W = 0, H = 0;
+  function resize() {
+    const r = canvas.getBoundingClientRect();
+    W = Math.max(1, Math.round(r.width));
+    H = Math.max(1, Math.round(r.height));
+    canvas.width = W * DPR; canvas.height = H * DPR;
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  }
+  resize();
+  const ro = new ResizeObserver(resize); ro.observe(canvas);
+
+  // Pre-render a single bubble sprite once. All bubbles reuse it, scaled.
+  // That removes per-frame gradient construction entirely.
+  const SPRITE_R = 64;
+  const sprite = document.createElement('canvas');
+  sprite.width = sprite.height = SPRITE_R * 2;
+  (function paintSprite() {
+    const s = sprite.getContext('2d');
+    const cx = SPRITE_R, cy = SPRITE_R, r = SPRITE_R - 2;
+    const body = s.createRadialGradient(cx, cy, r * 0.1, cx, cy, r);
+    body.addColorStop(0.00, 'rgba(220, 235, 245, 0.05)');
+    body.addColorStop(0.80, 'rgba(255, 255, 255, 0.10)');
+    body.addColorStop(0.94, 'rgba(255, 255, 255, 0.55)');
+    body.addColorStop(1.00, 'rgba(255, 255, 255, 0)');
+    s.fillStyle = body;
+    s.beginPath(); s.arc(cx, cy, r, 0, Math.PI * 2); s.fill();
+    const sx = cx - r * 0.38, sy = cy - r * 0.42;
+    const spec = s.createRadialGradient(sx, sy, 0, sx, sy, r * 0.28);
+    spec.addColorStop(0, 'rgba(255,255,255,0.85)');
+    spec.addColorStop(1, 'rgba(255,255,255,0)');
+    s.fillStyle = spec;
+    s.beginPath(); s.arc(sx, sy, r * 0.28, 0, Math.PI * 2); s.fill();
+  })();
+
+  const COUNT = 18;
+  const bubbles = [];
+  function makeBubble(startY) {
+    const r = 3 + Math.random() * 10;
+    return {
+      x: Math.random() * W,
+      y: startY ?? (H + 20),
+      r,
+      vy: 18 + r * 2.2 + Math.random() * 8,
+      phase: Math.random() * Math.PI * 2,
+      wob: 0.6 + Math.random() * 0.8,
+      amp: 4 + Math.random() * 10,
+      a: 0.35 + Math.random() * 0.35,
+    };
+  }
+  for (let i = 0; i < COUNT; i++) bubbles.push(makeBubble(Math.random() * H));
+
+  let last = performance.now();
+  let heroVisible = true, tabVisible = true;
+  const hero = canvas.closest('.cover');
+  if (hero && 'IntersectionObserver' in window) {
+    new IntersectionObserver(
+      (es) => { for (const e of es) heroVisible = e.isIntersecting; },
+      { threshold: 0.01 }
+    ).observe(hero);
+  }
+  document.addEventListener('visibilitychange', () => { tabVisible = !document.hidden; });
+
+  function frame(now) {
+    const dt = Math.min(0.05, (now - last) / 1000);
+    last = now;
+    const motionOn = document.documentElement.getAttribute('data-motion') !== 'off' && !prefersReduced;
+
+    ctx.clearRect(0, 0, W, H);
+    const active = heroVisible && tabVisible && motionOn;
+
+    for (let i = 0; i < bubbles.length; i++) {
+      const b = bubbles[i];
+      if (active) {
+        b.y -= b.vy * dt;
+        b.phase += dt * b.wob;
+        if (b.y + b.r < -10) {
+          b.y = H + 10 + Math.random() * 40;
+          b.x = Math.random() * W;
+        }
+      }
+      const drawX = b.x + Math.sin(b.phase) * b.amp;
+      const topFade = b.y < H * 0.15 ? Math.max(0, (b.y - H * 0.02) / (H * 0.13)) : 1;
+      ctx.globalAlpha = b.a * topFade;
+      const d = b.r * 2;
+      ctx.drawImage(sprite, drawX - b.r, b.y - b.r, d, d);
+    }
+    ctx.globalAlpha = 1;
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+
+/* ─── RAMPS ──────────────────────────────────────────────────────────── */
+const RAMP_NAMES = [
+  { k: 'brand',  title: 'Brand',         sub: 'primary / link / focus ring' },
+  { k: 'sec',    title: 'Secondary',     sub: 'supporting blues' },
+  { k: 'acc',    title: 'Accent',        sub: 'gorgonian red — one CTA per page' },
+  { k: 'ink',    title: 'Ink',           sub: 'text · dark surfaces' },
+  { k: 'surf',   title: 'Surface',       sub: 'background · muted · sunk' },
+];
+function renderRamps() {
+  const host = document.getElementById('ramps');
+  host.innerHTML = '';
+  RAMP_NAMES.forEach(ramp => {
+    const row = document.createElement('div');
+    row.className = 'ramp';
+    const label = document.createElement('div');
+    label.className = 'label';
+    label.innerHTML = `<b>${ramp.title}</b><small>${ramp.sub}</small>`;
+    const steps = document.createElement('div');
+    steps.className = 'steps';
+    [50,100,200,300,400,500,600,700,800,900].forEach(st => {
+      const cell = document.createElement('div');
+      cell.className = 'step';
+      cell.style.background = `var(--${ramp.k}-${st})`;
+      const darkText = st <= 300;
+      cell.style.color = darkText ? 'oklch(0.2 0.02 85)' : 'oklch(0.98 0.01 85)';
+      cell.textContent = st;
+      steps.appendChild(cell);
+    });
+    row.appendChild(label); row.appendChild(steps);
+    host.appendChild(row);
+  });
+}
+renderRamps();
+
+/* ─── CODE BLOCK ────────────────────────────────────────────────────────── */
+const TOKENS_FOR = {
+  A: {
+    name: 'Palette A — Adriatic Deep',
+    tokens: {
+      '--color-brand':            'oklch(0.52 0.11 235)',
+      '--color-brand-contrast':   'oklch(0.98 0.01 85)',
+      '--color-secondary':        'oklch(0.30 0.06 240)',
+      '--color-accent':           'oklch(0.55 0.18 25)',
+      '--color-accent-warm':      'oklch(0.78 0.14 85)',
+      '--color-ink':              'oklch(0.16 0.03 245)',
+      '--color-ink-muted':        'oklch(0.46 0.03 245)',
+      '--color-surface':          'oklch(0.975 0.008 85)',
+      '--color-surface-muted':    'oklch(0.945 0.012 85)',
+      '--color-border':           'oklch(0.88 0.01 85)',
+    },
+  },
+  B: {
+    name: 'Palette B — Adriatic Bright',
+    tokens: {
+      '--color-brand':            'oklch(0.42 0.11 240)',
+      '--color-brand-contrast':   'oklch(0.98 0.01 85)',
+      '--color-secondary':        'oklch(0.64 0.11 195)',
+      '--color-accent':           'oklch(0.55 0.18 25)',
+      '--color-accent-warm':      'oklch(0.80 0.13 85)',
+      '--color-ink':              'oklch(0.22 0.04 245)',
+      '--color-ink-muted':        'oklch(0.46 0.03 245)',
+      '--color-surface':          'oklch(0.985 0.006 85)',
+      '--color-surface-muted':    'oklch(0.955 0.009 80)',
+      '--color-border':           'oklch(0.89 0.01 80)',
+    },
+  },
+  C: {
+    name: 'Palette C — Surfaced',
+    tokens: {
+      '--color-brand':            'oklch(0.28 0.06 240)',
+      '--color-brand-contrast':   'oklch(0.98 0.01 85)',
+      '--color-secondary':        'oklch(0.50 0.10 235)',
+      '--color-accent':           'oklch(0.80 0.15 85)',
+      '--color-accent-warm':      'oklch(0.55 0.18 25)',
+      '--color-ink':              'oklch(0.18 0.02 85)',
+      '--color-ink-muted':        'oklch(0.45 0.02 85)',
+      '--color-surface':          'oklch(0.97 0.01 85)',
+      '--color-surface-muted':    'oklch(0.94 0.014 80)',
+      '--color-border':           'oklch(0.86 0.015 80)',
+    },
+  },
+};
+
+const TYPE_TOKENS = {
+  serif: {
+    '--font-display': `"Fraunces", ui-serif, Georgia, serif`,
+    '--font-body':    `"Source Serif 4", ui-serif, Georgia, serif`,
+    '--font-mono':    `"JetBrains Mono", ui-monospace, monospace`,
+  },
+  sans: {
+    '--font-display': `"Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif`,
+    '--font-body':    `"IBM Plex Sans", ui-sans-serif, system-ui, sans-serif`,
+    '--font-mono':    `"JetBrains Mono", ui-monospace, monospace`,
+  },
+};
+
+const SHARED_TOKENS = {
+  '--radius-card':     '12px',
+  '--radius-button':   '8px',
+  '--radius-input':    '8px',
+  '--spacing-section': '80px',
+  '--spacing-gutter':  '24px',
+  '--shadow-card':     '0 1px 2px -1px oklch(0 0 0 / 0.06), 0 0 0 1px var(--color-border)',
+  '--shadow-hover':    '0 12px 32px -12px oklch(0 0 0 / 0.18), 0 0 0 1px var(--color-border)',
+};
+
+function buildCodeBlock(pal, typ) {
+  const active = TOKENS_FOR[pal];
+  const typeTokens = TYPE_TOKENS[typ];
+  let s = '';
+  s += `<span class="c">/* Mihurić — ${active.name}. Paste into src/styles/globals.css. */</span>\n`;
+  s += `@import "tailwindcss";\n\n`;
+  s += `@theme {\n`;
+  s += `  <span class="c">/* — color — */</span>\n`;
+  for (const [k, v] of Object.entries(active.tokens)) {
+    s += `  <span class="k">${k}</span>: <span class="v">${v}</span>;\n`;
+  }
+  s += `\n  <span class="c">/* — type — */</span>\n`;
+  for (const [k, v] of Object.entries(typeTokens)) {
+    s += `  <span class="k">${k}</span>: <span class="v">${v}</span>;\n`;
+  }
+  s += `\n  <span class="c">/* — radius · spacing · shadow — */</span>\n`;
+  for (const [k, v] of Object.entries(SHARED_TOKENS)) {
+    s += `  <span class="k">${k}</span>: <span class="v">${v}</span>;\n`;
+  }
+  s += `}\n\n`;
+  s += `<span class="c">/* Alt palettes — swap in by replacing the block above. */</span>\n`;
+  for (const key of Object.keys(TOKENS_FOR)) {
+    if (key === pal) continue;
+    s += `<span class="c">/* ${TOKENS_FOR[key].name} */</span>\n`;
+    for (const [k, v] of Object.entries(TOKENS_FOR[key].tokens)) {
+      s += `<span class="c">/* </span><span class="k">${k}</span><span class="c">: </span><span class="v">${v}</span><span class="c">; */</span>\n`;
+    }
+    s += `\n`;
+  }
+  return s;
+}
+
+function updateCodeBlock() {
+  const pal = document.documentElement.getAttribute('data-palette') || 'A';
+  const typ = document.documentElement.getAttribute('data-type') || 'serif';
+  document.getElementById('code-block').innerHTML = buildCodeBlock(pal, typ);
+  document.getElementById('active-palette-name').textContent = TOKENS_FOR[pal].name;
+}
+
+document.getElementById('copy-code').addEventListener('click', () => {
+  const pal = document.documentElement.getAttribute('data-palette') || 'A';
+  const typ = document.documentElement.getAttribute('data-type') || 'serif';
+  const raw = buildCodeBlock(pal, typ).replace(/<span[^>]*>/g, '').replace(/<\/span>/g, '');
+  navigator.clipboard.writeText(raw).then(() => {
+    const btn = document.getElementById('copy-code');
+    const old = btn.textContent;
+    btn.textContent = 'Copied';
+    setTimeout(() => btn.textContent = old, 1400);
+  });
+});
+
+/* ─── PALETTE SELECTION ─────────────────────────────────────────────────── */
+function applyPalette(p) {
+  document.documentElement.setAttribute('data-palette', p);
+  document.body.setAttribute('data-palette', p);
+  localStorage.setItem('mihuric-palette', p);
+  document.querySelectorAll('.strip').forEach(s => {
+    s.toggleAttribute('data-selected', s.dataset.paletteChoice === p);
+  });
+  document.querySelectorAll('#tweaks-panel [data-pal]').forEach(b => {
+    b.setAttribute('aria-pressed', b.dataset.pal === p ? 'true' : 'false');
+  });
+  updateCodeBlock();
+}
+function applyType(t) {
+  document.documentElement.setAttribute('data-type', t);
+  document.body.setAttribute('data-type', t);
+  localStorage.setItem('mihuric-type', t);
+  document.querySelectorAll('#tweaks-panel [data-type-set]').forEach(b => {
+    b.setAttribute('aria-pressed', b.dataset.typeSet === t ? 'true' : 'false');
+  });
+  updateCodeBlock();
+}
+function applyMotion(m) {
+  document.documentElement.setAttribute('data-motion', m);
+  localStorage.setItem('mihuric-motion', m);
+  document.querySelectorAll('#tweaks-panel [data-motion-set]').forEach(b => {
+    b.setAttribute('aria-pressed', b.dataset.motionSet === m ? 'true' : 'false');
+  });
+}
+document.querySelectorAll('[data-choose]').forEach(b => {
+  b.addEventListener('click', () => applyPalette(b.dataset.choose));
+});
+document.querySelectorAll('#tweaks-panel [data-pal]').forEach(b => {
+  b.addEventListener('click', () => applyPalette(b.dataset.pal));
+});
+document.querySelectorAll('#tweaks-panel [data-type-set]').forEach(b => {
+  b.addEventListener('click', () => applyType(b.dataset.typeSet));
+});
+document.querySelectorAll('#tweaks-panel [data-motion-set]').forEach(b => {
+  b.addEventListener('click', () => applyMotion(b.dataset.motionSet));
+});
+
+/* init */
+const initPal = localStorage.getItem('mihuric-palette') || 'A';
+const initTyp = localStorage.getItem('mihuric-type') || 'serif';
+const initMot = localStorage.getItem('mihuric-motion') || 'on';
+applyPalette(initPal);
+applyType(initTyp);
+applyMotion(initMot);
+
+/* ─── TWEAKS HOST (edit-mode protocol) ──────────────────────────────────── */
+(function initEditModeProtocol() {
+  const panel = document.getElementById('tweaks-panel');
+  const fab = document.getElementById('tweaks-fab');
+  let open = false;
+  const setOpen = (v) => {
+    open = v;
+    panel.setAttribute('data-open', v ? 'true' : 'false');
+    fab.classList.toggle('show', !v);
+  };
+  setOpen(false);
+  window.addEventListener('message', (e) => {
+    if (!e.data || typeof e.data !== 'object') return;
+    if (e.data.type === '__activate_edit_mode') { setOpen(true); fab.classList.add('show'); }
+    if (e.data.type === '__deactivate_edit_mode') { setOpen(false); fab.classList.remove('show'); }
+  });
+  // Announce availability AFTER listener is attached.
+  try { window.parent.postMessage({ type: '__edit_mode_available' }, '*'); } catch(e) {}
+  fab.addEventListener('click', () => setOpen(true));
+  document.getElementById('tweaks-close').addEventListener('click', () => setOpen(false));
+  // Show FAB for standalone viewing so user always has access to tweaks.
+  fab.classList.add('show');
+})();
+
+/* ─── LENS ─────────────────────────────────────────────────────────────── */
+const lens = document.getElementById('lens');
+if (lens) {
+  lens.addEventListener('mousemove', (e) => {
+    const r = lens.getBoundingClientRect();
+    const x = ((e.clientX - r.left) / r.width) * 100;
+    const y = ((e.clientY - r.top) / r.height) * 100;
+    lens.style.setProperty('--x', x + '%');
+    lens.style.setProperty('--y', y + '%');
+    lens.style.setProperty('--bgx', x + '%');
+    lens.style.setProperty('--bgy', y + '%');
+  });
+}
+</script>
+</body>
+</html>
